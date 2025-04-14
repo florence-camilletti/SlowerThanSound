@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://x8k4uh65r06k"]
+
+[ext_resource type="Texture2D" uid="uid://d0ara2tk00xts" path="res://Assets/Textures/back.png" id="1_jm66m"]
+
+[node name="ShipScreen" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(584, 328)
+scale = Vector2(58.75, 33.125)
+texture = ExtResource("1_jm66m")
