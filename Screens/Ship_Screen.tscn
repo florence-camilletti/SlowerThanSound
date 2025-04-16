@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://by6ibt8eqsgjk"]
+[gd_scene load_steps=5 format=3 uid="uid://by6ibt8eqsgjk"]
 
 [ext_resource type="Texture2D" uid="uid://d0ara2tk00xts" path="res://Assets/Textures/back.png" id="1_ungp0"]
 [ext_resource type="Script" uid="uid://jojeowbnx382" path="res://Screens/ship_screen.gd" id="1_xne6s"]
 [ext_resource type="Texture2D" uid="uid://bgdt0cl5t2qt8" path="res://Assets/Textures/Ships/Ship_Base.png" id="3_fjoxh"]
+[ext_resource type="Script" uid="uid://cbmyl68867y5i" path="res://Screens/ship_energy.gd" id="4_pmen7"]
 
 [node name="ShipScreen" type="Node2D"]
 script = ExtResource("1_xne6s")
@@ -38,3 +39,6 @@ texture = ExtResource("3_fjoxh")
 
 [node name="SystemSprite" type="Sprite2D" parent="."]
 position = Vector2(1328, 487)
+
+[node name="ShipEnergy" type="Node" parent="."]
+script = ExtResource("4_pmen7")
