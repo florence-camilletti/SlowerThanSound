@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://by6ibt8eqsgjk"]
+[gd_scene load_steps=6 format=3 uid="uid://by6ibt8eqsgjk"]
 
 [ext_resource type="Texture2D" uid="uid://d0ara2tk00xts" path="res://Assets/Textures/back.png" id="1_ungp0"]
 [ext_resource type="Script" uid="uid://jojeowbnx382" path="res://Screens/ship_screen.gd" id="1_xne6s"]
 [ext_resource type="Texture2D" uid="uid://bgdt0cl5t2qt8" path="res://Assets/Textures/Ships/Ship_Base.png" id="3_fjoxh"]
 [ext_resource type="Script" uid="uid://cbmyl68867y5i" path="res://Screens/ship_energy.gd" id="4_pmen7"]
+[ext_resource type="Texture2D" uid="uid://dr4oo0qbki4l8" path="res://Assets/Textures/EnergyBar.png" id="5_g76ue"]
 
 [node name="ShipScreen" type="Node2D"]
 script = ExtResource("1_xne6s")
@@ -40,5 +41,96 @@ texture = ExtResource("3_fjoxh")
 [node name="SystemSprite" type="Sprite2D" parent="."]
 position = Vector2(1328, 487)
 
-[node name="ShipEnergy" type="Node" parent="."]
+[node name="ShipEnergy" type="Node2D" parent="."]
+visible = false
 script = ExtResource("4_pmen7")
+
+[node name="Bar_A1" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1039, 551)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_Z1" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1025, 775)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_Z2" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1025, 740)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_X1" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1333, 791)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_X2" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1333, 757)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_C1" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1623, 777)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_C2" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1623, 740)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_S1" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1435, 643)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_S2" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1435, 611)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_S3" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1436, 578)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_W1" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1434, 466)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_W2" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1435, 431)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_Q1" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1224, 404)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_Q2" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1226, 374)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_Q3" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1223, 348)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_Q4" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1224, 317)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_21" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1420, 255)
+texture = ExtResource("5_g76ue")
+
+[node name="Bar_11" type="Sprite2D" parent="ShipEnergy"]
+visible = false
+position = Vector2(1330, 143)
+texture = ExtResource("5_g76ue")

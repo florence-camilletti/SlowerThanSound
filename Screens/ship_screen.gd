@@ -12,12 +12,15 @@ var bulk_file_text
 var weapons_file_text
 var targeting_file_text
 
+var energy_node
+
 var ship_sprite
 var system_sprite
 
 func _ready() -> void:
     menu_choice = 0
     menu_text = $MenuText
+    energy_node = $ShipEnergy
     ship_sprite = $ShipSprite
     system_sprite = $SystemSprite
     
@@ -33,10 +36,12 @@ func _ready() -> void:
 func _process(delta: float) -> void:
     if(Input.is_action_just_pressed("MENU_QUIT")):#Go up a menu
         menu_choice = 0
+        energy_node.set_focus(false)
     if(Input.is_action_just_pressed("HEADING")):#Where you're going
         menu_choice = 1
     if(Input.is_action_just_pressed("ENERGY")):#What has power
         menu_choice = 2
+        energy_node.set_focus(true)
     if(Input.is_action_just_pressed("AI")):#What the computers are focusing on
         menu_choice = 3
     if(Input.is_action_just_pressed("OXYGEN")):#Oxygen managment
@@ -82,11 +87,12 @@ func display_heading():#MOVE TO MAP MENU
     system_sprite.visible = false
     menu_text.set_text(heading_file_text)
     
-func display_energy():
+func display_energy():#MOVE TO ship_energy.gd
     ship_sprite.visible = true
     system_sprite.visible = true
     menu_text.set_text(energy_file_text)
     system_sprite.texture = load("res://Assets/Textures/Ships/Ship_Energy.png")
+    
 
 func display_AI():
     ship_sprite.visible = true
