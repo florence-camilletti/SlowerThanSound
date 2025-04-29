@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3 uid="uid://cc5hivvk8lrs3"]
+
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Screens/Ship_System.tscn" id="1_0fvnq"]
+[ext_resource type="Script" uid="uid://cyim88fakf5xt" path="res://Scripts/ship_weapons.gd" id="2_cbrcw"]
+[ext_resource type="Texture2D" uid="uid://dmi2wf0pdnyvs" path="res://Assets/Textures/Ships/Ship_Weapons.png" id="3_cyf5v"]
+
+[node name="ShipWeapons" instance=ExtResource("1_0fvnq")]
+script = ExtResource("2_cbrcw")
+
+[node name="SystemSprite" parent="." index="1"]
+texture = ExtResource("3_cyf5v")

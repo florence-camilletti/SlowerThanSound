@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://dcbq55wkga8tk"]
+
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Screens/Ship_System.tscn" id="1_ctw80"]
+[ext_resource type="Script" uid="uid://bol1r4odc751j" path="res://Scripts/ship_lidar.gd" id="2_yj4yk"]
+
+[node name="ShipLIDAR" instance=ExtResource("1_ctw80")]
+script = ExtResource("2_yj4yk")

@@ -1,6 +1,4 @@
-extends Node
-
-var in_focus: bool
+extends ShipSystem
 
 var energy_bar_path = "res://Assets/Textures/EnergyBar.png"
 
@@ -13,16 +11,19 @@ var add_actions = ["1","2","Q","W","A","S","Z","X","C"]
 var rem_actions = "SH"
 
 func _ready() -> void:
-    in_focus = false
-    bar_sprites = [[$Bar_11],
-                [$Bar_21],
-                [$Bar_Q1,$Bar_Q2,$Bar_Q3,$Bar_Q4],
-                [$Bar_W1,$Bar_W2],
-                [$Bar_A1],
-                [$Bar_S1,$Bar_S2,$Bar_S3],
-                [$Bar_Z1,$Bar_Z2],
-                [$Bar_X1,$Bar_X2],
-                [$Bar_C1,$Bar_C2]]
+    text_file_path = "res://Assets/Texts/Ship_Energy.txt"
+    
+    bar_sprites = [[$Bars/Bar_11],
+                [$Bars/Bar_21],
+                [$Bars/Bar_Q1,$Bars/Bar_Q2,$Bars/Bar_Q3,$Bars/Bar_Q4],
+                [$Bars/Bar_W1,$Bars/Bar_W2],
+                [$Bars/Bar_A1],
+                [$Bars/Bar_S1,$Bars/Bar_S2,$Bars/Bar_S3],
+                [$Bars/Bar_Z1,$Bars/Bar_Z2],
+                [$Bars/Bar_X1,$Bars/Bar_X2],
+                [$Bars/Bar_C1,$Bars/Bar_C2]]
+                
+    super._ready()
     
 func _process(delta: float) -> void:
     if(in_focus):
@@ -31,13 +32,9 @@ func _process(delta: float) -> void:
             if(Input.is_action_just_pressed(rem_actions+action)):#Remove energy
                 print("REMOVE FROM "+action)
                 curr_power[indx] = max(curr_power[indx]-1, 0)
-                bar_sprites[indx][0].visible = false
+                bar_sprites[indx][curr_power[indx]].visible = false
                 
             elif(Input.is_action_just_pressed(action)):#Add energy
                 print("ADD TO "+action)
                 curr_power[indx] = min(curr_power[indx]+1, max_power[indx])
-                bar_sprites[indx][0].visible = true
-
-func set_focus(f) -> void:
-    in_focus = f
-    self.visible = f
+                bar_sprites[indx][curr_power[indx]-1].visible = true
