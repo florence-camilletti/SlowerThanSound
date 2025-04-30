@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://de68nawnmq5oj"]
 
-[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Screens/Ship_System.tscn" id="1_3dum8"]
-[ext_resource type="Script" uid="uid://0qqwrvc417u8" path="res://Scripts/ship_oxy.gd" id="2_0pxto"]
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Screens/Systems/Ship_System.tscn" id="1_3dum8"]
+[ext_resource type="Script" uid="uid://0qqwrvc417u8" path="res://Scripts/Systems/ship_oxy.gd" id="2_0pxto"]
 [ext_resource type="Texture2D" uid="uid://c637rvndrx6ix" path="res://Assets/Textures/Ships/Ship_Pumps.png" id="2_bvm6j"]
 
 [node name="ShipOxy" instance=ExtResource("1_3dum8")]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cxlti6bo41ija"]
 
-[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Screens/Ship_System.tscn" id="1_hkqgm"]
-[ext_resource type="Script" uid="uid://cbmyl68867y5i" path="res://Scripts/ship_energy.gd" id="2_pvwxx"]
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Screens/Systems/Ship_System.tscn" id="1_hkqgm"]
+[ext_resource type="Script" uid="uid://cbmyl68867y5i" path="res://Scripts/Systems/ship_energy.gd" id="2_pvwxx"]
 [ext_resource type="Texture2D" uid="uid://bsferqnagcwnt" path="res://Assets/Textures/Ships/Ship_Energy.png" id="3_wh11q"]
 [ext_resource type="Texture2D" uid="uid://dr4oo0qbki4l8" path="res://Assets/Textures/EnergyBar.png" id="4_mrip0"]
 
