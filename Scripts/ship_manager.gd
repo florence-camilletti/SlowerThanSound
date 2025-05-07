@@ -22,7 +22,7 @@ func _ready() -> void:
                     $ShipWeapons]
     focuses = [true, false, false, false, false, false]
 
-func _process(delta: float) -> void:
+func _process(delta: float):
     for possible_action in range(num_actions):
         if(Input.is_action_just_pressed(actions[possible_action])):
             menu_choice = possible_action#Set the menu choice

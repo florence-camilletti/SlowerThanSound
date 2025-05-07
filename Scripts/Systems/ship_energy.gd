@@ -1,7 +1,5 @@
 extends ShipSystem
 
-var energy_bar_path = "res://Assets/Textures/EnergyBar.png"
-
 enum {HEADING, OXYGEN, AI, WEAPONS, BULKHEAD, TARGETING,
         ENGINE_LEFT, ENGINE_CENTER, ENGINE_RIGHT}
 var bar_sprites = []
@@ -26,15 +24,14 @@ func _ready() -> void:
     super._ready()
     
 func _process(delta: float) -> void:
+    #Process player input
     if(in_focus):
-        for indx in range(len(add_actions)):
+         for indx in range(len(add_actions)):
             var action = add_actions[indx]
             if(Input.is_action_just_pressed(rem_actions+action)):#Remove energy
-                print("REMOVE FROM "+action)
                 curr_power[indx] = max(curr_power[indx]-1, 0)
                 bar_sprites[indx][curr_power[indx]].visible = false
-                
+                    
             elif(Input.is_action_just_pressed(action)):#Add energy
-                print("ADD TO "+action)
                 curr_power[indx] = min(curr_power[indx]+1, max_power[indx])
                 bar_sprites[indx][curr_power[indx]-1].visible = true

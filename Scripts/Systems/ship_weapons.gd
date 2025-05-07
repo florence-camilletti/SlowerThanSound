@@ -6,3 +6,6 @@ func _ready() -> void:
     
 func _process(delta: float) -> void:
     super._process(delta)
+    #Process player input
+    if(in_focus):
+        pass

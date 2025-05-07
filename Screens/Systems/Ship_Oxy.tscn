@@ -1,11 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://de68nawnmq5oj"]
+[gd_scene load_steps=7 format=3 uid="uid://de68nawnmq5oj"]
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Screens/Systems/Ship_System.tscn" id="1_3dum8"]
 [ext_resource type="Script" uid="uid://0qqwrvc417u8" path="res://Scripts/Systems/ship_oxy.gd" id="2_0pxto"]
 [ext_resource type="Texture2D" uid="uid://c637rvndrx6ix" path="res://Assets/Textures/Ships/Ship_Pumps.png" id="2_bvm6j"]
+[ext_resource type="Texture2D" uid="uid://82il3iooechu" path="res://Assets/Textures/OxyAI.png" id="4_30utm"]
+[ext_resource type="Texture2D" uid="uid://pwjg6ei4vb5m" path="res://Assets/Textures/OxyBattery.png" id="5_5jpe7"]
+[ext_resource type="Texture2D" uid="uid://jce8ndbe5g24" path="res://Assets/Textures/OxyEngine.png" id="6_jwc4r"]
 
 [node name="ShipOxy" instance=ExtResource("1_3dum8")]
 script = ExtResource("2_0pxto")
 
 [node name="SystemSprite" parent="." index="1"]
 texture = ExtResource("2_bvm6j")
+
+[node name="AISprite" type="Sprite2D" parent="." index="2"]
+position = Vector2(1328, 487)
+texture = ExtResource("4_30utm")
+
+[node name="BatterySprite" type="Sprite2D" parent="." index="3"]
+position = Vector2(1328, 487)
+texture = ExtResource("5_5jpe7")
+
+[node name="EngineSprite" type="Sprite2D" parent="." index="4"]
+position = Vector2(1328, 487)
+texture = ExtResource("6_jwc4r")

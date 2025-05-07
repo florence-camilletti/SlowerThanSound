@@ -12,9 +12,8 @@ func _ready() -> void:
     var file = FileAccess.open(text_file_path, FileAccess.READ)
     text_node.set_text(file.get_as_text())
     
-func _process(delta: float):
-    if(!in_focus):
-        return(null)
+func _process(delta: float) -> void:
+    pass
 
 func set_focus(f) -> void:
     in_focus = f
