@@ -1,5 +1,5 @@
 extends Node2D
-class_name ShipSystem
+class_name ShipSystemBase
 
 var in_focus: bool
 var text_file_path

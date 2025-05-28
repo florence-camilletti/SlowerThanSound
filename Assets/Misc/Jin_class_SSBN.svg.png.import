@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c637rvndrx6ix"
-path="res://.godot/imported/Ship_Pumps.png-915790b32d212982f92237abf68d877d.ctex"
+uid="uid://cm2rcdex268dp"
+path="res://.godot/imported/Jin_class_SSBN.svg.png-2ae96a7bd8417c5ba06a973b0f0638a8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/Ships/Ship_Pumps.png"
-dest_files=["res://.godot/imported/Ship_Pumps.png-915790b32d212982f92237abf68d877d.ctex"]
+source_file="res://Assets/Misc/Jin_class_SSBN.svg.png"
+dest_files=["res://.godot/imported/Jin_class_SSBN.svg.png-2ae96a7bd8417c5ba06a973b0f0638a8.ctex"]
 
 [params]
 

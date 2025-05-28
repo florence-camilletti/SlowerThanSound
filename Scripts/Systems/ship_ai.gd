@@ -1,4 +1,4 @@
-extends ShipSystem
+extends ShipSystemBase
 
 func _ready() -> void:
     text_file_path = "res://Assets/Texts/Ship_AI.txt"

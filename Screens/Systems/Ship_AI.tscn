@@ -1,11 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dkl1ls4rou68o"]
+[gd_scene load_steps=3 format=3 uid="uid://dkl1ls4rou68o"]
 
-[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Screens/Systems/Ship_System.tscn" id="1_64dlo"]
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Screens/Systems/Ship_System_Base.tscn" id="1_64dlo"]
 [ext_resource type="Script" uid="uid://2dkidu1gf8ja" path="res://Scripts/Systems/ship_ai.gd" id="2_m4vln"]
-[ext_resource type="Texture2D" uid="uid://q34ng4xtyev4" path="res://Assets/Textures/Ships/Ship_AI.png" id="2_qdeq5"]
 
 [node name="ShipAI" instance=ExtResource("1_64dlo")]
 script = ExtResource("2_m4vln")
-
-[node name="SystemSprite" parent="." index="1"]
-texture = ExtResource("2_qdeq5")

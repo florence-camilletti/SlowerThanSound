@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jce8ndbe5g24"
-path="res://.godot/imported/OxyEngine.png-f387208650dd1ce85d0b91f41b6d156c.ctex"
+uid="uid://cam2e0mmnaywe"
+path="res://.godot/imported/Ship_Full.png-4c18ecbddaed66fc0817ac122d90cc20.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/OxyEngine.png"
-dest_files=["res://.godot/imported/OxyEngine.png-f387208650dd1ce85d0b91f41b6d156c.ctex"]
+source_file="res://Assets/Textures/Ships/Ship_Full.png"
+dest_files=["res://.godot/imported/Ship_Full.png-4c18ecbddaed66fc0817ac122d90cc20.ctex"]
 
 [params]
 

@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbmqp6ic5jct8"]
+
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Screens/Systems/Ship_System_Base.tscn" id="1_hkqgm"]
+[ext_resource type="Script" uid="uid://cbmyl68867y5i" path="res://Scripts/Systems/ship_power.gd" id="2_pvwxx"]
+
+[node name="ShipPower" instance=ExtResource("1_hkqgm")]
+script = ExtResource("2_pvwxx")

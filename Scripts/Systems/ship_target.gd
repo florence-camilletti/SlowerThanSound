@@ -1,7 +1,7 @@
 extends ShipSystemBase
 
 func _ready() -> void:
-    text_file_path = "res://Assets/Texts/Ship_Weapons.txt"
+    text_file_path = "res://Assets/Texts/Ship_Target.txt"
     super._ready()
     
 func _process(delta: float) -> void:

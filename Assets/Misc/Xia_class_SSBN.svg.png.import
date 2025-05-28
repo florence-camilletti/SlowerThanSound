@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvgk2vr2emy3f"
-path="res://.godot/imported/Ship_Bulkheads.png-b2f9e13a489681952c69c5e5e21837db.ctex"
+uid="uid://blae3ao21y1xc"
+path="res://.godot/imported/Xia_class_SSBN.svg.png-029b5100681fa40f9efade5b9d70867b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/Ships/Ship_Bulkheads.png"
-dest_files=["res://.godot/imported/Ship_Bulkheads.png-b2f9e13a489681952c69c5e5e21837db.ctex"]
+source_file="res://Assets/Misc/Xia_class_SSBN.svg.png"
+dest_files=["res://.godot/imported/Xia_class_SSBN.svg.png-029b5100681fa40f9efade5b9d70867b.ctex"]
 
 [params]
 
