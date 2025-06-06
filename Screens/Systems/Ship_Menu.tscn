@@ -7,6 +7,15 @@
 [node name="ShipMenu" instance=ExtResource("1_5erjh")]
 script = ExtResource("2_hfdcm")
 
+[node name="Text" parent="." index="0"]
+offset_left = 16.0
+
 [node name="SystemSprite" parent="." index="1"]
 position = Vector2(948, 894)
 texture = ExtResource("3_67jto")
+
+[node name="StatusNums" type="RichTextLabel" parent="." index="2"]
+offset_left = 294.0
+offset_top = 16.0
+offset_right = 708.0
+offset_bottom = 1079.0
