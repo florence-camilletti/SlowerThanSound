@@ -1,49 +1,78 @@
 extends ShipSystemBase
 
-var max_delta_heading = 2.0
-var min_delta_heading = max_delta_heading*-1
-var depth_change = 0.1
+var statusNumsText
 
-var max_delta_depth = 2.0
-var min_delta_depth = max_delta_depth*-1
-var delta_change = 0.1
+var heading_flag:bool
+var depth_flag:bool
+var speed_flag:bool
 
-var max_delta_speed = 2.0
-var min_delta_speed = max_delta_speed*-1
-var speed_change = 0.1
+var input_num:int
+var num_digits:int
+var digits_left:int
 
 func _ready() -> void:
     text_file_path = "res://Assets/Texts/Ship_Engine.txt"
+    statusNumsText = $StatusNums
+    
+    heading_flag=false
+    depth_flag=false
+    speed_flag=false
+    
+    input_num=0
+    num_digits=3
+    digits_left=num_digits
     super._ready()
     
 func _process(delta: float) -> void:
     super._process(delta)
+    #Update text
+    var txt_output = str(manager_node.heading) + "\n" + str(manager_node.delta_heading) + "\n"
+    txt_output += str(manager_node.depth) + "\n" + str(manager_node.delta_depth) + "\n"
+    txt_output += str(manager_node.speed) + "\n" + str(manager_node.delta_speed) + "\n"
+    statusNumsText.set_text(txt_output)
+
+func _input(event):
     #Process player input
     if(in_focus):
-        if(Input.is_action_just_pressed("U")):#Heading
-            if(Input.is_action_pressed("SHIFT")):#Auto-heading
-                pass
-            else:
-                print("HEADING UP")
-                var curr_delta = manager_node.delta_heading
-                manager_node.delta_heading = min(curr_delta+depth_change, max_delta_heading)
-        elif(Input.is_action_just_pressed("J")):
-            print("HEADING DOWN")
-            var curr_delta = manager_node.delta_heading
-            manager_node.delta_heading = max(curr_delta-depth_change, min_delta_heading)
+        if(event.is_action_pressed("U")):#Heading
+            heading_flag = true
+            input_num=0
+            digits_left=num_digits
+        elif(event.is_action_pressed("J")):
+            print("EMERGENCY HEADING")
             
-        elif(Input.is_action_just_pressed("I")):#Depth
-            if(Input.is_action_pressed("SHIFT")):#Auto-depth
-                pass
-            else:
-                print("DEPTH UP")
-        elif(Input.is_action_just_pressed("K")):
-            print("DEPTH DOWN")
+        elif(event.is_action_pressed("I")):#Depth
+            depth_flag = true
+            input_num=0
+            digits_left=num_digits
+        elif(event.is_action_pressed("K")):
+            print("EMERGENCY DIVE/SURFACE")
             
-        elif(Input.is_action_just_pressed("O")):#Speed
-            if(Input.is_action_pressed("SHIFT")):#Auto-speed
-                pass
-            else:
-                print("SPEED UP")
-        elif(Input.is_action_just_pressed("L")):
-            print("SPEED DOWN")
+        elif(event.is_action_pressed("O")):#Speed
+            speed_flag = true
+            input_num=0
+            digits_left=num_digits
+        elif(event.is_action_pressed("L")):
+            print("EMERGENCY STOP/GO")
+            
+        #Check for number input
+        if(heading_flag or depth_flag or speed_flag):
+            for n in range(10):
+                if(event.is_action_pressed(str(n))):
+                    input_num*=10
+                    input_num+=n
+                    digits_left-=1
+                
+                if(digits_left==0):
+                    if(heading_flag):
+                        manager_node.heading = input_num
+                    elif(depth_flag):
+                        manager_node.depth = input_num
+                    elif(speed_flag):
+                        manager_node.speed = input_num
+                    input_num=0
+                    digits_left=num_digits
+                    heading_flag = false
+                    depth_flag = false
+                    speed_flag = false
+                    

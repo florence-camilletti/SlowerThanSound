@@ -9,6 +9,18 @@ script = ExtResource("2_hfdcm")
 
 [node name="Text" parent="." index="0"]
 offset_left = 16.0
+text = "HEADING:
+ΔHEADING:
+DEPTH:  
+ΔDEPTH:
+SPEED:  
+ΔSPEED:
+
+POWER: 69%
+OXY: 666 ppm
+
+DAMAGE REPORT:
+lmao u sinking"
 
 [node name="SystemSprite" parent="." index="1"]
 position = Vector2(948, 894)
@@ -19,3 +31,9 @@ offset_left = 294.0
 offset_top = 16.0
 offset_right = 708.0
 offset_bottom = 1079.0
+text = "123
+456
+789
+123
+456
+789"

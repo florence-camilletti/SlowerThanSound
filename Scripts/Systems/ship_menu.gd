@@ -1,6 +1,6 @@
 extends ShipSystemBase
 
-var statusNums
+var statusNumsText
 
 func _ready() -> void:
     text_file_path = "res://Assets/Texts/Ship_Menu.txt"
@@ -8,13 +8,12 @@ func _ready() -> void:
     self.in_focus = true
     self.visible = true
     
-    self.statusNums = $StatusNums
+    self.statusNumsText = $StatusNums
     
 func _process(delta: float) -> void:
     super._process(delta)
     #Process player input
     if(in_focus):
-        pass
-        #Set status numbers
+        #Update text
         var txt_output = str(manager_node.heading) + "\n" + str(manager_node.delta_heading)
-        statusNums.set_text(txt_output)
+        statusNumsText.set_text(txt_output)

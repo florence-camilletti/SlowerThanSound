@@ -2,8 +2,8 @@ extends Node2D
 
 var menu_choice: int;
 enum {MENU,ENGINE,POWER,OXY,AI,BULK,TARGET,WEAP,LIDAR}#Manual controls
-var num_actions = 9
 var actions = ["MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"]#Names of possible menu actions
+var num_actions = len(actions)
 var system_nodes = []#Child nodes belonging to each one
 var focuses = []#Which one is currently being focused on
 
@@ -44,14 +44,19 @@ func _process(delta: float):
     depth+=delta_depth
     speed+=delta_speed
     
+func _input(event):
     for possible_action in range(num_actions):#Check for menu change
-        if(Input.is_action_just_pressed(actions[possible_action])):
-            if(Input.is_action_pressed("Space")):
-                menu_choice = possible_action#Set the menu choice
-                for n in range(num_actions):#Set the focuses
-                    if(possible_action==n):
-                        system_nodes[n].set_focus(true)
-                        focuses[n]=true
-                    else:
-                        system_nodes[n].set_focus(false)        
-                        focuses[n]=false
+        if(event.is_action_pressed(actions[possible_action])):
+            menu_choice = possible_action#Set the menu choice
+            for n in range(num_actions):#Set the focuses
+                if(possible_action==n):
+                    system_nodes[n].set_focus(true)
+                    focuses[n]=true
+                else:
+                    system_nodes[n].set_focus(false)        
+                    focuses[n]=false
+    
+func _unhandled_input(event):
+    if event is InputEventKey:
+        if event.pressed and event.keycode == KEY_ESCAPE:
+            get_tree().quit()
