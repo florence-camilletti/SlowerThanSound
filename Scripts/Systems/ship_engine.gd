@@ -1,10 +1,11 @@
 extends ShipSystemBase
 
 var statusNumsText
+var inputNumsText
 
-var heading_flag:bool
-var depth_flag:bool
-var speed_flag:bool
+enum {NONE, HEADING, DEPTH, SPEED}
+var setting_names = ["INPUT","Heading","Depth","Speed"]
+var selected_setting: int
 
 var input_num:int
 var num_digits:int
@@ -13,10 +14,9 @@ var digits_left:int
 func _ready() -> void:
     text_file_path = "res://Assets/Texts/Ship_Engine.txt"
     statusNumsText = $StatusNums
+    inputNumsText = $InputNums
     
-    heading_flag=false
-    depth_flag=false
-    speed_flag=false
+    selected_setting=NONE
     
     input_num=0
     num_digits=3
@@ -35,28 +35,28 @@ func _input(event):
     #Process player input
     if(in_focus):
         if(event.is_action_pressed("U")):#Heading
-            heading_flag = true
+            selected_setting = HEADING
             input_num=0
             digits_left=num_digits
         elif(event.is_action_pressed("J")):
             print("EMERGENCY HEADING")
             
         elif(event.is_action_pressed("I")):#Depth
-            depth_flag = true
+            selected_setting = DEPTH
             input_num=0
             digits_left=num_digits
         elif(event.is_action_pressed("K")):
             print("EMERGENCY DIVE/SURFACE")
             
         elif(event.is_action_pressed("O")):#Speed
-            speed_flag = true
+            selected_setting = SPEED
             input_num=0
             digits_left=num_digits
         elif(event.is_action_pressed("L")):
             print("EMERGENCY STOP/GO")
             
         #Check for number input
-        if(heading_flag or depth_flag or speed_flag):
+        if(selected_setting!=NONE):
             for n in range(10):
                 if(event.is_action_pressed(str(n))):
                     input_num*=10
@@ -64,15 +64,14 @@ func _input(event):
                     digits_left-=1
                 
                 if(digits_left==0):
-                    if(heading_flag):
+                    if(selected_setting==HEADING):
                         manager_node.heading = input_num
-                    elif(depth_flag):
+                    elif(selected_setting==DEPTH):
                         manager_node.depth = input_num
-                    elif(speed_flag):
+                    elif(selected_setting==SPEED):
                         manager_node.speed = input_num
                     input_num=0
                     digits_left=num_digits
-                    heading_flag = false
-                    depth_flag = false
-                    speed_flag = false
+                    selected_setting=NONE
+            inputNumsText.set_text(setting_names[selected_setting]+"\n"+str(input_num))
                     

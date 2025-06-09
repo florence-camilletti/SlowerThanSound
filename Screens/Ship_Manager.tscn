@@ -48,5 +48,6 @@ visible = false
 visible = false
 
 [node name="ShipSprite" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(948, 894)
 texture = ExtResource("3_mneo4")

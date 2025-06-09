@@ -15,5 +15,7 @@ func _process(delta: float) -> void:
     #Process player input
     if(in_focus):
         #Update text
-        var txt_output = str(manager_node.heading) + "\n" + str(manager_node.delta_heading)
+        var txt_output = str(manager_node.heading) + "\n" + str(manager_node.delta_heading) + "\n"
+        txt_output += str(manager_node.depth) + "\n" + str(manager_node.delta_depth) + "\n"
+        txt_output += str(manager_node.speed) + "\n" + str(manager_node.delta_speed)
         statusNumsText.set_text(txt_output)

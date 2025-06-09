@@ -2,13 +2,15 @@
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Screens/Systems/Ship_System_Base.tscn" id="1_5erjh"]
 [ext_resource type="Script" uid="uid://dftv80lcqy7rb" path="res://Scripts/Systems/ship_menu.gd" id="2_hfdcm"]
-[ext_resource type="Texture2D" uid="uid://ccxp4l5colwh5" path="res://Assets/Textures/Ships/Ship_Menu.png" id="3_67jto"]
+[ext_resource type="Texture2D" uid="uid://cam2e0mmnaywe" path="res://Assets/Textures/Ships/Ship_Full.png" id="3_67jto"]
 
 [node name="ShipMenu" instance=ExtResource("1_5erjh")]
 script = ExtResource("2_hfdcm")
 
 [node name="Text" parent="." index="0"]
 offset_left = 16.0
+offset_right = 240.0
+offset_bottom = 304.0
 text = "HEADING:
 ΔHEADING:
 DEPTH:  
@@ -29,8 +31,8 @@ texture = ExtResource("3_67jto")
 [node name="StatusNums" type="RichTextLabel" parent="." index="2"]
 offset_left = 294.0
 offset_top = 16.0
-offset_right = 708.0
-offset_bottom = 1079.0
+offset_right = 344.0
+offset_bottom = 168.0
 text = "123
 456
 789
