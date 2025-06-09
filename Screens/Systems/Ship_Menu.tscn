@@ -7,10 +7,11 @@
 [node name="ShipMenu" instance=ExtResource("1_5erjh")]
 script = ExtResource("2_hfdcm")
 
-[node name="Text" parent="." index="0"]
+[node name="StatusLabels" type="RichTextLabel" parent="." index="0"]
 offset_left = 16.0
-offset_right = 240.0
-offset_bottom = 304.0
+offset_top = 16.0
+offset_right = 328.0
+offset_bottom = 312.0
 text = "HEADING:
 ΔHEADING:
 DEPTH:  
@@ -24,11 +25,7 @@ OXY: 666 ppm
 DAMAGE REPORT:
 lmao u sinking"
 
-[node name="SystemSprite" parent="." index="1"]
-position = Vector2(948, 894)
-texture = ExtResource("3_67jto")
-
-[node name="StatusNums" type="RichTextLabel" parent="." index="2"]
+[node name="StatusNums" type="RichTextLabel" parent="." index="1"]
 offset_left = 294.0
 offset_top = 16.0
 offset_right = 344.0
@@ -39,3 +36,7 @@ text = "123
 123
 456
 789"
+
+[node name="ShipSprite" type="Sprite2D" parent="." index="2"]
+position = Vector2(944, 888)
+texture = ExtResource("3_67jto")

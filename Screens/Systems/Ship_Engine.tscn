@@ -6,17 +6,20 @@
 [node name="ShipEngine" instance=ExtResource("1_2kqdq")]
 script = ExtResource("2_cqdlt")
 
-[node name="Text" parent="." index="0"]
-offset_right = 185.0
-offset_bottom = 187.0
+[node name="StatusLabels" type="RichTextLabel" parent="." index="0"]
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 184.0
+offset_bottom = 184.0
 text = "HEADING:
 ΔHEADING:
 DEPTH:  
 ΔDEPTH:
 SPEED:  
-ΔSPEED:"
+ΔSPEED:
+"
 
-[node name="StatusNums" type="RichTextLabel" parent="." index="2"]
+[node name="StatusNums" type="RichTextLabel" parent="." index="1"]
 offset_left = 233.0
 offset_top = 16.0
 offset_right = 308.0
@@ -28,7 +31,7 @@ text = "123
 456
 789"
 
-[node name="InputNums" type="RichTextLabel" parent="." index="3"]
+[node name="InputNums" type="RichTextLabel" parent="." index="2"]
 offset_left = 64.0
 offset_top = 205.0
 offset_right = 230.0

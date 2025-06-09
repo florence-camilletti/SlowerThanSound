@@ -5,3 +5,17 @@
 
 [node name="ShipWeapons" instance=ExtResource("1_0fvnq")]
 script = ExtResource("2_cbrcw")
+
+[node name="StatusLabels" type="RichTextLabel" parent="." index="0"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 128.0
+offset_bottom = 320.0
+text = "Torps left:"
+
+[node name="TorpsLeft" type="RichTextLabel" parent="." index="1"]
+offset_left = 150.0
+offset_top = 16.0
+offset_right = 200.0
+offset_bottom = 184.0
+text = "123"

@@ -12,7 +12,6 @@ var num_digits:int
 var digits_left:int
 
 func _ready() -> void:
-    text_file_path = "res://Assets/Texts/Ship_Engine.txt"
     statusNumsText = $StatusNums
     inputNumsText = $InputNums
     
@@ -34,11 +33,14 @@ func _process(delta: float) -> void:
 func _input(event):
     #Process player input
     if(in_focus):
+        '''TODO Have changes be gradual
+           instead of instant'''
         if(event.is_action_pressed("U")):#Heading
             selected_setting = HEADING
             input_num=0
             digits_left=num_digits
         elif(event.is_action_pressed("J")):
+            #TODO
             print("EMERGENCY HEADING")
             
         elif(event.is_action_pressed("I")):#Depth
@@ -46,6 +48,7 @@ func _input(event):
             input_num=0
             digits_left=num_digits
         elif(event.is_action_pressed("K")):
+            #TODO
             print("EMERGENCY DIVE/SURFACE")
             
         elif(event.is_action_pressed("O")):#Speed
@@ -53,6 +56,7 @@ func _input(event):
             input_num=0
             digits_left=num_digits
         elif(event.is_action_pressed("L")):
+            #TODO
             print("EMERGENCY STOP/GO")
             
         #Check for number input
