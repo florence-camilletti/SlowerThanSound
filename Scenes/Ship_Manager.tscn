@@ -1,0 +1,58 @@
+[gd_scene load_steps=13 format=3 uid="uid://by6ibt8eqsgjk"]
+
+[ext_resource type="Script" uid="uid://jojeowbnx382" path="res://Scripts/ship_manager.gd" id="1_3a267"]
+[ext_resource type="Texture2D" uid="uid://d0ara2tk00xts" path="res://Assets/Textures/back.png" id="2_qcah4"]
+[ext_resource type="PackedScene" uid="uid://d7h8318elmx6" path="res://Scenes/Systems/Ship_Menu.tscn" id="4_fwxua"]
+[ext_resource type="PackedScene" uid="uid://dkl1ls4rou68o" path="res://Scenes/Systems/Ship_AI.tscn" id="5_kpqe6"]
+[ext_resource type="PackedScene" uid="uid://bchrej7d20kxs" path="res://Scenes/Systems/Ship_Engine.tscn" id="5_mneo4"]
+[ext_resource type="PackedScene" uid="uid://bbmqp6ic5jct8" path="res://Scenes/Systems/Ship_Power.tscn" id="6_3a267"]
+[ext_resource type="PackedScene" uid="uid://dcbq55wkga8tk" path="res://Scenes/Systems/Ship_LIDAR.tscn" id="7_mneo4"]
+[ext_resource type="PackedScene" uid="uid://de68nawnmq5oj" path="res://Scenes/Systems/Ship_Oxy.tscn" id="8_252ws"]
+[ext_resource type="PackedScene" uid="uid://cr28yyxlvbnsv" path="res://Scenes/Systems/Ship_Bulk.tscn" id="9_252ws"]
+[ext_resource type="PackedScene" uid="uid://cc5hivvk8lrs3" path="res://Scenes/Systems/Ship_Weapons.tscn" id="9_hkh0f"]
+[ext_resource type="PackedScene" uid="uid://cnnchfc25huf5" path="res://Scenes/Systems/Ship_Target.tscn" id="10_hkh0f"]
+[ext_resource type="PackedScene" uid="uid://d1vfu7ka822wr" path="res://Scenes/Enemy_Manager.tscn" id="12_tio8k"]
+
+[node name="ShipManager" type="Node2D"]
+script = ExtResource("1_3a267")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(950, 540)
+scale = Vector2(95, 54)
+texture = ExtResource("2_qcah4")
+
+[node name="TestLabel" type="RichTextLabel" parent="."]
+visible = false
+offset_left = 412.0
+offset_top = 178.0
+offset_right = 1511.0
+offset_bottom = 477.0
+text = "abcd"
+
+[node name="ShipMenu" parent="." instance=ExtResource("4_fwxua")]
+
+[node name="ShipEngine" parent="." instance=ExtResource("5_mneo4")]
+visible = false
+
+[node name="ShipPower" parent="." instance=ExtResource("6_3a267")]
+visible = false
+
+[node name="ShipOxy" parent="." instance=ExtResource("8_252ws")]
+visible = false
+
+[node name="ShipAI" parent="." instance=ExtResource("5_kpqe6")]
+visible = false
+
+[node name="ShipBulk" parent="." instance=ExtResource("9_252ws")]
+visible = false
+
+[node name="ShipTarget" parent="." instance=ExtResource("10_hkh0f")]
+visible = false
+
+[node name="ShipWeapons" parent="." instance=ExtResource("9_hkh0f")]
+visible = false
+
+[node name="ShipLIDAR" parent="." instance=ExtResource("7_mneo4")]
+visible = false
+
+[node name="EnemyManager" parent="." instance=ExtResource("12_tio8k")]

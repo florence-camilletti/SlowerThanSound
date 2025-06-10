@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkl1ls4rou68o"]
+
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/Systems/Ship_System_Base.tscn" id="1_64dlo"]
+[ext_resource type="Script" uid="uid://2dkidu1gf8ja" path="res://Scripts/Systems/ship_ai.gd" id="2_m4vln"]
+
+[node name="ShipAI" instance=ExtResource("1_64dlo")]
+script = ExtResource("2_m4vln")

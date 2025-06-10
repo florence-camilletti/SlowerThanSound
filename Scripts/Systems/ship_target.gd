@@ -12,3 +12,4 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
     if(in_focus):
         pass
+        #Select
