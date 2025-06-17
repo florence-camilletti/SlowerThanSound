@@ -1,11 +1,13 @@
 extends Node2D
 
+var manager_node
 var rng = RandomNumberGenerator.new()
 var num_enemies: int
 var max_enemies = 0
 var enemy_list: Array
 
 func _ready() -> void:
+    manager_node = get_parent()
     num_enemies = 0
     enemy_list = []
 

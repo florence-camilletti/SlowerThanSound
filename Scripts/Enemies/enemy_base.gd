@@ -9,19 +9,20 @@ var vel: Vector2
 var sprite: Sprite2D
 
 func _ready() -> void:
-    sprite = Sprite2D.new()
     var image = Image.load_from_file(("res://Assets/Textures/angy.png"))
-    sprite.set_texture(ImageTexture.create_from_image(image))
-    add_child(sprite)
+    self.sprite = Sprite2D.new()
+    self.sprite.set_texture(ImageTexture.create_from_image(image))
+    add_child(self.sprite)
     
 func _process(delta: float) -> void:
+    #Update enemy pos
     pos+=vel
 
 func set_pos(p) -> void:
-    pos = p
+    self.pos = p
 func set_vel(v) -> void:
-    vel = v
+    self.vel = v
 func get_pos() -> Vector2:
-    return(pos)
+    return(self.pos)
 func get_vel() -> Vector2:
-    return(vel)
+    return(self.vel)

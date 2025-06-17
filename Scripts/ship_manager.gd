@@ -1,6 +1,5 @@
 extends Node2D
 
-var testLabel
 var menu_choice: int;
 enum {MENU,ENGINE,POWER,OXY,AI,BULK,TARGET,WEAP,LIDAR}#Manual controls
 var actions = ["MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"]#Names of possible menu actions
@@ -10,7 +9,7 @@ var focuses = []#Which one is currently being focused on
 
 #Location details in long,lat
 #1 nautical mile(nmile) = 1/60 degree = 1 minutes = 60 seconds = 600 decisecond
-#1 knot = 1 nmile/hour = 600 decisecond/hour = 1 decisecond / 6 ticks
+#1 knot = 1 nmile/hour = 600 decisecond/216000 ticks = 1 decisecond/360 ticks
 #1 decisecond = 3.09 meters
 #1 tick = 1/60 second
 var sub_position: Vector2#Deciseconds; [-3,240,000 - 3,240,000, -6,480,000 - 6,480,000]
@@ -23,15 +22,14 @@ var speed: float#Knots; 0 - 30
 var delta_speed: float#Acceleration; knot/tick
 
 #1 knot = 1/360 decisecond/tick
-var tick_translate: float
+var tick_translate = 360
 #1 decisecond = 1/36000 degrees
-var degree_translate: float
+var degree_translate = 36000
 
 func _ready() -> void:
-    testLabel = $TestLabel
-    menu_choice = 0
+    self.menu_choice = 0
     
-    system_nodes = [$ShipMenu,
+    self.system_nodes = [$ShipMenu,
                     $ShipEngine,
                     $ShipPower,
                     $ShipOxy,
@@ -40,35 +38,34 @@ func _ready() -> void:
                     $ShipTarget,
                     $ShipWeapons,
                     $ShipLIDAR]
-    focuses = [true, false, false, false, false, false, false, false, false]
+    self.focuses = [true, false, false, false, false, false, false, false, false]
     
-    heading=0
-    depth=0
-    speed=0
-    delta_heading=0
-    delta_depth=0
-    delta_speed=0
-    tick_translate = 360.0
-    degree_translate = 36000.0
+    self.heading=0
+    self.depth=0
+    self.speed=0
+    self.delta_heading=0
+    self.delta_depth=0
+    self.delta_speed=0
 
 func _process(delta: float):
     #Update ship position and speed
-    heading+=delta_heading
-    depth+=delta_depth
-    speed+=delta_speed
-    sub_position+=translate_speed()
+    self.heading+=delta_heading
+    self.depth+=delta_depth
+    self.speed+=delta_speed
+    self.sub_position+=translate_speed(self.heading, self.speed)
+    #print(translate_speed(self.heading, self.speed))
     
 func _input(event):
     for possible_action in range(num_actions):#Check for menu change
         if(event.is_action_pressed(actions[possible_action])):
-            menu_choice = possible_action#Set the menu choice
+            self.menu_choice = possible_action#Set the menu choice
             for n in range(num_actions):#Set the focuses
                 if(possible_action==n):
-                    system_nodes[n].set_focus(true)
-                    focuses[n]=true
+                    self.system_nodes[n].set_focus(true)
+                    self.focuses[n]=true
                 else:
-                    system_nodes[n].set_focus(false)        
-                    focuses[n]=false
+                    self.system_nodes[n].set_focus(false)        
+                    self.focuses[n]=false
     
 func _unhandled_input(event):#Quit on ESC
     if event is InputEventKey:
@@ -76,17 +73,13 @@ func _unhandled_input(event):#Quit on ESC
             get_tree().quit()
 
 #Changes heading and speed into a vector2 of how much the sub has moved in 1 tick
-func translate_speed() -> Vector2:
+func translate_speed(h,s) -> Vector2:
     #Translate heading (0-360 angle) into vector2 direction
-    var x = sin(deg_to_rad(heading))
-    var y = cos(deg_to_rad(heading))
+    var x = sin(deg_to_rad(h))
+    var y = cos(deg_to_rad(h))
     var direction_scale = Vector2(x, y)
-    var test=str(direction_scale)+"\n"
-    direction_scale *= speed#knots
-    test+=str(direction_scale)+"\n"
+    direction_scale *= s#knots
     direction_scale /= tick_translate
-    test+=str(direction_scale)+"\n\n\n"
-    testLabel.set_text(test)
     return(direction_scale)
    
 #Turns decisecond into decimal degrees
