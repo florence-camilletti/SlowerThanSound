@@ -5,3 +5,10 @@
 
 [node name="ShipPower" instance=ExtResource("1_hkqgm")]
 script = ExtResource("2_pvwxx")
+
+[node name="TmpLabel" type="RichTextLabel" parent="." index="0"]
+offset_left = 40.0
+offset_top = 1002.0
+offset_right = 422.0
+offset_bottom = 1042.0
+text = "POWER"

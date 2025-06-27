@@ -19,3 +19,10 @@ offset_top = 16.0
 offset_right = 200.0
 offset_bottom = 184.0
 text = "123"
+
+[node name="TmpLabel" type="RichTextLabel" parent="." index="2"]
+offset_left = 5.0
+offset_top = 1018.0
+offset_right = 703.0
+offset_bottom = 1077.0
+text = "WEAPONSS"

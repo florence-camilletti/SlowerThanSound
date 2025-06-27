@@ -52,7 +52,7 @@ func _process(delta: float):
     self.heading+=delta_heading
     self.depth+=delta_depth
     self.speed+=delta_speed
-    self.sub_position+=translate_speed(self.heading, self.speed)
+    self.sub_position+=knot_to_dectic(self.heading, self.speed)
     #print(translate_speed(self.heading, self.speed))
     
 func _input(event):
@@ -73,24 +73,30 @@ func _unhandled_input(event):#Quit on ESC
             get_tree().quit()
 
 #Changes heading and speed into a vector2 of how much the sub has moved in 1 tick
-func translate_speed(h,s) -> Vector2:
+func knot_to_dectic(heading: float, speed: float) -> Vector2:
     #Translate heading (0-360 angle) into vector2 direction
-    var x = sin(deg_to_rad(h))
-    var y = cos(deg_to_rad(h))
-    var direction_scale = Vector2(x, y)
-    direction_scale *= s#knots
-    direction_scale /= tick_translate
-    return(direction_scale)
-   
+    var x = sin(deg_to_rad(heading))
+    var y = cos(deg_to_rad(heading))
+    var direction_scale = Vector2(x, y)#Angle sub is pointing
+    var new_vel = direction_scale * speed#knots
+    new_vel /= tick_translate#knot -> d/t
+    return(new_vel)
+
 #Turns decisecond into decimal degrees
-func translate_pos() -> String:
-    var pos = Vector2(sub_position)
-    pos /= degree_translate
-    return(str(pos))
+func deci_to_deg(d: Vector2) -> Vector2:
+    var new_pos = d
+    new_pos /= degree_translate
+    return(new_pos)
+    
+#Turn decimal degrees into deciseconds
+func deg_to_deci(d: Vector2) -> Vector2:
+    var new_pos = d
+    new_pos *= degree_translate
+    return(new_pos)
      
 #Returns a string about the sub's position and movement info
 func get_sub_info() -> String:
-    var rtn= str(translate_pos()) + "\n"
+    var rtn= str(deci_to_deg(self.sub_position)) + "\n"
     rtn += str(heading) + "\n" + str(delta_heading) + "\n"
     rtn += str(depth) + "\n" + str(delta_depth) + "\n"
     rtn += str(speed) + "\n" + str(delta_speed)

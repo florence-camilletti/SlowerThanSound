@@ -12,6 +12,9 @@ position = Vector2(896, 536)
 scale = Vector2(3.00556, 3.00556)
 texture = ExtResource("3_s0o80")
 
-[node name="TestText" type="RichTextLabel" parent="." index="1"]
-offset_right = 256.0
-offset_bottom = 256.0
+[node name="TmpLabel" type="RichTextLabel" parent="." index="1"]
+offset_left = 32.0
+offset_top = 1024.0
+offset_right = 296.0
+offset_bottom = 1072.0
+text = "LIDAR"

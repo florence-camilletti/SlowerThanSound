@@ -5,3 +5,10 @@
 
 [node name="ShipOxy" instance=ExtResource("1_3dum8")]
 script = ExtResource("2_0pxto")
+
+[node name="TmpLabel" type="RichTextLabel" parent="." index="0"]
+offset_left = 38.0
+offset_top = 954.0
+offset_right = 464.0
+offset_bottom = 1059.0
+text = "OXYGEN"

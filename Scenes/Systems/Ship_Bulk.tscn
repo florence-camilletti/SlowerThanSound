@@ -5,3 +5,10 @@
 
 [node name="ShipBulk" instance=ExtResource("1_jinuf")]
 script = ExtResource("2_0jys5")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." index="0"]
+offset_left = 24.0
+offset_top = 1019.0
+offset_right = 356.0
+offset_bottom = 1059.0
+text = "BULK"
