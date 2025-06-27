@@ -8,15 +8,19 @@ var dec_vel: Vector2#Deciseconds/tick
 
 var sprite: Sprite2D
 
+func _init(i, t, p, v) -> void:
+    self.id = i
+    self.type = t
+    self.dec_pos = p
+    self.dec_vel = v
+    print("ABCD")
+
 func _ready() -> void:
-    var image = Image.load_from_file(("res://Assets/Textures/angy.png"))
-    self.sprite = Sprite2D.new()
-    self.sprite.set_texture(ImageTexture.create_from_image(image))
-    add_child(self.sprite)
+    pass
     
 func _process(delta: float) -> void:
     #Update enemy pos
-    self.dec_pos+=self.dec.vel
+    self.dec_pos+=self.dec_vel
 
 func set_dec_pos(p) -> void:
     self.dec_pos = p
@@ -26,3 +30,6 @@ func get_dec_pos() -> Vector2:
     return(self.dec_pos)
 func get_dec_vel() -> Vector2:
     return(self.dec_vel)
+
+func _to_string() -> String:
+    return("ID: "+str(self.id)+", TYPE: "+str(self.type)+", POS: "+str(self.dec_pos)+", VEL: "+str(self.dec_vel))

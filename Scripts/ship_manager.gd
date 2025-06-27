@@ -7,19 +7,22 @@ var num_actions = len(actions)
 var system_nodes = []#Child nodes belonging to each one
 var focuses = []#Which one is currently being focused on
 
+var LIDAR_child
+var enemy_manage_child
+
 #Location details in long,lat
 #1 nautical mile(nmile) = 1/60 degree = 1 minutes = 60 seconds = 600 decisecond
 #1 knot = 1 nmile/hour = 600 decisecond/216000 ticks = 1 decisecond/360 ticks
 #1 decisecond = 3.09 meters
 #1 tick = 1/60 second
-var sub_position: Vector2#Deciseconds; [-3,240,000 - 3,240,000, -6,480,000 - 6,480,000]
+var sub_position: Vector2#Deciseconds; [-6,480,000 - 6,480,000, -3,240,000 - 3,240,000]
 #Movement details
 var heading: float#Degrees; 0 - 360
 var delta_heading: float#Turn rate; deg/tick
 var depth: float#Meters; 0 - 240
 var delta_depth: float#Float/sink rate; meter/tick
-var speed: float#Knots; 0 - 30
-var delta_speed: float#Acceleration; knot/tick
+var knot_speed: float#Knots; 0 - 30
+var delta_knot_speed: float#Acceleration; knot/tick
 
 #1 knot = 1/360 decisecond/tick
 var tick_translate = 360
@@ -27,6 +30,10 @@ var tick_translate = 360
 var degree_translate = 36000
 
 func _ready() -> void:
+    self.LIDAR_child = $ShipLIDAR
+    self.enemy_manage_child = $EnemyManager
+    self.LIDAR_child.enemy_request.connect(on_enemy_request)
+    
     self.menu_choice = 0
     
     self.system_nodes = [$ShipMenu,
@@ -42,17 +49,17 @@ func _ready() -> void:
     
     self.heading=0
     self.depth=0
-    self.speed=0
+    self.knot_speed=0
     self.delta_heading=0
     self.delta_depth=0
-    self.delta_speed=0
+    self.delta_knot_speed=0
 
 func _process(delta: float):
     #Update ship position and speed
     self.heading+=delta_heading
     self.depth+=delta_depth
-    self.speed+=delta_speed
-    self.sub_position+=knot_to_dectic(self.heading, self.speed)
+    self.knot_speed+=delta_knot_speed
+    self.sub_position+=knot_to_dectic(self.heading, self.knot_speed)
     #print(translate_speed(self.heading, self.speed))
     
 func _input(event):
@@ -99,5 +106,10 @@ func get_sub_info() -> String:
     var rtn= str(deci_to_deg(self.sub_position)) + "\n"
     rtn += str(heading) + "\n" + str(delta_heading) + "\n"
     rtn += str(depth) + "\n" + str(delta_depth) + "\n"
-    rtn += str(speed) + "\n" + str(delta_speed)
+    rtn += str(knot_speed) + "\n" + str(delta_knot_speed)
     return(rtn)
+
+#Update LIDAR's enemy info
+func on_enemy_request():
+    self.LIDAR_child.enemy_sprite_list = self.enemy_manage_child.get_enemy_list()
+    self.LIDAR_child.request_flag = false
