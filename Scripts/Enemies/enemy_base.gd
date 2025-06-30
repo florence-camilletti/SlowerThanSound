@@ -13,7 +13,6 @@ func _init(i, t, p, v) -> void:
     self.type = t
     self.dec_pos = p
     self.dec_vel = v
-    print("ABCD")
 
 func _ready() -> void:
     pass

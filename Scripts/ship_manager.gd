@@ -33,6 +33,7 @@ func _ready() -> void:
     self.LIDAR_child = $ShipLIDAR
     self.enemy_manage_child = $EnemyManager
     self.LIDAR_child.enemy_request.connect(on_enemy_request)
+    self.enemy_manage_child.enemy_created.connect(on_enemy_created)
     
     self.menu_choice = 0
     
@@ -113,3 +114,7 @@ func get_sub_info() -> String:
 func on_enemy_request():
     self.LIDAR_child.enemy_sprite_list = self.enemy_manage_child.get_enemy_list()
     self.LIDAR_child.request_flag = false
+
+#When the enemy managers signals a new enemy has been made
+func on_enemy_created(id: int, pos: Vector2) -> void:
+    self.LIDAR_child.inc_enemies(id, pos)

@@ -3,8 +3,9 @@ extends Node2D
 var manager_node
 var rng = RandomNumberGenerator.new()
 var num_enemies: int
-var max_enemies = 2
+var max_enemies = 5
 var enemy_list: Array
+signal enemy_created
 
 func _ready() -> void:
     self.manager_node = get_parent()
@@ -26,6 +27,7 @@ func make_new_enemy() -> void:
     print("Making enemy at spot "+str(rnd_pos))
     self.enemy_list.append(new_enemy)
     add_child(new_enemy)
+    enemy_created.emit(self.num_enemies,Vector2(200,200))
     
 func get_num_enemies() -> int:
     return(self.num_enemies)
