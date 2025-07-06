@@ -112,9 +112,10 @@ func get_sub_info() -> String:
 
 #Update LIDAR's enemy info
 func on_enemy_request():
-    self.LIDAR_child.enemy_sprite_list = self.enemy_manage_child.get_enemy_list()
+    var enemy_list = self.enemy_manage_child.get_enemy_list()
+    self.LIDAR_child.update_enemies(enemy_list)
     self.LIDAR_child.request_flag = false
 
 #When the enemy managers signals a new enemy has been made
-func on_enemy_created(id: int, pos: Vector2) -> void:
-    self.LIDAR_child.inc_enemies(id, pos)
+func on_enemy_created(id: int) -> void:
+    self.LIDAR_child.add_new_enemy(id)
