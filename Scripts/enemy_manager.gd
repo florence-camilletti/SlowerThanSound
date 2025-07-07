@@ -20,13 +20,12 @@ func _input(event: InputEvent) -> void:
         if(self.num_enemies < self.max_enemies):
             make_new_enemy()
 
-#TODO
+#Create a new enemy and update the manager
 func make_new_enemy() -> void:
     var tmp_pos = Vector2(0,0)
     var tmp_vel = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
     self.num_enemies += 1
     var new_enemy = EnemyBase.new(num_enemies, "Cool Dude", tmp_pos, tmp_vel)
-    print("Making enemy at spot "+str(tmp_pos))
     self.enemy_list.append(new_enemy)
     add_child(new_enemy)
     enemy_created.emit(self.num_enemies)
@@ -37,7 +36,7 @@ func get_num_enemies() -> int:
 func get_enemy_list() -> Array:
     return(self.enemy_list)
     
-#TODO
+#String info about the enemy
 func _to_string() -> String:
     var rtn = ""
     for enemy in self.enemy_list:

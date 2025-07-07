@@ -5,8 +5,8 @@ var request_flag: bool
 var rng = RandomNumberGenerator.new()
 var map_pixel_radius = 488
 var map_pixel_center = Vector2(896,536)
-var map_dec_size = Vector2(540000, 540000)
-var map_deg_size = Vector2(30,30)
+var map_deg_radius = Vector2(15,15)#+/- 15 degrees in each direction
+var map_dec_size = map_deg_radius*36000 #1 degree = 360,000 decsec
 
 signal enemy_request
 var num_enemies = 0
@@ -32,10 +32,8 @@ func _input(event: InputEvent) -> void:
             while(self.request_flag):
                 pass
             
-            print(self.enemy_list)
-            
-#TODO
-func update_enemies(enemies) -> void:
+#Update the position of the enemy sprites
+func update_display(enemies) -> void:
     for curr_enemy in enemies:
         self.enemy_list[curr_enemy.id].position = self.dec_pos_to_map_pos(curr_enemy.get_dec_pos())
             
@@ -49,8 +47,9 @@ func add_new_enemy(id: int) -> void:
     self.enemy_list[id] = new_sprite
     add_child(new_sprite)
 
-#TODO
+#Translates a Vector2 of decisecond position to a pixel position for sprite display
 func dec_pos_to_map_pos(dec_pos: Vector2) -> Vector2:
+    #TODO: HAVE THIS MOVE WITH THE PLAYER
     #Divide dec pos by map size to get  ([-1, 1], [-1, 1]) range
     var rtn = dec_pos/self.map_dec_size
     #Multiple -1, 1 range by pixel radius (488) to get offset

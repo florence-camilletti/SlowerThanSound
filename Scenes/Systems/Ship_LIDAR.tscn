@@ -46,3 +46,5 @@ offset_top = 520.0
 offset_right = 408.0
 offset_bottom = 552.0
 text = "-15"
+
+[node name="Player" type="Sprite2D" parent="." index="6"]
