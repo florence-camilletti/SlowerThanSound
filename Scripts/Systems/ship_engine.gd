@@ -71,7 +71,7 @@ func _input(event):
                     elif(selected_setting==DEPTH):
                         manager_node.depth = input_num
                     elif(selected_setting==SPEED):
-                        manager_node.speed = input_num
+                        manager_node.knot_speed = input_num
                     input_num=0
                     digits_left=num_digits
                     selected_setting=NONE

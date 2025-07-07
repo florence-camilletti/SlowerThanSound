@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dr4oo0qbki4l8"
-path="res://.godot/imported/EnergyBar.png-99bf07222f3744376393baf79ddb5af9.ctex"
+uid="uid://bq7qw1f1t8xih"
+path="res://.godot/imported/enemy_tmp.png-1383248360f98341b1705b13f49ac45e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/EnergyBar.png"
-dest_files=["res://.godot/imported/EnergyBar.png-99bf07222f3744376393baf79ddb5af9.ctex"]
+source_file="res://Assets/Textures/enemy_tmp.png"
+dest_files=["res://.godot/imported/enemy_tmp.png-1383248360f98341b1705b13f49ac45e.ctex"]
 
 [params]
 

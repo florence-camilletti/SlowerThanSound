@@ -13,7 +13,7 @@ var enemy_manage_child
 #Location details in long,lat
 #1 nautical mile(nmile) = 1/60 degree = 1 minutes = 60 seconds = 600 decisecond
 #1 degree = 36000 deciseconds
-#1 knot = 1 nmile/hour = 600 decisecond/216000 ticks = 1 decisecond/360 ticks
+#1 knot = 1 nmile/hour = 600 decisecond/216000 ticks = 1 decisecond/360 ticks (1/360 dectic)
 #1 decisecond = 3.09 meters
 #1 tick = 1/60 second
 var sub_position: Vector2#Deciseconds; [-6,480,000 - 6,480,000, -3,240,000 - 3,240,000]
@@ -114,7 +114,7 @@ func get_sub_info() -> String:
 #Update LIDAR's enemy info
 func on_enemy_request():
     var enemy_list = self.enemy_manage_child.get_enemy_list()
-    self.LIDAR_child.update_display(enemy_list)
+    self.LIDAR_child.update_display(self.sub_position, enemy_list)
     self.LIDAR_child.request_flag = false
 
 #When the enemy managers signals a new enemy has been made

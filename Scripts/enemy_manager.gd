@@ -18,12 +18,12 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
     if(event.is_action_pressed("U")):
         if(self.num_enemies < self.max_enemies):
-            make_new_enemy()
+            pass#make_new_enemy()
 
 #Create a new enemy and update the manager
 func make_new_enemy() -> void:
     var tmp_pos = Vector2(0,0)
-    var tmp_vel = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
+    var tmp_vel = Vector2(rng.randi_range(-1,1),rng.randi_range(-1,1))
     self.num_enemies += 1
     var new_enemy = EnemyBase.new(num_enemies, "Cool Dude", tmp_pos, tmp_vel)
     self.enemy_list.append(new_enemy)

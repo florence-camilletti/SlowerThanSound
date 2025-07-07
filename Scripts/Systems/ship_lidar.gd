@@ -5,17 +5,19 @@ var request_flag: bool
 var rng = RandomNumberGenerator.new()
 var map_pixel_radius = 488
 var map_pixel_center = Vector2(896,536)
-var map_deg_radius = Vector2(15,15)#+/- 15 degrees in each direction
+var map_deg_radius = Vector2(0.1,0.1)#+/- 0.1 degrees (~10 km) in each direction
 var map_dec_size = map_deg_radius*36000 #1 degree = 360,000 decsec
 
 signal enemy_request
 var num_enemies = 0
 #Key - enemy ID, Value - enemy POS
 var enemy_list = {}
+var player_sprite
 
 func _ready() -> void:
     super._ready()
     self.request_flag = false
+    self.player_sprite = $Player
     
 func _process(delta: float) -> void:
     super._process(delta)
@@ -32,23 +34,27 @@ func _input(event: InputEvent) -> void:
             while(self.request_flag):
                 pass
             
-#Update the position of the enemy sprites
-func update_display(enemies) -> void:
+#Update the position of the LIDAR sprites
+func update_display(sub_position, enemies) -> void:
+    #Update player
+    self.player_sprite.position = self.dec_to_map(sub_position)
+    
+    #Update enemies
     for curr_enemy in enemies:
-        self.enemy_list[curr_enemy.id].position = self.dec_pos_to_map_pos(curr_enemy.get_dec_pos())
+        self.enemy_list[curr_enemy.id].position = self.dec_to_map(curr_enemy.get_dec_pos())
             
 #Increase the number of sprites
 func add_new_enemy(id: int) -> void:
     num_enemies+=1
     var new_sprite = Sprite2D.new()
-    var sprite_data = load("res://Assets/Textures/angy.png")
+    var sprite_data = load("res://Assets/Textures/enemy_tmp.png")
     new_sprite.set_texture(sprite_data)
     new_sprite.position = Vector2(-100,-100)
     self.enemy_list[id] = new_sprite
     add_child(new_sprite)
 
 #Translates a Vector2 of decisecond position to a pixel position for sprite display
-func dec_pos_to_map_pos(dec_pos: Vector2) -> Vector2:
+func dec_to_map(dec_pos: Vector2) -> Vector2:
     #TODO: HAVE THIS MOVE WITH THE PLAYER
     #Divide dec pos by map size to get  ([-1, 1], [-1, 1]) range
     var rtn = dec_pos/self.map_dec_size
