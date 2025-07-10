@@ -62,6 +62,7 @@ func _process(delta: float):
     self.depth+=delta_depth
     self.knot_speed+=delta_knot_speed
     self.sub_position+=knot_to_dectic(self.heading, self.knot_speed)
+    self.LIDAR_child.update_sub_pos(self.sub_position)
     #print(translate_speed(self.heading, self.speed))
     
 func _input(event):
@@ -106,15 +107,15 @@ func deg_to_deci(d: Vector2) -> Vector2:
 #Returns a string about the sub's position and movement info
 func get_sub_info() -> String:
     var rtn= str(deci_to_deg(self.sub_position)) + "\n"
+    rtn += str(knot_speed) + "\n" + str(delta_knot_speed) + "\n"
     rtn += str(heading) + "\n" + str(delta_heading) + "\n"
-    rtn += str(depth) + "\n" + str(delta_depth) + "\n"
-    rtn += str(knot_speed) + "\n" + str(delta_knot_speed)
+    rtn += str(depth) + "\n" + str(delta_depth)
     return(rtn)
 
 #Update LIDAR's enemy info
 func on_enemy_request():
     var enemy_list = self.enemy_manage_child.get_enemy_list()
-    self.LIDAR_child.update_display(self.sub_position, enemy_list)
+    self.LIDAR_child.update_display(enemy_list)
     self.LIDAR_child.request_flag = false
 
 #When the enemy managers signals a new enemy has been made

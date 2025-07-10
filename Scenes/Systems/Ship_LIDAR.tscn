@@ -20,35 +20,7 @@ offset_right = 296.0
 offset_bottom = 1072.0
 text = "LIDAR"
 
-[node name="TmpS" type="RichTextLabel" parent="." index="2"]
-offset_left = 880.0
-offset_top = 8.0
-offset_right = 920.0
-offset_bottom = 48.0
-text = "-15"
-
-[node name="TmpE" type="RichTextLabel" parent="." index="3"]
-offset_left = 1400.0
-offset_top = 520.0
-offset_right = 1440.0
-offset_bottom = 560.0
-text = "15"
-
-[node name="TmpN" type="RichTextLabel" parent="." index="4"]
-offset_left = 880.0
-offset_top = 1032.0
-offset_right = 920.0
-offset_bottom = 1072.0
-text = "15"
-
-[node name="TmpW" type="RichTextLabel" parent="." index="5"]
-offset_left = 368.0
-offset_top = 520.0
-offset_right = 408.0
-offset_bottom = 552.0
-text = "-15"
-
-[node name="Player" type="Sprite2D" parent="." index="6"]
+[node name="Player" type="Sprite2D" parent="." index="2"]
 position = Vector2(-144, 208)
 scale = Vector2(0.0483871, 0.0483871)
 texture = ExtResource("4_vgnkx")

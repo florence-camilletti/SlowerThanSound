@@ -33,12 +33,13 @@ func _input(event: InputEvent) -> void:
             enemy_request.emit()
             while(self.request_flag):
                 pass
-            
-#Update the position of the LIDAR sprites
-func update_display(sub_position, enemies) -> void:
+        
+func update_sub_pos(pos) -> void:
     #Update player
-    self.player_sprite.position = self.dec_to_map(sub_position)
-    
+    self.player_sprite.position = self.dec_to_map(pos)
+         
+#Update the position of the LIDAR sprites
+func update_display(enemies) -> void:    
     #Update enemies
     for curr_enemy in enemies:
         self.enemy_list[curr_enemy.id].position = self.dec_to_map(curr_enemy.get_dec_pos())
@@ -58,8 +59,10 @@ func dec_to_map(dec_pos: Vector2) -> Vector2:
     #TODO: HAVE THIS MOVE WITH THE PLAYER
     #Divide dec pos by map size to get  ([-1, 1], [-1, 1]) range
     var rtn = dec_pos/self.map_dec_size
-    #Multiple -1, 1 range by pixel radius (488) to get offset
+    #Multiply -1, 1 range by pixel radius (488) to get offset
     rtn *= self.map_pixel_radius
+    #Flip y-coord
+    rtn *= Vector2(1,-1)
     #Add offset to map center (896,536)
     rtn += self.map_pixel_center
     return(rtn)
