@@ -2,12 +2,21 @@ extends Node2D
 
 var manager_node
 var rng = RandomNumberGenerator.new()
+var timer
+
+var enemy_chance = 0.2
 var num_enemies: int
-var max_enemies = 5
+var max_enemies = 3
 var enemy_list: Array
 signal enemy_created
 
 func _ready() -> void:
+    self.timer = $EnemySpawn
+    self.timer.timeout.connect(_on_timer_timeout)
+    self.timer.wait_time = 5.0
+    self.timer.one_shot = false
+    self.timer.start()
+    
     self.manager_node = get_parent()
     self.num_enemies = 0
     self.enemy_list = []
@@ -16,9 +25,12 @@ func _process(delta: float) -> void:
     pass
 
 func _input(event: InputEvent) -> void:
-    if(event.is_action_pressed("U")):
-        if(self.num_enemies < self.max_enemies):
-            pass#make_new_enemy()
+    pass
+
+func _on_timer_timeout():
+    if(self.num_enemies < self.max_enemies):
+        if(rng.randf() < self.enemy_chance):
+            make_new_enemy()
 
 #Create a new enemy and update the manager
 func make_new_enemy() -> void:
