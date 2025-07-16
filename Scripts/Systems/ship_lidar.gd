@@ -17,7 +17,7 @@ var player_sprite
 func _ready() -> void:
     super._ready()
     self.request_flag = false
-    self.player_sprite = $Player
+    self.player_sprite = $PlayerSprite
     
 func _process(delta: float) -> void:
     super._process(delta)
@@ -34,9 +34,10 @@ func _input(event: InputEvent) -> void:
             while(self.request_flag):
                 pass
         
-func update_sub_pos(pos) -> void:
+func update_sub_pos(pos, deg) -> void:
     #Update player
     self.player_sprite.position = self.dec_to_map(pos)
+    self.player_sprite.set_rotation_degrees(deg)
          
 #Update the position of the LIDAR sprites
 func update_display(enemies) -> void:    

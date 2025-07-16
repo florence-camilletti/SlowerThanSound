@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/Systems/Ship_System_Base.tscn" id="1_ctw80"]
 [ext_resource type="Script" uid="uid://bol1r4odc751j" path="res://Scripts/Systems/ship_lidar.gd" id="2_yj4yk"]
 [ext_resource type="Texture2D" uid="uid://5q3jclmmg811" path="res://Assets/Textures/sweep.jpg" id="3_s0o80"]
-[ext_resource type="Texture2D" uid="uid://cam2e0mmnaywe" path="res://Assets/Textures/Ships/Ship_Full.png" id="4_vgnkx"]
+[ext_resource type="Texture2D" uid="uid://bm85byyvxyveb" path="res://Assets/Textures/ship_tmp.png" id="4_vgnkx"]
 
 [node name="ShipLIDAR" instance=ExtResource("1_ctw80")]
 script = ExtResource("2_yj4yk")
@@ -20,7 +20,7 @@ offset_right = 296.0
 offset_bottom = 1072.0
 text = "LIDAR"
 
-[node name="Player" type="Sprite2D" parent="." index="2"]
-position = Vector2(-144, 208)
-scale = Vector2(0.0483871, 0.0483871)
+[node name="PlayerSprite" type="Sprite2D" parent="." index="2"]
+position = Vector2(-120.145, 168.242)
+scale = Vector2(4.02419, 4.02419)
 texture = ExtResource("4_vgnkx")
