@@ -5,11 +5,16 @@ var request_flag: bool
 var rng = RandomNumberGenerator.new()
 var map_pixel_radius = 488
 var map_pixel_center = Vector2(896,536)
-var map_deg_radius = 0.01#+/- 0.01 degrees (1101.6 m) in each direction
+var map_deg_radius = 0.01#+/- 0.01 degrees (0.6 nm) in each direction
 var map_dec_radius = map_deg_radius*36000 #1 degree = 36,000 decsec
 #Final map is [-360,360] decsec
 
 var player_sprite
+var inputBox
+var autoLight
+var autoFlag: bool
+var autoRate: float
+var timer
 
 signal enemy_request
 var num_enemies = 0
@@ -20,6 +25,12 @@ func _ready() -> void:
     self.request_flag = false
     self.player_sprite = $PlayerSprite
     
+    self.timer = $SweepTimer
+    self.inputBox = $AutoInput
+    self.autoLight = $AutoLight
+    self.autoLight.set_visible(false)
+    self.autoFlag = false
+    
 func _process(delta: float) -> void:
     super._process(delta)
     #Process player input
@@ -28,12 +39,26 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
     if(in_focus):
+        if(event.is_action_pressed("K")):
+            #Set auto-update rate
+            self.inputBox.clear()
+            self.inputBox.grab_focus()
+        if(event.is_action_pressed("Enter")):
+            self.autoRate = int(self.inputBox.get_text())
+            self.autoFlag = (autoRate!=0)
+            self.autoLight.set_visible(self.autoFlag)
+            if(self.autoFlag):
+                #Start timer
+                self.timer.start(self.autoRate)
+            else:
+                #Stop timer
+                self.timer.stop()
+                
+            self.inputBox.clear()
+            self.inputBox.release_focus()
+            
         if(event.is_action_pressed("L")):
-            #Update the enemy list
-            self.request_flag = true
-            enemy_request.emit()
-            while(self.request_flag):
-                pass
+            refresh_map()
         
 func update_sub_rotation(deg) -> void:
     #Update player
@@ -69,3 +94,20 @@ func dec_to_map(enemy_pos: Vector2, sub_pos: Vector2) -> Vector2:
     #Add offset to map center (896,536)
     rtn += self.map_pixel_center
     return(rtn)
+
+func refresh_map() -> void:
+    #Update the enemy list
+    self.request_flag = true
+    enemy_request.emit()
+    while(self.request_flag):
+        pass
+
+func _on_timer_timeout() -> void:
+    #Automatically refresh LIDAR
+    print("TIMER")
+    refresh_map()
+
+func _on_auto_input_text_changed() -> void:
+    #Check for only nums
+    if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
+        self.inputBox.clear()
