@@ -104,7 +104,6 @@ func refresh_map() -> void:
 
 func _on_timer_timeout() -> void:
     #Automatically refresh LIDAR
-    print("TIMER")
     refresh_map()
 
 func _on_auto_input_text_changed() -> void:
