@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dcbq55wkga8tk"]
+[gd_scene load_steps=6 format=3 uid="uid://dcbq55wkga8tk"]
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/Systems/Ship_System_Base.tscn" id="1_ctw80"]
 [ext_resource type="Script" uid="uid://bol1r4odc751j" path="res://Scripts/Systems/ship_lidar.gd" id="2_yj4yk"]
 [ext_resource type="Texture2D" uid="uid://5q3jclmmg811" path="res://Assets/Textures/sweep.jpg" id="3_s0o80"]
 [ext_resource type="Texture2D" uid="uid://bm85byyvxyveb" path="res://Assets/Textures/ship_tmp.png" id="4_vgnkx"]
+[ext_resource type="Texture2D" uid="uid://cnao21055w77d" path="res://Assets/Textures/green_circle.png" id="5_m1kkf"]
 
 [node name="ShipLIDAR" instance=ExtResource("1_ctw80")]
 script = ExtResource("2_yj4yk")
@@ -13,14 +14,22 @@ position = Vector2(896, 536)
 scale = Vector2(3.00556, 3.00556)
 texture = ExtResource("3_s0o80")
 
-[node name="TmpLabel" type="RichTextLabel" parent="." index="1"]
-offset_left = 32.0
-offset_top = 1024.0
-offset_right = 296.0
-offset_bottom = 1072.0
-text = "LIDAR"
-
-[node name="PlayerSprite" type="Sprite2D" parent="." index="2"]
-position = Vector2(-120.145, 168.242)
+[node name="PlayerSprite" type="Sprite2D" parent="." index="1"]
+position = Vector2(896, 536)
 scale = Vector2(4.02419, 4.02419)
 texture = ExtResource("4_vgnkx")
+
+[node name="SweepTimer" type="Timer" parent="." index="2"]
+
+[node name="AutoInput" type="TextEdit" parent="." index="3"]
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 256.0
+offset_bottom = 128.0
+
+[node name="AutoLight" type="Sprite2D" parent="." index="4"]
+position = Vector2(128, 176)
+texture = ExtResource("5_m1kkf")
+
+[connection signal="timeout" from="SweepTimer" to="." method="_on_timer_timeout"]
+[connection signal="text_changed" from="AutoInput" to="." method="_on_auto_input_text_changed"]

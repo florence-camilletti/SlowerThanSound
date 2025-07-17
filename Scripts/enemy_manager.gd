@@ -4,7 +4,7 @@ var manager_node
 var rng = RandomNumberGenerator.new()
 var timer
 
-var enemy_chance = 0.2
+var enemy_chance = 0.5
 var num_enemies: int
 var max_enemies = 3
 var enemy_list: Array
@@ -13,7 +13,8 @@ signal enemy_created
 func _ready() -> void:
     self.timer = $EnemySpawn
     self.timer.timeout.connect(_on_timer_timeout)
-    self.timer.wait_time = 5.0
+    #self.timer.wait_time = 5
+    self.timer.wait_time = 1
     self.timer.one_shot = false
     self.timer.start()
     
@@ -34,8 +35,9 @@ func _on_timer_timeout():
 
 #Create a new enemy and update the manager
 func make_new_enemy() -> void:
-    var tmp_pos = Vector2(0,0)
-    var tmp_vel = Vector2(rng.randi_range(-1,1),rng.randi_range(-1,1))
+    var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
+    #var tmp_vel = Vector2(rng.randi_range(-1,1),rng.randi_range(-1,1))
+    var tmp_vel = Vector2(0,0)
     self.num_enemies += 1
     var new_enemy = EnemyBase.new(num_enemies, "Cool Dude", tmp_pos, tmp_vel)
     self.enemy_list.append(new_enemy)

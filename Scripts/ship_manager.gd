@@ -62,8 +62,7 @@ func _process(delta: float):
     self.depth+=delta_depth
     self.knot_speed+=delta_knot_speed
     self.sub_position+=knot_to_dectic(self.heading, self.knot_speed)
-    self.LIDAR_child.update_sub_pos(self.sub_position, self.heading)
-    #print(translate_speed(self.heading, self.speed))
+    self.LIDAR_child.update_sub_rotation(self.heading)
     
 func _input(event):
     for possible_action in range(num_actions):#Check for menu change
