@@ -1,6 +1,6 @@
 extends ShipSystemBase
 
-var statusNumsText
+var statusNumsText: RichTextLabel
 
 func _ready() -> void:
     super._ready()

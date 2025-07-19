@@ -1,35 +1,32 @@
 extends ShipSystemBase
 
-var request_flag: bool
-
-var rng = RandomNumberGenerator.new()
-var map_pixel_radius = 488
-var map_pixel_center = Vector2(896,536)
-var map_deg_radius = 0.01#+/- 0.01 degrees (0.6 nm) in each direction
-var map_dec_radius = map_deg_radius*36000 #1 degree = 36,000 decsec
+var player_sprite: Sprite2D
+var rng := RandomNumberGenerator.new()
+var map_pixel_radius := 488
+var map_pixel_center := Vector2(896,536)
+var map_deg_radius := 0.01#+/- 0.01 degrees (0.6 nm) in each direction
+var map_dec_radius := map_deg_radius*36000 #1 degree = 36,000 decsec
 #Final map is [-360,360] decsec
 
-var player_sprite
-var inputBox
-var autoLight
-var autoFlag: bool
+var inputBox: TextEdit
+var autoLight: Sprite2D
+var autoFlag := false
 var autoRate: float
 var timer
 
 signal enemy_request
-var num_enemies = 0
-var enemy_list = {} #Key - enemy ID, Value - enemy POS
+var request_flag := false
+var num_enemies := 0
+var enemy_list := {} #Key - enemy ID, Value - enemy POS
 
 func _ready() -> void:
     super._ready()
-    self.request_flag = false
     self.player_sprite = $PlayerSprite
     
     self.timer = $SweepTimer
     self.inputBox = $AutoInput
     self.autoLight = $AutoLight
     self.autoLight.set_visible(false)
-    self.autoFlag = false
     
 func _process(delta: float) -> void:
     super._process(delta)
@@ -99,7 +96,7 @@ func refresh_map() -> void:
     #Update the enemy list
     self.request_flag = true
     enemy_request.emit()
-    while(self.request_flag):
+    while(self.request_flag):#Wait for enemy list
         pass
 
 func _on_timer_timeout() -> void:

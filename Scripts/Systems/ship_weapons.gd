@@ -4,7 +4,7 @@ var num_torps: int
 var torp_fuel_size: int
 var torp_fuel_rate: float
 
-var torps_left_text
+var torps_left_text: RichTextLabel
 
 func _ready() -> void:
     torps_left_text = $TorpsLeft

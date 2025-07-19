@@ -2,13 +2,14 @@ extends Node2D
 
 var menu_choice: int;
 enum {MENU,ENGINE,POWER,OXY,AI,BULK,TARGET,WEAP,LIDAR}#Manual controls
-var actions = ["MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"]#Names of possible menu actions
-var num_actions = len(actions)
-var system_nodes = []#Child nodes belonging to each one
-var focuses = []#Which one is currently being focused on
+var actions := ["MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"]#Names of possible menu actions
+var num_actions := len(actions)
+var system_nodes := []#Child nodes belonging to each one
+var focuses := []#Which one is currently being focused on
 
-var LIDAR_child
-var enemy_manage_child
+var LIDAR_child: ShipSystemBase
+var target_child: ShipSystemBase
+var enemy_manage_child: Node2D
 
 #Location details in long,lat
 #1 nautical mile(nmile) = 1/60 degree = 1 minutes = 60 seconds = 600 decisecond
@@ -16,14 +17,14 @@ var enemy_manage_child
 #1 knot = 1 nmile/hour = 600 decisecond/216000 ticks = 1 decisecond/360 ticks (1/360 dectic)
 #1 decisecond = 3.09 meters
 #1 tick = 1/60 second
-var sub_position: Vector2#Deciseconds; [-6,480,000 - 6,480,000, -3,240,000 - 3,240,000]
+var sub_position := Vector2(0, 0)#Deciseconds; [-6,480,000 - 6,480,000, -3,240,000 - 3,240,000]
 #Movement details
-var heading: float#Degrees; 0 - 360
-var delta_heading: float#Turn rate; deg/tick
-var depth: float#Meters; 0 - 240
-var delta_depth: float#Float/sink rate; meter/tick
-var knot_speed: float#Knots; 0 - 30
-var delta_knot_speed: float#Acceleration; knot/tick
+var heading := 0.0#Degrees; 0 - 360
+var delta_heading := 0.0#Turn rate; deg/tick
+var depth := 0.0#Meters; 0 - 240
+var delta_depth := 0.0#Float/sink rate; meter/tick
+var knot_speed := 0.0#Knots; 0 - 30
+var delta_knot_speed := 0.0#Acceleration; knot/tick
 
 #1 knot = 1/360 decisecond/tick
 var tick_translate = 360
@@ -32,8 +33,10 @@ var degree_translate = 36000
 
 func _ready() -> void:
     self.LIDAR_child = $ShipLIDAR
+    self.target_child = $ShipTarget
     self.enemy_manage_child = $EnemyManager
-    self.LIDAR_child.enemy_request.connect(on_enemy_request)
+    self.LIDAR_child.enemy_request.connect(on_LIDAR_request)
+    self.target_child.enemy_request.connect(on_target_list_request)
     self.enemy_manage_child.enemy_created.connect(on_enemy_created)
     
     self.menu_choice = 0
@@ -48,13 +51,6 @@ func _ready() -> void:
                     $ShipWeapons,
                     $ShipLIDAR]
     self.focuses = [true, false, false, false, false, false, false, false, false]
-    
-    self.heading=0
-    self.depth=0
-    self.knot_speed=0
-    self.delta_heading=0
-    self.delta_depth=0
-    self.delta_knot_speed=0
 
 func _process(delta: float):
     #Update ship position and speed
@@ -112,10 +108,15 @@ func get_sub_info() -> String:
     return(rtn)
 
 #Update LIDAR's enemy info
-func on_enemy_request():
+func on_LIDAR_request():
     var enemy_list = self.enemy_manage_child.get_enemy_list()
     self.LIDAR_child.update_display(enemy_list)
     self.LIDAR_child.request_flag = false
+    
+#Update targeting's enemy info
+func on_target_list_request():
+    var enemy_list = self.enemy_manage_child.get_enemy_list()
+    self.target_child.update_list(enemy_list)
 
 #When the enemy managers signals a new enemy has been made
 func on_enemy_created(id: int) -> void:

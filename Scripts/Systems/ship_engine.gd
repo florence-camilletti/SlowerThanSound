@@ -1,8 +1,8 @@
 extends ShipSystemBase
 
-var statusNumsText
-var inputNumsText
-var inputBox
+var statusNumsText: RichTextLabel
+var inputNumsText: RichTextLabel
+var inputBox: TextEdit
 
 enum {NONE, SPEED, HEADING, DEPTH}
 var setting_names = ["INPUT","Speed","Heading","Depth"]
