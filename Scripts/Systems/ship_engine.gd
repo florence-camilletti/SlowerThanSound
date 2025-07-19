@@ -6,14 +6,12 @@ var inputBox: TextEdit
 
 enum {NONE, SPEED, HEADING, DEPTH}
 var setting_names = ["INPUT","Speed","Heading","Depth"]
-var selected_setting: int
+var selected_setting := NONE
 
 func _ready() -> void:
     statusNumsText = $StatusNums
     inputNumsText = $InputText
     inputBox = $InputBox
-    
-    selected_setting=NONE
     
     super._ready()
     

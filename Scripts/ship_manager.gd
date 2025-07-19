@@ -1,4 +1,5 @@
-extends Node2D
+extends ShipSystemBase#THIS MAY NEED TO BE CHANGED BACK TO NODE2D IF IT GETS MESSY
+class_name ShipManager
 
 var menu_choice: int;
 enum {MENU,ENGINE,POWER,OXY,AI,BULK,TARGET,WEAP,LIDAR}#Manual controls
@@ -12,11 +13,6 @@ var target_child: ShipSystemBase
 var enemy_manage_child: Node2D
 
 #Location details in long,lat
-#1 nautical mile(nmile) = 1/60 degree = 1 minutes = 60 seconds = 600 decisecond
-#1 degree = 36000 deciseconds
-#1 knot = 1 nmile/hour = 600 decisecond/216000 ticks = 1 decisecond/360 ticks (1/360 dectic)
-#1 decisecond = 3.09 meters
-#1 tick = 1/60 second
 var sub_position := Vector2(0, 0)#Deciseconds; [-6,480,000 - 6,480,000, -3,240,000 - 3,240,000]
 #Movement details
 var heading := 0.0#Degrees; 0 - 360
@@ -25,11 +21,6 @@ var depth := 0.0#Meters; 0 - 240
 var delta_depth := 0.0#Float/sink rate; meter/tick
 var knot_speed := 0.0#Knots; 0 - 30
 var delta_knot_speed := 0.0#Acceleration; knot/tick
-
-#1 knot = 1/360 decisecond/tick
-var tick_translate = 360
-#1 decisecond = 1/36000 degrees
-var degree_translate = 36000
 
 func _ready() -> void:
     self.LIDAR_child = $ShipLIDAR
@@ -57,7 +48,7 @@ func _process(delta: float):
     self.heading+=delta_heading
     self.depth+=delta_depth
     self.knot_speed+=delta_knot_speed
-    self.sub_position+=knot_to_dectic(self.heading, self.knot_speed)
+    self.sub_position+=(calculate_velocity(self.heading, self.knot_speed)*self.knot_desectic_ratio)
     self.LIDAR_child.update_sub_rotation(self.heading)
     
 func _input(event):
@@ -78,30 +69,17 @@ func _unhandled_input(event):#Quit on ESC
             get_tree().quit()
 
 #Changes heading and speed into a vector2 of how much the sub has moved in 1 tick
-func knot_to_dectic(heading: float, speed: float) -> Vector2:
+func calculate_velocity(heading: float, speed: float) -> Vector2:
     #Translate heading (0-360 angle) into vector2 direction
     var x = sin(deg_to_rad(heading))
     var y = cos(deg_to_rad(heading))
     var direction_scale = Vector2(x, y)#Angle sub is pointing
     var new_vel = direction_scale * speed#knots
-    new_vel /= tick_translate#knot -> d/t
     return(new_vel)
-
-#Turns decisecond into decimal degrees
-func deci_to_deg(d: Vector2) -> Vector2:
-    var new_pos = d
-    new_pos /= degree_translate
-    return(new_pos)
-    
-#Turn decimal degrees into deciseconds
-func deg_to_deci(d: Vector2) -> Vector2:
-    var new_pos = d
-    new_pos *= degree_translate
-    return(new_pos)
      
 #Returns a string about the sub's position and movement info
 func get_sub_info() -> String:
-    var rtn= str(deci_to_deg(self.sub_position)) + "\n"
+    var rtn = str(self.sub_position*self.desec_deg_ratio) + "\n"
     rtn += str(knot_speed) + "\n" + str(delta_knot_speed) + "\n"
     rtn += str(heading) + "\n" + str(delta_heading) + "\n"
     rtn += str(depth) + "\n" + str(delta_depth)

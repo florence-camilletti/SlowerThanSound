@@ -20,13 +20,16 @@ func _input(event: InputEvent) -> void:
 
 #TODO: Document
 func update_list(enemy) -> void:
-    enemy_list = format_enemy_list(enemy)
+    enemy_list = enemy
+    update_enemy_text(enemy)
 
 #TODO: Document    
-func format_enemy_list(enemy) -> Array:
-    print(enemy)
+func update_enemy_text(enemy) -> void:
+    var output_str = ""
     for e in enemy:
-        print(e)
-        print(e.id)
-    return([1,2,3])
+        output_str += str(e.id) + ": " + str(calc_distance(e.desec_pos)) + "\n"
+    self.enemy_box.set_text(output_str)
     
+#Returns the distance in desec between the enemy and the player
+func calc_distance(enemy_pos) -> float:
+    return(manager_node.sub_position.distance_to(enemy_pos))
