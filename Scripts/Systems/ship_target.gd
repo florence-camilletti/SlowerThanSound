@@ -6,6 +6,7 @@ var enemy_box: RichTextLabel
 var selected_num: RichTextLabel
 var enemy_list := {}
 
+signal new_selection
 var auto_light: Sprite2D
 var selected_enemy: int
 var selected_flag := false
@@ -36,9 +37,12 @@ func _input(event: InputEvent) -> void:
             if(self.selected_flag):
                 self.selected_enemy = selection
                 self.selected_num.set_text(str(selection))
+                self.new_selection.emit(selection)
+            else:
+                self.new_selection.emit(-1)
                 
-            self.selected_num.visible = self.selected_flag
-            self.auto_light.visible = self.selected_flag
+            self.selected_num.set_visible(self.selected_flag)
+            self.auto_light.set_visible(self.selected_flag)
 
 #Increase the number of sprites
 func add_new_enemy(id: int) -> void:

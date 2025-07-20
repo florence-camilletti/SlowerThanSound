@@ -28,6 +28,7 @@ func _ready() -> void:
     self.enemy_manage_child = $EnemyManager
     self.LIDAR_child.enemy_request.connect(on_LIDAR_request)
     self.target_child.enemy_request.connect(on_target_list_request)
+    self.target_child.new_selection.connect(on_new_selection)
     self.enemy_manage_child.enemy_created.connect(on_enemy_created)
     
     self.menu_choice = 0
@@ -86,15 +87,18 @@ func get_sub_info() -> String:
     return(rtn)
 
 #Update LIDAR's enemy info
-func on_LIDAR_request():
+func on_LIDAR_request() -> void:
     var enemy_list = self.enemy_manage_child.get_enemy_list()
     self.LIDAR_child.update_display(enemy_list)
     self.LIDAR_child.request_flag = false
     
 #Update targeting's enemy info
-func on_target_list_request():
+func on_target_list_request() -> void:
     var enemy_list = self.enemy_manage_child.get_enemy_list()
     self.target_child.update_list(enemy_list)
+
+func on_new_selection(id: int) -> void:
+    self.LIDAR_child.update_selection(id)
 
 #When the enemy managers signals a new enemy has been made
 func on_enemy_created(id: int) -> void:

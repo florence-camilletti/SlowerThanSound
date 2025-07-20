@@ -1,5 +1,6 @@
 extends ShipSystemBase
 
+# === Map Vars ===
 var player_sprite: Sprite2D
 var rng := RandomNumberGenerator.new()
 var map_pixel_radius := 488
@@ -8,16 +9,20 @@ var map_deg_radius := 0.01#+/- 0.01 degrees (0.6 nm) in each direction
 var map_desec_radius := map_deg_radius*36000 #1 degree = 36,000 desecsec
 #Final map is [-360,360] desecsec
 
+# === Input Vars ===
 var inputBox: TextEdit
 var autoLightG: Sprite2D
 var autoFlag := false
 var autoRate: float
 var timer
 
+# === Enemy Vars ===
 signal enemy_request
 var request_flag := false
 var num_enemies := 0
 var enemy_list := {} #Key - enemy ID, Value - enemy POS
+var selected_sprite: Sprite2D
+var selected_enemy := -1
 
 func _ready() -> void:
     super._ready()
@@ -26,6 +31,8 @@ func _ready() -> void:
     self.timer = $SweepTimer
     self.inputBox = $AutoInput
     self.autoLightG = $AutoLight/AutoLightG
+    
+    self.selected_sprite = $SelectionBox
     
 func _process(delta: float) -> void:
     super._process(delta)
@@ -66,6 +73,11 @@ func update_display(enemies) -> void:
     var sub_pos = self.manager_node.sub_position
     for curr_enemy in enemies:
         self.enemy_list[curr_enemy.id].position = self.desec_to_map(curr_enemy.get_desec_pos(), sub_pos)
+        
+    #Update selection box
+    var show_select = self.selected_enemy != -1
+    if(show_select):
+        self.selected_sprite.set_position(self.enemy_list[self.selected_enemy].position)
             
 #Increase the number of sprites
 func add_new_enemy(id: int) -> void:
@@ -76,6 +88,11 @@ func add_new_enemy(id: int) -> void:
     new_sprite.position = Vector2(-100,-100)
     self.enemy_list[id] = new_sprite
     add_child(new_sprite)
+
+#TODO: document
+func update_selection(id: int) -> void:
+    self.selected_sprite.set_visible(id != -1)
+    self.selected_enemy = id
 
 #Translates a Vector2 of desecisecond position to a pixel position for sprite display
 func desec_to_map(enemy_pos: Vector2, sub_pos: Vector2) -> Vector2:

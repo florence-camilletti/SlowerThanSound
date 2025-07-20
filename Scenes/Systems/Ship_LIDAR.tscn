@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dcbq55wkga8tk"]
+[gd_scene load_steps=8 format=3 uid="uid://dcbq55wkga8tk"]
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/Systems/Ship_System_Base.tscn" id="1_ctw80"]
 [ext_resource type="Script" uid="uid://bol1r4odc751j" path="res://Scripts/Systems/ship_lidar.gd" id="2_yj4yk"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bm85byyvxyveb" path="res://Assets/Textures/ship_tmp.png" id="4_vgnkx"]
 [ext_resource type="Texture2D" uid="uid://cv2j4rp3n6ksd" path="res://Assets/Textures/red_circle.png" id="5_3s6dt"]
 [ext_resource type="Texture2D" uid="uid://cnao21055w77d" path="res://Assets/Textures/green_circle.png" id="5_m1kkf"]
+[ext_resource type="Texture2D" uid="uid://dsdssl8iyjw5a" path="res://Assets/Textures/selection_square.png" id="7_bne4i"]
 
 [node name="ShipLIDAR" instance=ExtResource("1_ctw80")]
 script = ExtResource("2_yj4yk")
@@ -44,6 +45,11 @@ texture = ExtResource("5_3s6dt")
 [node name="AutoLightG" type="Sprite2D" parent="AutoLight" index="1"]
 visible = false
 texture = ExtResource("5_m1kkf")
+
+[node name="SelectionBox" type="Sprite2D" parent="." index="6"]
+visible = false
+position = Vector2(16, 16)
+texture = ExtResource("7_bne4i")
 
 [connection signal="timeout" from="SweepTimer" to="." method="_on_timer_timeout"]
 [connection signal="text_changed" from="AutoInput" to="." method="_on_auto_input_text_changed"]
