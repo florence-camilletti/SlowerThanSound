@@ -53,10 +53,16 @@ func update_list(enemy) -> void:
     var output_str = ""
     var id = 0
     var distance = 0
+    var direction_vec = Vector2(0,0)
+    var direction_deg
     for e in enemy:    
         id = e.id
         distance = desec_nmile_ratio*calc_distance(e.desec_pos)
-        output_str += str(id) + ": " + str(distance) + "\n"
+        direction_vec = manager_node.sub_position.direction_to(e.desec_pos)
+        direction_deg = rad_to_deg(atan2(direction_vec[0], direction_vec[1]))
+        if(direction_deg<0):
+            direction_deg = 360+direction_deg
+        output_str += str(id) + (": %.4f, %.2f\n" % [distance, direction_deg])
         self.enemy_list[id] = distance
     self.enemy_box.set_text(output_str)
     
