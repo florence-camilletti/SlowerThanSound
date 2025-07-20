@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://dcbq55wkga8tk"]
+[gd_scene load_steps=7 format=3 uid="uid://dcbq55wkga8tk"]
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/Systems/Ship_System_Base.tscn" id="1_ctw80"]
 [ext_resource type="Script" uid="uid://bol1r4odc751j" path="res://Scripts/Systems/ship_lidar.gd" id="2_yj4yk"]
 [ext_resource type="Texture2D" uid="uid://5q3jclmmg811" path="res://Assets/Textures/sweep.jpg" id="3_s0o80"]
 [ext_resource type="Texture2D" uid="uid://bm85byyvxyveb" path="res://Assets/Textures/ship_tmp.png" id="4_vgnkx"]
+[ext_resource type="Texture2D" uid="uid://cv2j4rp3n6ksd" path="res://Assets/Textures/red_circle.png" id="5_3s6dt"]
 [ext_resource type="Texture2D" uid="uid://cnao21055w77d" path="res://Assets/Textures/green_circle.png" id="5_m1kkf"]
 
 [node name="ShipLIDAR" instance=ExtResource("1_ctw80")]
@@ -16,7 +17,7 @@ texture = ExtResource("3_s0o80")
 
 [node name="PlayerSprite" type="Sprite2D" parent="." index="1"]
 position = Vector2(896, 536)
-scale = Vector2(4.02419, 4.02419)
+scale = Vector2(2.00605, 1.87272)
 texture = ExtResource("4_vgnkx")
 
 [node name="SweepTimer" type="Timer" parent="." index="2"]
@@ -27,8 +28,21 @@ offset_top = 64.0
 offset_right = 256.0
 offset_bottom = 128.0
 
-[node name="AutoLight" type="Sprite2D" parent="." index="4"]
-position = Vector2(128, 176)
+[node name="AutoLabel" type="RichTextLabel" parent="." index="4"]
+offset_left = 104.0
+offset_top = 160.0
+offset_right = 152.0
+offset_bottom = 184.0
+text = "AUTO"
+
+[node name="AutoLight" type="Node2D" parent="." index="5"]
+position = Vector2(128, 208)
+
+[node name="AutoLightR" type="Sprite2D" parent="AutoLight" index="0"]
+texture = ExtResource("5_3s6dt")
+
+[node name="AutoLightG" type="Sprite2D" parent="AutoLight" index="1"]
+visible = false
 texture = ExtResource("5_m1kkf")
 
 [connection signal="timeout" from="SweepTimer" to="." method="_on_timer_timeout"]

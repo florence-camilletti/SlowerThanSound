@@ -9,7 +9,7 @@ var map_desec_radius := map_deg_radius*36000 #1 degree = 36,000 desecsec
 #Final map is [-360,360] desecsec
 
 var inputBox: TextEdit
-var autoLight: Sprite2D
+var autoLightG: Sprite2D
 var autoFlag := false
 var autoRate: float
 var timer
@@ -25,8 +25,7 @@ func _ready() -> void:
     
     self.timer = $SweepTimer
     self.inputBox = $AutoInput
-    self.autoLight = $AutoLight
-    self.autoLight.set_visible(false)
+    self.autoLightG = $AutoLight/AutoLightG
     
 func _process(delta: float) -> void:
     super._process(delta)
@@ -43,7 +42,7 @@ func _input(event: InputEvent) -> void:
         if(event.is_action_pressed("Enter")):
             self.autoRate = int(self.inputBox.get_text())
             self.autoFlag = (autoRate!=0)
-            self.autoLight.set_visible(self.autoFlag)
+            self.autoLightG.set_visible(self.autoFlag)
             if(self.autoFlag):
                 #Start timer
                 self.timer.start(self.autoRate)

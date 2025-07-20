@@ -99,3 +99,4 @@ func on_target_list_request():
 #When the enemy managers signals a new enemy has been made
 func on_enemy_created(id: int) -> void:
     self.LIDAR_child.add_new_enemy(id)
+    self.target_child.add_new_enemy(id)
