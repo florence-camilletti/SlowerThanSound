@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dcbq55wkga8tk"]
 
-[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/Systems/Ship_System_Base.tscn" id="1_ctw80"]
-[ext_resource type="Script" uid="uid://bol1r4odc751j" path="res://Scripts/Systems/ship_lidar.gd" id="2_yj4yk"]
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_ctw80"]
+[ext_resource type="Script" uid="uid://bol1r4odc751j" path="res://Scripts/ShipSystems/ship_lidar.gd" id="2_yj4yk"]
 [ext_resource type="Texture2D" uid="uid://5q3jclmmg811" path="res://Assets/Textures/sweep.jpg" id="3_s0o80"]
 [ext_resource type="Texture2D" uid="uid://bm85byyvxyveb" path="res://Assets/Textures/ship_tmp.png" id="4_vgnkx"]
 [ext_resource type="Texture2D" uid="uid://cv2j4rp3n6ksd" path="res://Assets/Textures/red_circle.png" id="5_3s6dt"]

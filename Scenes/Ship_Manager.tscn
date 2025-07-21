@@ -1,20 +1,20 @@
 [gd_scene load_steps=13 format=3 uid="uid://by6ibt8eqsgjk"]
 
-[ext_resource type="Script" uid="uid://jojeowbnx382" path="res://Scripts/ship_manager.gd" id="1_3a267"]
+[ext_resource type="Script" uid="uid://jojeowbnx382" path="res://Scripts/ship_manager.gd" id="1_tio8k"]
 [ext_resource type="Texture2D" uid="uid://d0ara2tk00xts" path="res://Assets/Textures/back.png" id="2_qcah4"]
-[ext_resource type="PackedScene" uid="uid://d7h8318elmx6" path="res://Scenes/Systems/Ship_Menu.tscn" id="4_fwxua"]
-[ext_resource type="PackedScene" uid="uid://dkl1ls4rou68o" path="res://Scenes/Systems/Ship_AI.tscn" id="5_kpqe6"]
-[ext_resource type="PackedScene" uid="uid://bchrej7d20kxs" path="res://Scenes/Systems/Ship_Engine.tscn" id="5_mneo4"]
-[ext_resource type="PackedScene" uid="uid://bbmqp6ic5jct8" path="res://Scenes/Systems/Ship_Power.tscn" id="6_3a267"]
-[ext_resource type="PackedScene" uid="uid://dcbq55wkga8tk" path="res://Scenes/Systems/Ship_LIDAR.tscn" id="7_mneo4"]
-[ext_resource type="PackedScene" uid="uid://de68nawnmq5oj" path="res://Scenes/Systems/Ship_Oxy.tscn" id="8_252ws"]
-[ext_resource type="PackedScene" uid="uid://cr28yyxlvbnsv" path="res://Scenes/Systems/Ship_Bulk.tscn" id="9_252ws"]
-[ext_resource type="PackedScene" uid="uid://cc5hivvk8lrs3" path="res://Scenes/Systems/Ship_Weapons.tscn" id="9_hkh0f"]
-[ext_resource type="PackedScene" uid="uid://cnnchfc25huf5" path="res://Scenes/Systems/Ship_Target.tscn" id="10_hkh0f"]
+[ext_resource type="PackedScene" uid="uid://d7h8318elmx6" path="res://Scenes/ShipSystems/Ship_Menu.tscn" id="4_fwxua"]
+[ext_resource type="PackedScene" uid="uid://dkl1ls4rou68o" path="res://Scenes/ShipSystems/Ship_AI.tscn" id="5_kpqe6"]
+[ext_resource type="PackedScene" uid="uid://bchrej7d20kxs" path="res://Scenes/ShipSystems/Ship_Engine.tscn" id="5_mneo4"]
+[ext_resource type="PackedScene" uid="uid://bbmqp6ic5jct8" path="res://Scenes/ShipSystems/Ship_Power.tscn" id="6_3a267"]
+[ext_resource type="PackedScene" uid="uid://dcbq55wkga8tk" path="res://Scenes/ShipSystems/Ship_LIDAR.tscn" id="7_mneo4"]
+[ext_resource type="PackedScene" uid="uid://de68nawnmq5oj" path="res://Scenes/ShipSystems/Ship_Oxy.tscn" id="8_252ws"]
+[ext_resource type="PackedScene" uid="uid://cr28yyxlvbnsv" path="res://Scenes/ShipSystems/Ship_Bulk.tscn" id="9_252ws"]
+[ext_resource type="PackedScene" uid="uid://cc5hivvk8lrs3" path="res://Scenes/ShipSystems/Ship_Weapons.tscn" id="9_hkh0f"]
+[ext_resource type="PackedScene" uid="uid://cnnchfc25huf5" path="res://Scenes/ShipSystems/Ship_Target.tscn" id="10_hkh0f"]
 [ext_resource type="PackedScene" uid="uid://d1vfu7ka822wr" path="res://Scenes/Enemy_Manager.tscn" id="12_tio8k"]
 
 [node name="ShipManager" type="Node2D"]
-script = ExtResource("1_3a267")
+script = ExtResource("1_tio8k")
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(950, 540)

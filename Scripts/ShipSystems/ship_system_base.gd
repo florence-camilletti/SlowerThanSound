@@ -1,7 +1,7 @@
 extends Node2D
 class_name ShipSystemBase
 
-var manager_node: ShipManager
+var manager_node#: ShipManager
 var in_focus: bool
 
 var health: int

@@ -1,8 +1,8 @@
 extends Node2D
-class_name EnemyBase
+class_name EntityBase
 
 var id: int
-var type: String
+var type: String#TODO, what is this supposed to be?
 var desec_pos: Vector2#Decisecond
 var desec_vel: Vector2#Decisecond/tick
 

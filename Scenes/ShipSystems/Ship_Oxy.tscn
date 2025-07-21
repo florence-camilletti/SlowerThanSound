@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://de68nawnmq5oj"]
 
-[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/Systems/Ship_System_Base.tscn" id="1_3dum8"]
-[ext_resource type="Script" uid="uid://0qqwrvc417u8" path="res://Scripts/Systems/ship_oxy.gd" id="2_0pxto"]
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_3dum8"]
+[ext_resource type="Script" uid="uid://0qqwrvc417u8" path="res://Scripts/ShipSystems/ship_oxy.gd" id="2_0pxto"]
 
 [node name="ShipOxy" instance=ExtResource("1_3dum8")]
 script = ExtResource("2_0pxto")

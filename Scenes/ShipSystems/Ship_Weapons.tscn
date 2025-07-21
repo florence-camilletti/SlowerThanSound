@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cc5hivvk8lrs3"]
 
-[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/Systems/Ship_System_Base.tscn" id="1_0fvnq"]
-[ext_resource type="Script" uid="uid://cyim88fakf5xt" path="res://Scripts/Systems/ship_weapons.gd" id="2_cbrcw"]
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_0fvnq"]
+[ext_resource type="Script" uid="uid://cyim88fakf5xt" path="res://Scripts/ShipSystems/ship_weapons.gd" id="2_cbrcw"]
 
 [node name="ShipWeapons" instance=ExtResource("1_0fvnq")]
 script = ExtResource("2_cbrcw")

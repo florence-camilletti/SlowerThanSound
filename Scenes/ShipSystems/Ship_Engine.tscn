@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bchrej7d20kxs"]
 
-[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/Systems/Ship_System_Base.tscn" id="1_2kqdq"]
-[ext_resource type="Script" uid="uid://chh6nsfu83vap" path="res://Scripts/Systems/ship_engine.gd" id="2_cqdlt"]
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_2kqdq"]
+[ext_resource type="Script" uid="uid://chh6nsfu83vap" path="res://Scripts/ShipSystems/ship_engine.gd" id="2_cqdlt"]
 
 [node name="ShipEngine" instance=ExtResource("1_2kqdq")]
 script = ExtResource("2_cqdlt")
