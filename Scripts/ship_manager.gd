@@ -26,10 +26,10 @@ func _ready() -> void:
     self.LIDAR_child = $ShipLIDAR
     self.target_child = $ShipTarget
     self.enemy_manage_child = $EnemyManager
-    self.LIDAR_child.enemy_request.connect(on_LIDAR_request)
-    self.target_child.enemy_request.connect(on_target_list_request)
+    self.LIDAR_child.entity_request.connect(on_LIDAR_request)
+    self.target_child.entity_request.connect(on_target_list_request)
     self.target_child.new_selection.connect(on_new_selection)
-    self.enemy_manage_child.enemy_created.connect(on_enemy_created)
+    self.enemy_manage_child.enemy_created.connect(on_entity_created)
     
     self.menu_choice = 0
     
@@ -86,7 +86,7 @@ func get_sub_info() -> String:
     rtn += str(depth) + "\n" + str(delta_depth)
     return(rtn)
 
-#Update LIDAR's enemy info
+#Update LIDAR's entity info
 func on_LIDAR_request() -> void:
     var enemy_list = self.enemy_manage_child.get_enemy_list()
     self.LIDAR_child.update_display(enemy_list)
@@ -100,7 +100,7 @@ func on_target_list_request() -> void:
 func on_new_selection(id: int) -> void:
     self.LIDAR_child.update_selection(id)
 
-#When the enemy managers signals a new enemy has been made
-func on_enemy_created(id: int) -> void:
-    self.LIDAR_child.add_new_enemy(id)
-    self.target_child.add_new_enemy(id)
+#When the enemy managers signals a new entity has been made
+func on_entity_created(id: int) -> void:
+    self.LIDAR_child.add_new_entity(id)
+    self.target_child.add_new_entity(id)

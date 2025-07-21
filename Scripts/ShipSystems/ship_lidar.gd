@@ -16,13 +16,13 @@ var autoFlag := false
 var autoRate: float
 var timer
 
-# === Enemy Vars ===
-signal enemy_request
+# === Entity Vars ===
+signal entity_request
 var request_flag := false
 var num_enemies := 0
-var enemy_list := {} #Key - enemy ID, Value - enemy POS
+var entity_list := {} #Key - entity ID, Value - entity POS
 var selected_sprite: Sprite2D
-var selected_enemy := -1
+var selected_entity := -1
 
 func _ready() -> void:
     super._ready()
@@ -71,33 +71,33 @@ func update_sub_rotation(deg) -> void:
 func update_display(enemies) -> void:    
     #Update enemies
     var sub_pos = self.manager_node.sub_position
-    for curr_enemy in enemies:
-        self.enemy_list[curr_enemy.id].position = self.desec_to_map(curr_enemy.get_desec_pos(), sub_pos)
+    for curr_entity in enemies:
+        self.entity_list[curr_entity.id].position = self.desec_to_map(curr_entity.get_desec_pos(), sub_pos)
         
     #Update selection box
-    var show_select = self.selected_enemy != -1
+    var show_select = self.selected_entity != -1
     if(show_select):
-        self.selected_sprite.set_position(self.enemy_list[self.selected_enemy].position)
+        self.selected_sprite.set_position(self.entity_list[self.selected_entity].position)
             
 #Increase the number of sprites
-func add_new_enemy(id: int) -> void:
+func add_new_entity(id: int) -> void:
     num_enemies+=1
     var new_sprite = Sprite2D.new()
     var sprite_data = load("res://Assets/Textures/enemy_tmp.png")
     new_sprite.set_texture(sprite_data)
     new_sprite.position = Vector2(-100,-100)
-    self.enemy_list[id] = new_sprite
+    self.entity_list[id] = new_sprite
     add_child(new_sprite)
 
 #TODO: document
 func update_selection(id: int) -> void:
     self.selected_sprite.set_visible(id != -1)
-    self.selected_enemy = id
+    self.selected_entity = id
 
 #Translates a Vector2 of desecisecond position to a pixel position for sprite display
-func desec_to_map(enemy_pos: Vector2, sub_pos: Vector2) -> Vector2:
-    #Get distance between sub and enemy
-    var distance = enemy_pos-sub_pos
+func desec_to_map(entity_pos: Vector2, sub_pos: Vector2) -> Vector2:
+    #Get distance between sub and entity
+    var distance = entity_pos-sub_pos
     #Divide desec pos by map size to get  ([-1, 1], [-1, 1]) range
     var rtn = distance/self.map_desec_radius
     #Multiply -1, 1 range by pixel radius (488) to get offset
@@ -109,10 +109,10 @@ func desec_to_map(enemy_pos: Vector2, sub_pos: Vector2) -> Vector2:
     return(rtn)
 
 func refresh_map() -> void:
-    #Update the enemy list
+    #Update the entity list
     self.request_flag = true
-    enemy_request.emit()
-    while(self.request_flag):#Wait for enemy list
+    entity_request.emit()
+    while(self.request_flag):#Wait for entity list
         pass
 
 func _on_timer_timeout() -> void:

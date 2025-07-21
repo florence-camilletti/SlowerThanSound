@@ -14,7 +14,7 @@ offset_top = 24.0
 offset_right = 193.0
 offset_bottom = 93.0
 
-[node name="EnemyList" type="RichTextLabel" parent="." index="1"]
+[node name="EntityList" type="RichTextLabel" parent="." index="1"]
 offset_left = 52.0
 offset_top = 159.0
 offset_right = 1698.0

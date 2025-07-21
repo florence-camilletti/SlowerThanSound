@@ -34,7 +34,7 @@ func make_new_enemy() -> void:
     #var tmp_vel = Vector2(rng.randi_range(-1,1),rng.randi_range(-1,1))
     var tmp_vel = Vector2(0,0)
     self.num_enemies += 1
-    var new_enemy = EntityBase.new(num_enemies, "Cool Dude", tmp_pos, tmp_vel)
+    var new_enemy = EntityBase.new(num_enemies, "Cool Dude", tmp_pos, tmp_vel)#TODO: CHANGE THIS
     #Add enemy to parent objects
     self.enemy_list.append(new_enemy)
     add_child(new_enemy)
