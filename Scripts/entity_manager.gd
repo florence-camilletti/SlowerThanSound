@@ -1,14 +1,18 @@
 extends Node2D
 
+# === NODE VARS ===
 var manager_node
 var rng = RandomNumberGenerator.new()
 var timer: Timer
 
+# === ENTITY VARS ===
+signal entity_created
+var entity_list := []
+
+# === ENEMY VARS ===
 var enemy_chance := 0.5
 var num_enemies := 0
 var max_enemies := 3
-var enemy_list := []
-signal enemy_created
 
 func _ready() -> void:
     self.timer = $EnemySpawn
@@ -24,6 +28,7 @@ func _process(delta: float) -> void:
     pass
 
 func _on_timer_timeout():
+    #Chance for a new enemy
     if(self.num_enemies < self.max_enemies):
         if(rng.randf() < self.enemy_chance):
             make_new_enemy()
@@ -34,21 +39,21 @@ func make_new_enemy() -> void:
     #var tmp_vel = Vector2(rng.randi_range(-1,1),rng.randi_range(-1,1))
     var tmp_vel = Vector2(0,0)
     self.num_enemies += 1
-    var new_enemy = EntityBase.new(num_enemies, "Cool Dude", tmp_pos, tmp_vel)#TODO: CHANGE THIS
+    var new_enemy = BasicEnemy.new(num_enemies, tmp_pos, tmp_vel)#TODO: CHANGE THIS
     #Add enemy to parent objects
-    self.enemy_list.append(new_enemy)
+    self.entity_list.append(new_enemy)
     add_child(new_enemy)
-    enemy_created.emit(self.num_enemies)
+    entity_created.emit(new_enemy)
     
-func get_num_enemies() -> int:
-    return(self.num_enemies)
+func get_num_entities() -> int:
+    return(self.num_entities)
     
-func get_enemy_list() -> Array:
-    return(self.enemy_list)
+func get_entity_list() -> Array:
+    return(self.entity_list)
     
-#String info about the enemy
+#String info about the entity
 func _to_string() -> String:
     var rtn = ""
-    for enemy in self.enemy_list:
-        rtn+=str(enemy)+"\n"
+    for entity in self.entity_list:
+        rtn+=str(entity)+"\n"
     return(rtn)

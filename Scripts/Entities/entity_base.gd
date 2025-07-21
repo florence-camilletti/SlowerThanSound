@@ -1,15 +1,15 @@
 extends Node2D
 class_name EntityBase
 
-var id: int
-var type: String#TODO, what is this supposed to be?
+var num: int
+var type: String
 var desec_pos: Vector2#Decisecond
 var desec_vel: Vector2#Decisecond/tick
 
-var sprite: Sprite2D
+var texture: Texture2D
 
-func _init(i, t, p, v) -> void:
-    self.id = i
+func _init(n:int, t:String, p:Vector2, v:Vector2) -> void:
+    self.num = n
     self.type = t
     self.desec_pos = p
     self.desec_vel = v
@@ -18,17 +18,25 @@ func _ready() -> void:
     pass
     
 func _process(delta: float) -> void:
-    #Update enemy pos
+    #Update entity pos
     self.desec_pos+=self.desec_vel
 
-func set_desec_pos(p) -> void:
+func set_texture(t: Texture2D) -> void:
+    self.texture = t
+func get_texture() -> Texture2D:
+    return(self.texture)
+
+func set_desec_pos(p: Vector2) -> void:
     self.desec_pos = p
-func set_desec_vel(v) -> void:
+func set_desec_vel(v: Vector2) -> void:
     self.desec_vel = v
 func get_desec_pos() -> Vector2:
     return(self.desec_pos)
 func get_desec_vel() -> Vector2:
     return(self.desec_vel)
 
+func get_id() -> String:
+    return(self.type+str(self.num))
+
 func _to_string() -> String:
-    return("ID: "+str(self.id)+", TYPE: "+str(self.type)+", POS: "+str(self.desec_pos)+", VEL: "+str(self.desec_vel))
+    return("ID: "+get_id()+", POS: "+str(self.desec_pos)+", VEL: "+str(self.desec_vel))

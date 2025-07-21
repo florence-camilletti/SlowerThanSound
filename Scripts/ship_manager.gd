@@ -1,6 +1,7 @@
 extends ShipSystemBase#THIS MAY NEED TO BE CHANGED BACK TO NODE2D IF IT GETS MESSY
 class_name ShipManager
 
+# === MENU VARS ===
 var menu_choice: int;
 enum {MENU,ENGINE,POWER,OXY,AI,BULK,TARGET,WEAP,LIDAR}#Manual controls
 var actions := ["MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"]#Names of possible menu actions
@@ -8,10 +9,12 @@ var num_actions := len(actions)
 var system_nodes := []#Child nodes belonging to each one
 var focuses := []#Which one is currently being focused on
 
+# === NODE VARS ===
 var LIDAR_child: ShipSystemBase
 var target_child: ShipSystemBase
-var enemy_manage_child: Node2D
+var entity_manager: Node2D
 
+# === MOVEMENT VARS ===
 #Location details in long,lat
 var sub_position := Vector2(0, 0)#Deciseconds; [-6,480,000 - 6,480,000, -3,240,000 - 3,240,000]
 #Movement details
@@ -25,11 +28,11 @@ var delta_knot_speed := 0.0#Acceleration; knot/tick
 func _ready() -> void:
     self.LIDAR_child = $ShipLIDAR
     self.target_child = $ShipTarget
-    self.enemy_manage_child = $EnemyManager
+    self.entity_manager = $EntityManager
     self.LIDAR_child.entity_request.connect(on_LIDAR_request)
     self.target_child.entity_request.connect(on_target_list_request)
     self.target_child.new_selection.connect(on_new_selection)
-    self.enemy_manage_child.enemy_created.connect(on_entity_created)
+    self.entity_manager.entity_created.connect(on_entity_created)
     
     self.menu_choice = 0
     
@@ -88,19 +91,20 @@ func get_sub_info() -> String:
 
 #Update LIDAR's entity info
 func on_LIDAR_request() -> void:
-    var enemy_list = self.enemy_manage_child.get_enemy_list()
-    self.LIDAR_child.update_display(enemy_list)
+    var entity_list = self.entity_manager.get_entity_list()
+    self.LIDAR_child.update_display(entity_list)
     self.LIDAR_child.request_flag = false
     
-#Update targeting's enemy info
+#Update targeting's entity info
 func on_target_list_request() -> void:
-    var enemy_list = self.enemy_manage_child.get_enemy_list()
-    self.target_child.update_list(enemy_list)
+    var entity_list = self.entity_manager.get_entity_list()
+    self.target_child.update_list(entity_list)
 
-func on_new_selection(id: int) -> void:
+#When a new entity is selectedssss
+func on_new_selection(id: String) -> void:
     self.LIDAR_child.update_selection(id)
 
-#When the enemy managers signals a new entity has been made
-func on_entity_created(id: int) -> void:
-    self.LIDAR_child.add_new_entity(id)
-    self.target_child.add_new_entity(id)
+#When the entity managers signals a new entity has been made
+func on_entity_created(ent: EntityBase) -> void:
+    self.LIDAR_child.add_new_entity(ent)
+    self.target_child.add_new_entity(ent)

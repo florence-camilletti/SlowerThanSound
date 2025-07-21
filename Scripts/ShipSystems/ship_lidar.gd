@@ -19,10 +19,11 @@ var timer
 # === Entity Vars ===
 signal entity_request
 var request_flag := false
-var num_enemies := 0
-var entity_list := {} #Key - entity ID, Value - entity POS
+var num_entities := 0
+var entity_list := {} #Key - entity ID, Value - entity obj
+var sprite_list := {} #Key - entity ID, Value - sprite obj
 var selected_sprite: Sprite2D
-var selected_entity := -1
+var selected_entity := "-1"
 
 func _ready() -> void:
     super._ready()
@@ -68,30 +69,30 @@ func update_sub_rotation(deg) -> void:
     self.player_sprite.set_rotation_degrees(deg)
          
 #Update the position of the LIDAR sprites
-func update_display(enemies) -> void:    
-    #Update enemies
+func update_display(entity_list: Array) -> void:    
+    #Update entities
     var sub_pos = self.manager_node.sub_position
-    for curr_entity in enemies:
-        self.entity_list[curr_entity.id].position = self.desec_to_map(curr_entity.get_desec_pos(), sub_pos)
+    for curr_entity in entity_list:
+        self.sprite_list[curr_entity.get_id()].position = self.desec_to_map(curr_entity.get_desec_pos(), sub_pos)
         
     #Update selection box
-    var show_select = self.selected_entity != -1
+    var show_select = self.selected_entity != "-1"
     if(show_select):
-        self.selected_sprite.set_position(self.entity_list[self.selected_entity].position)
+        self.selected_sprite.set_position(self.sprite_list[self.selected_entity].position)
             
 #Increase the number of sprites
-func add_new_entity(id: int) -> void:
-    num_enemies+=1
+func add_new_entity(ent: EntityBase) -> void:
+    self.num_entities+=1
     var new_sprite = Sprite2D.new()
-    var sprite_data = load("res://Assets/Textures/enemy_tmp.png")
-    new_sprite.set_texture(sprite_data)
+    new_sprite.set_texture(ent.get_texture())
     new_sprite.position = Vector2(-100,-100)
-    self.entity_list[id] = new_sprite
+    self.sprite_list[ent.get_id()] = new_sprite
+    self.entity_list[ent.get_id()] = ent
     add_child(new_sprite)
 
 #TODO: document
-func update_selection(id: int) -> void:
-    self.selected_sprite.set_visible(id != -1)
+func update_selection(id: String) -> void:
+    self.selected_sprite.set_visible(id != "-1")
     self.selected_entity = id
 
 #Translates a Vector2 of desecisecond position to a pixel position for sprite display
@@ -110,6 +111,8 @@ func desec_to_map(entity_pos: Vector2, sub_pos: Vector2) -> Vector2:
 
 func refresh_map() -> void:
     #Update the entity list
+    #print(self.entity_list)
+    #print(self.sprite_list)
     self.request_flag = true
     entity_request.emit()
     while(self.request_flag):#Wait for entity list
