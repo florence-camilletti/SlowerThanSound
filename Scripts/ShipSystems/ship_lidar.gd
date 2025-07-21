@@ -69,10 +69,10 @@ func update_sub_rotation(deg) -> void:
     self.player_sprite.set_rotation_degrees(deg)
          
 #Update the position of the LIDAR sprites
-func update_display(entity_list: Array) -> void:    
+func update_display(new_entity_list: Array) -> void:    
     #Update entities
     var sub_pos = self.manager_node.sub_position
-    for curr_entity in entity_list:
+    for curr_entity in new_entity_list:
         self.sprite_list[curr_entity.get_id()].position = self.desec_to_map(curr_entity.get_desec_pos(), sub_pos)
         
     #Update selection box

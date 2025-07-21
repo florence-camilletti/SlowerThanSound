@@ -24,7 +24,7 @@ func _ready() -> void:
     
     self.manager_node = get_parent()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
     pass
 
 func _on_timer_timeout():

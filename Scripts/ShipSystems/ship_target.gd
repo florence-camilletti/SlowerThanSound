@@ -49,7 +49,7 @@ func _input(event: InputEvent) -> void:
                 self.selected_num.set_text(str(selection))
                 self.new_selection.emit(selection)
             else:
-                self.new_selection.emit(-1)
+                self.new_selection.emit("-1")
                 
             self.selected_num.set_visible(self.selected_flag)
             self.auto_light.set_visible(self.selected_flag)
@@ -59,13 +59,13 @@ func add_new_entity(ent: EntityBase) -> void:
     self.entity_list[ent.get_id()] = 0
     
 #TODO: Document
-func update_list(entity_list) -> void:
+func update_list(new_entity_list) -> void:
     var output_str = ""
     var id = ""
     var distance = 0
     var direction_vec = Vector2(0,0)
     var direction_deg
-    for e in entity_list:    
+    for e in new_entity_list:    
         id = e.get_id()
         distance = desec_nmile_ratio*calc_distance(e.desec_pos)
         direction_vec = manager_node.sub_position.direction_to(e.desec_pos)

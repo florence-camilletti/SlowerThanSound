@@ -36,7 +36,7 @@ func _ready() -> void:
     in_focus = false
     self.visible = false
     
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
     pass
 
 func set_focus(f) -> void:

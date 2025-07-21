@@ -14,20 +14,4 @@ func _process(delta: float) -> void:
     super._process(delta)
     #Process player input
     if(in_focus):
-        torps_left_text.set_text(str(num_torps))
-
-func _input(event: InputEvent) -> void:
-    if(in_focus):
-        pass
-        #TODO
-        #Select torp tube
-        #elif(event.is_action_pressed("O")):#Speed
-        #TODO
-        #Select what to load into it
-        #TODO
-        #Fuel and load torp
-        #TODO
-        #Select firing plan
-        #TODO
-        #Select fire time
-    
+        torps_left_text.set_text(str(num_torps))    

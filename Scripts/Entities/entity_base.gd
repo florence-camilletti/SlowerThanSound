@@ -17,7 +17,7 @@ func _init(n:int, t:String, p:Vector2, v:Vector2) -> void:
 func _ready() -> void:
     pass
     
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
     #Update entity pos
     self.desec_pos+=self.desec_vel
 

@@ -47,7 +47,7 @@ func _ready() -> void:
                     $ShipLIDAR]
     self.focuses = [true, false, false, false, false, false, false, false, false]
 
-func _process(delta: float):
+func _process(_delta: float):
     #Update ship position and speed
     self.heading+=delta_heading
     self.depth+=delta_depth
@@ -73,10 +73,10 @@ func _unhandled_input(event):#Quit on ESC
             get_tree().quit()
 
 #Changes heading and speed into a vector2 of how much the sub has moved in 1 tick
-func calculate_velocity(heading: float, speed: float) -> Vector2:
+func calculate_velocity(curr_heading: float, speed: float) -> Vector2:
     #Translate heading (0-360 angle) into vector2 direction
-    var x = sin(deg_to_rad(heading))
-    var y = cos(deg_to_rad(heading))
+    var x = sin(deg_to_rad(curr_heading))
+    var y = cos(deg_to_rad(curr_heading))
     var direction_scale = Vector2(x, y)#Angle sub is pointing
     var new_vel = direction_scale * speed#knots
     return(new_vel)
