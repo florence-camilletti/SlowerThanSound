@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbu56m84uraok"]
+
+[ext_resource type="Script" uid="uid://cyxxim0lshth1" path="res://Scripts/Torps/torp_base.gd" id="1_v0mog"]
+
+[node name="TorpBase" type="Node2D"]
+visible = false
+script = ExtResource("1_v0mog")
