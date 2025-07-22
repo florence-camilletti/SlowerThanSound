@@ -10,7 +10,7 @@ signal entity_created
 var entity_list := []
 
 # === ENEMY VARS ===
-var enemy_chance := 0.5
+var enemy_chance := 1.0
 var num_enemies := 0
 var max_enemies := 3
 

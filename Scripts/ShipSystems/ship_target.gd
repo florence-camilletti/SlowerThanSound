@@ -39,7 +39,7 @@ func _ready() -> void:
     
     var output_str = ""
     for n in range(5):#Dummy torpedoes
-        var new_torp = BasicTorp.new(n, manager_node.sub_position, manager_node.calculate_self_velocity())
+        var new_torp = BasicTorp.new(n)
         self.torps_left[new_torp.get_id()] = new_torp
         output_str += new_torp.get_ID()+": "+str(new_torp.get_range())+"\n"
     self.torp_box.set_text(output_str)
@@ -116,7 +116,9 @@ func launch_torpedo() -> void:
     #Set up object launch
     var launch_torp = self.torps_left[self.selected_torp]
     var launch_target = self.entity_list[self.selected_target]
-    print("LAUNCH TORP "+str(launch_torp)+" AT TARGET "+str(launch_target))
+    launch_torp.set_desec_pos(manager_node.sub_position)
+    print(manager_node.calc_self_desectic_vel())
+    launch_torp.set_desec_vel(manager_node.calc_self_desectic_vel())
     launch_torp.set_target(launch_target)
     
     #Actually launch the torp
@@ -154,8 +156,8 @@ func update_entity_list() -> void:
 func update_torpedo_list() -> void:
     var output_str = ""
     for key in self.torps_left:
-        var t = self.torps_list[key]
-        output_str += t.get_id() +": "+str(t.get_range)+ "\n"
+        var t = self.torps_left[key]
+        output_str += t.get_id() +": "+str(t.get_range())+ "\n"
     self.torp_box.set_text(output_str)
     
 #Returns the distance in desec between the entity and the player

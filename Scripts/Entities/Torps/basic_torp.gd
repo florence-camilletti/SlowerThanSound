@@ -1,17 +1,22 @@
 extends EntityBase
 class_name BasicTorp
 
+var is_launched := false
 var range := 0.5
-var fuel := 10.0
-var fuel_per_tick := 0.01
 var target: EntityBase
 
-func _init(i:int, p:Vector2, v:Vector2) -> void:
-    super._init(i,"TB",p,v)
+func _init(i:int) -> void:
+    super._init(i,"TB",Vector2(0,0),Vector2(0,0))
     self.texture = load("res://Assets/Textures/torpedo.png")
 
+func _ready() -> void:
+    super._ready()
+    
 func _process(_delta: float) -> void:
-    pass
+    super._process(_delta)
+
+func check_impact() -> bool:#TODO: THIS
+    return(true)
 
 func set_target(ent: EntityBase) -> void:
     self.target = ent
@@ -19,5 +24,3 @@ func get_target_pos() -> Vector2:
     return(target.get_pos())
 func get_range() -> float:
     return(self.range)
-func get_fuel() -> float:
-    return(self.fuel)

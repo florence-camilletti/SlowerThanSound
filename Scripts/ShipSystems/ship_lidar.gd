@@ -74,6 +74,7 @@ func update_display(new_entity_list: Array) -> void:
     var sub_pos = self.manager_node.sub_position
     for curr_entity in new_entity_list:
         self.sprite_list[curr_entity.get_id()].position = self.desec_to_map(curr_entity.get_desec_pos(), sub_pos)
+        self.sprite_list[curr_entity.get_id()].set_rotation_degrees(curr_entity.get_heading())
         
     #Update selection box
     var show_select = self.selected_entity != "-1"

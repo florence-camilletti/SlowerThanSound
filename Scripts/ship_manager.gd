@@ -22,7 +22,8 @@ var heading := 0.0#Degrees; 0 - 360
 var delta_heading := 0.0#Turn rate; deg/tick
 var depth := 0.0#Meters; 0 - 240
 var delta_depth := 0.0#Float/sink rate; meter/tick
-var knot_speed := 0.0#Knots; 0 - 30
+var knot_speed := 0.0#Knots; 0 - 30#TODO: Change this to desectic speed instead of knot
+                                   #Knot speed is only needed for display 
 var delta_knot_speed := 0.0#Acceleration; knot/tick
 
 func _ready() -> void:
@@ -52,7 +53,7 @@ func _process(_delta: float):
     self.heading+=delta_heading
     self.depth+=delta_depth
     self.knot_speed+=delta_knot_speed
-    self.sub_position+=(calculate_self_velocity()*self.knot_desectic_ratio)
+    self.sub_position+=(calc_self_desectic_vel())
     self.LIDAR_child.update_sub_rotation(self.heading)
     
 func _input(event):
@@ -72,18 +73,22 @@ func _unhandled_input(event):#Quit on ESC
         if event.pressed and event.keycode == KEY_ESCAPE:
             get_tree().quit()
 
-func calculate_self_velocity() -> Vector2:
-    return(calculate_velocity(self.heading, self.knot_speed))
+func calc_self_knot_vel() -> Vector2:
+    return(calc_knot_vel(self.heading, self.knot_speed))
+func calc_self_desectic_vel() -> Vector2:
+    return(calc_desectic_vel(self.heading, self.knot_speed))
 
 #Changes heading and speed into a vector2 of how much the sub has moved in 1 tick
-func calculate_velocity(curr_heading: float, speed: float) -> Vector2:
+func calc_knot_vel(curr_heading: float, speed: float) -> Vector2:
     #Translate heading (0-360 angle) into vector2 direction
     var x = sin(deg_to_rad(curr_heading))
     var y = cos(deg_to_rad(curr_heading))
     var direction_scale = Vector2(x, y)#Angle sub is pointing
     var new_vel = direction_scale * speed#knots
     return(new_vel)
-     
+func calc_desectic_vel(curr_heading: float, speed: float) -> Vector2:
+    return(calc_knot_vel(curr_heading, speed)*self.knot_desectic_ratio)
+    
 #Returns a string about the sub's position and movement info
 func get_sub_info() -> String:
     var rtn = str(self.sub_position*self.desec_deg_ratio) + "\n"
