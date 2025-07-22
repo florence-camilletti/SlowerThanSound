@@ -37,6 +37,8 @@ func get_desec_vel() -> Vector2:
 
 func get_id() -> String:
     return(self.type+str(self.num))
+func get_ID() -> String:
+    return(get_id())
 
 func _to_string() -> String:
     return("ID: "+get_id()+", POS: "+str(self.desec_pos)+", VEL: "+str(self.desec_vel))

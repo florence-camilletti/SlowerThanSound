@@ -43,7 +43,7 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
     if(in_focus):
-        if(event.is_action_pressed("K")):
+        if(event.is_action_pressed("Action_K")):
             #Set auto-update rate
             self.inputBox.clear()
             self.inputBox.grab_focus()
@@ -61,7 +61,7 @@ func _input(event: InputEvent) -> void:
             self.inputBox.clear()
             self.inputBox.release_focus()
             
-        if(event.is_action_pressed("L")):
+        if(event.is_action_pressed("Action_L")):
             refresh_map()
         
 func update_sub_rotation(deg) -> void:

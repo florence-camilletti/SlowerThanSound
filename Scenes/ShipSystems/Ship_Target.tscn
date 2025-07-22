@@ -14,47 +14,67 @@ position = Vector2(951.5, 538)
 scale = Vector2(1.00794, 1.0037)
 texture = ExtResource("3_urawi")
 
-[node name="IDInput" type="TextEdit" parent="." index="1"]
+[node name="Targeting" type="Node2D" parent="." index="1"]
+
+[node name="IDInput" type="TextEdit" parent="Targeting" index="0"]
 offset_left = 48.0
 offset_top = 24.0
 offset_right = 193.0
-offset_bottom = 93.0
-
-[node name="SelectionLabel" type="RichTextLabel" parent="." index="2"]
-offset_left = 232.0
-offset_top = 32.0
-offset_right = 344.0
 offset_bottom = 64.0
-text = "SELECTION:"
 
-[node name="AutoLight" type="Node2D" parent="." index="3"]
+[node name="AutoLight" type="Node2D" parent="Targeting" index="1"]
 position = Vector2(248, 72)
 
-[node name="AutoLightR" type="Sprite2D" parent="AutoLight" index="0"]
+[node name="AutoLightR" type="Sprite2D" parent="Targeting/AutoLight" index="0"]
 texture = ExtResource("3_vrtcm")
 
-[node name="AutoLightG" type="Sprite2D" parent="AutoLight" index="1"]
+[node name="AutoLightG" type="Sprite2D" parent="Targeting/AutoLight" index="1"]
 visible = false
 texture = ExtResource("4_wqkqm")
 
-[node name="SelectionNumber" type="RichTextLabel" parent="." index="4"]
+[node name="SelectionID" type="RichTextLabel" parent="Targeting" index="2"]
 offset_left = 272.0
 offset_top = 64.0
 offset_right = 312.0
 offset_bottom = 104.0
 
-[node name="EntityList" type="RichTextLabel" parent="." index="5"]
+[node name="EntityList" type="RichTextLabel" parent="Targeting" index="3"]
 offset_left = 52.0
 offset_top = 159.0
 offset_right = 1698.0
 offset_bottom = 512.0
 text = "TARGET"
 
-[node name="TorpLabel" type="RichTextLabel" parent="." index="6"]
+[node name="Torpedo" type="Node2D" parent="." index="2"]
+
+[node name="IDInput" type="TextEdit" parent="Torpedo" index="0"]
 offset_left = 48.0
 offset_top = 576.0
+offset_right = 200.0
+offset_bottom = 624.0
+
+[node name="AutoLight" type="Node2D" parent="Torpedo" index="1"]
+position = Vector2(248, 624)
+
+[node name="AutoLightR" type="Sprite2D" parent="Torpedo/AutoLight" index="0"]
+texture = ExtResource("3_vrtcm")
+
+[node name="AutoLightG" type="Sprite2D" parent="Torpedo/AutoLight" index="1"]
+visible = false
+texture = ExtResource("4_wqkqm")
+
+[node name="SelectionID" type="RichTextLabel" parent="Torpedo" index="2"]
+offset_left = 272.0
+offset_top = 608.0
+offset_right = 312.0
+offset_bottom = 648.0
+
+[node name="TorpsLeft" type="RichTextLabel" parent="Torpedo" index="3"]
+offset_left = 48.0
+offset_top = 736.0
 offset_right = 728.0
-offset_bottom = 712.0
+offset_bottom = 864.0
 text = "TORPS LEFT:"
 
-[connection signal="text_changed" from="IDInput" to="." method="_on_id_input_text_changed"]
+[connection signal="text_changed" from="Targeting/IDInput" to="." method="_on_target_input_text_changed"]
+[connection signal="text_changed" from="Torpedo/IDInput" to="." method="_on_torpedo_input_text_changed"]

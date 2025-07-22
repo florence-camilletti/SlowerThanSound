@@ -32,6 +32,7 @@ func _ready() -> void:
     self.LIDAR_child.entity_request.connect(on_LIDAR_request)
     self.target_child.entity_request.connect(on_target_list_request)
     self.target_child.new_selection.connect(on_new_selection)
+    self.target_child.torpedo_launched.connect(on_torpedo_launch)
     self.entity_manager.entity_created.connect(on_entity_created)
     
     self.menu_choice = 0
@@ -52,7 +53,7 @@ func _process(_delta: float):
     self.heading+=delta_heading
     self.depth+=delta_depth
     self.knot_speed+=delta_knot_speed
-    self.sub_position+=(calculate_velocity(self.heading, self.knot_speed)*self.knot_desectic_ratio)
+    self.sub_position+=(calculate_self_velocity()*self.knot_desectic_ratio)
     self.LIDAR_child.update_sub_rotation(self.heading)
     
 func _input(event):
@@ -71,6 +72,9 @@ func _unhandled_input(event):#Quit on ESC
     if event is InputEventKey:
         if event.pressed and event.keycode == KEY_ESCAPE:
             get_tree().quit()
+
+func calculate_self_velocity() -> Vector2:
+    return(calculate_velocity(self.heading, self.knot_speed))
 
 #Changes heading and speed into a vector2 of how much the sub has moved in 1 tick
 func calculate_velocity(curr_heading: float, speed: float) -> Vector2:
@@ -103,6 +107,9 @@ func on_target_list_request() -> void:
 #When a new entity is selectedssss
 func on_new_selection(id: String) -> void:
     self.LIDAR_child.update_selection(id)
+
+func on_torpedo_launch(torpedo: BasicTorp) -> void:
+    self.entity_manager.create_torpedo_launch(torpedo)
 
 #When the entity managers signals a new entity has been made
 func on_entity_created(ent: EntityBase) -> void:

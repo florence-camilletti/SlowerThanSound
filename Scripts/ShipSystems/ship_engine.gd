@@ -27,26 +27,26 @@ func _input(event):
     if(in_focus):
         '''TODO Have changes be gradual
            instead of instant'''
-        if(event.is_action_pressed("U")):#Speed
+        if(event.is_action_pressed("Action_U")):#Speed
             selected_setting = SPEED
             input_flag = true
-        elif(event.is_action_pressed("J")):
+        elif(event.is_action_pressed("Action_J")):
             #TODO
-            print("EMERGENCY GO/STOP")
+            manager_node.knot_speed = 0
             
-        elif(event.is_action_pressed("I")):#Heading
+        elif(event.is_action_pressed("Action_I")):#Heading
             selected_setting = HEADING
             input_flag = true
-        elif(event.is_action_pressed("K")):
+        elif(event.is_action_pressed("Action_K")):
             #TODO
-            print("EMERGENCY TURN")
+            pass
             
-        elif(event.is_action_pressed("O")):#Depth
+        elif(event.is_action_pressed("Action_O")):#Depth
             selected_setting = DEPTH
             input_flag = true
-        elif(event.is_action_pressed("L")):
+        elif(event.is_action_pressed("Action_L")):
             #TODO
-            print("EMERGENCY DIVE/SURFACE")
+            pass
             
         #Check for number input
         if(input_flag):

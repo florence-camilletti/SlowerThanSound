@@ -33,6 +33,11 @@ func _on_timer_timeout():
         if(rng.randf() < self.enemy_chance):
             make_new_enemy()
 
+func create_entity(ent: EntityBase) -> void:
+    self.entity_list.append(ent)
+    add_child(ent)
+    entity_created.emit(ent)
+    
 #Create a new enemy and update the manager
 func make_new_enemy() -> void:
     var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
@@ -41,9 +46,10 @@ func make_new_enemy() -> void:
     self.num_enemies += 1
     var new_enemy = BasicEnemy.new(num_enemies, tmp_pos, tmp_vel)#TODO: CHANGE THIS
     #Add enemy to parent objects
-    self.entity_list.append(new_enemy)
-    add_child(new_enemy)
-    entity_created.emit(new_enemy)
+    create_entity(new_enemy)
+    
+func create_torpedo_launch(torp: BasicTorp) -> void:
+    create_entity(torp)
     
 func get_num_entities() -> int:
     return(self.num_entities)

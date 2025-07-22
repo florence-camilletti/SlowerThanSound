@@ -1,62 +1,130 @@
 extends ShipSystemBase
 
+var selected_box := 0
+
 # === SELECTION VARS ===
+var target_input_box: TextEdit
+var target_box: RichTextLabel
+var target_selection_id_box: RichTextLabel
+var target_auto_light: Sprite2D
+
 signal entity_request
-var input_box: TextEdit
-var entity_box: RichTextLabel
-var selected_num: RichTextLabel
-var entity_list := {}
 signal new_selection
-var auto_light: Sprite2D
-var selected_entity: String
-var selected_flag := false
+var entity_list := {}
+var selected_target: String
+var selected_target_flag := false
 
 # === TORPEDO VARS ===
-var torps_left := 5
-var torps_list := {}
+var torp_input_box: TextEdit
+var torp_box: RichTextLabel
+var torp_selection_id_box: RichTextLabel
+var torp_auto_light: Sprite2D
+
+signal torpedo_launched
+var torps_left := {} #List of unlaunched torps
+var torps_fired := {} #List of launched torps
+var selected_torp: String
+var selected_torp_flag := false
 
 func _ready() -> void:
     super._ready()
-    self.input_box = $IDInput
-    self.entity_box = $EntityList
-    self.selected_num = $SelectionNumber
-    self.auto_light = $AutoLight/AutoLightG
+    self.target_input_box = $Targeting/IDInput
+    self.target_box = $Targeting/EntityList
+    self.target_selection_id_box = $Targeting/SelectionID
+    self.target_auto_light = $Targeting/AutoLight/AutoLightG
+    
+    self.torp_input_box = $Torpedo/IDInput
+    self.torp_box = $Torpedo/TorpsLeft
+    self.torp_selection_id_box = $Torpedo/SelectionID
+    self.torp_auto_light = $Torpedo/AutoLight/AutoLightG
+    
+    var output_str = ""
+    for n in range(5):#Dummy torpedoes
+        var new_torp = BasicTorp.new(n, manager_node.sub_position, manager_node.calculate_self_velocity())
+        self.torps_left[new_torp.get_id()] = new_torp
+        output_str += new_torp.get_ID()+": "+str(new_torp.get_range())+"\n"
+    self.torp_box.set_text(output_str)
+    
     
 func _process(delta: float) -> void:
     super._process(delta)
     #Process player input
     if(in_focus):
-        input_box.grab_focus()
         entity_request.emit()
 
 func _input(event: InputEvent) -> void:
     if(in_focus):
-        if(event.is_action_pressed("J")):
-            #Attempt to launch a torpedo
-            print("LAUNCH")
-            if(self.torps_left>0):
-                pass
+        if(event.is_action_pressed("Action_U")):
+            #Select a target
+            self.selected_box = 1
+            self.target_input_box.clear()
+            self.target_input_box.grab_focus()
+        if(event.is_action_pressed("Action_J")):
+            #Select a torpedo
+            self.selected_box = 2
+            self.torp_input_box.clear()
+            self.torp_input_box.grab_focus()
+        if(event.is_action_pressed("Action_K")):
+            #Launch tornado
+            if(self.selected_torp_flag and self.selected_target_flag):
+                var launch_torp = self.torps_left[self.selected_torp]
+                var launch_target = self.entity_list[self.selected_target]
+                print(typeof(launch_torp))
+                print(typeof(launch_target))
+                print("LAUNCH TORP "+str(launch_torp)+" AT TARGET "+str(launch_target))
+                launch_torp.set_target(launch_target)
+                self.torpedo_launched.emit(launch_torp)
         if(event.is_action_pressed("Enter")):
             #Entity seletion
-            var selection = self.input_box.get_text()
-            self.input_box.clear()
-            var valid_select = selection in self.entity_list
+            if(self.selected_box==1):#Pull from target select box
+                update_selection_target()
+            elif(self.selected_box==2):#Pull from torpedo select box
+                update_selection_torpedo()
             
-            #selected_flag NAND selection==selected_entity
-            self.selected_flag = (valid_select) and not (self.selected_flag and selection == self.selected_entity)
-            if(self.selected_flag):
-                self.selected_entity = selection
-                self.selected_num.set_text(str(selection))
-                self.new_selection.emit(selection)
-            else:
-                self.new_selection.emit("-1")
+            #Reset boxes
+            self.target_input_box.release_focus()
+            self.torp_input_box.release_focus()
+            self.target_input_box.clear()
+            self.torp_input_box.clear()
+
+#TODO: Document
+func update_selection_target() -> void:
+    var selection = self.target_input_box.get_text().to_upper()
+    var valid_select = selection in self.entity_list
                 
-            self.selected_num.set_visible(self.selected_flag)
-            self.auto_light.set_visible(self.selected_flag)
+    #selected_target_flag NAND selection==selected_target
+    self.selected_target_flag = (valid_select) and not (self.selected_target_flag and selection == self.selected_target)
+    if(self.selected_target_flag):
+        self.selected_target = selection
+        self.target_selection_id_box.set_text(str(selection))
+        self.new_selection.emit(selection)
+    else:
+        self.new_selection.emit("-1")
+                    
+    self.target_selection_id_box.set_visible(self.selected_target_flag)
+    self.target_auto_light.set_visible(self.selected_target_flag)
+                
+#TODO: Document
+func update_selection_torpedo() -> void:
+    var selection = self.torp_input_box.get_text().to_upper()
+    var valid_select = selection in self.torps_left
+
+    #selected_target_flag NAND selection==selected_target
+    self.selected_torp_flag = (valid_select) and not (self.selected_torp_flag and selection == self.selected_torp)
+    if(self.selected_torp_flag):
+        self.selected_torp = selection
+        self.torp_selection_id_box.set_text(str(selection))
+                    
+    self.torp_selection_id_box.set_visible(self.selected_torp_flag)
+    self.torp_auto_light.set_visible(self.selected_torp_flag)
+    
+#Launches selected torpedo at selected target
+func launch_torpedo() -> void:
+    pass
 
 #Increase the number of entities
 func add_new_entity(ent: EntityBase) -> void:
-    self.entity_list[ent.get_id()] = 0
+    self.entity_list[ent.get_id()] = ent
     
 #TODO: Document
 func update_list(new_entity_list) -> void:
@@ -73,9 +141,17 @@ func update_list(new_entity_list) -> void:
         if(direction_deg<0):
             direction_deg = 360+direction_deg
         output_str += id + (": %.4f, %.2f\n" % [distance, direction_deg])
-        self.entity_list[id] = distance
-    self.entity_box.set_text(output_str)
+        self.entity_list[id] = e
+    self.target_box.set_text(output_str)
     
 #Returns the distance in desec between the entity and the player
 func calc_distance(entity_pos) -> float:
     return(manager_node.sub_position.distance_to(entity_pos))
+
+
+func _on_target_input_text_changed() -> void:
+    pass#self.target_input_box.set_text(self.target_input_box.text.to_upper())
+
+
+func _on_torpedo_input_text_changed() -> void:
+    pass#self.torp_input_box.set_text(self.torp_input_box.text.to_upper())
