@@ -30,7 +30,6 @@ func _ready() -> void:
     self.target_child = $ShipTarget
     self.entity_manager = $EntityManager
     self.LIDAR_child.entity_request.connect(on_LIDAR_request)
-    self.target_child.entity_request.connect(on_target_list_request)
     self.target_child.new_selection.connect(on_new_selection)
     self.target_child.torpedo_launched.connect(on_torpedo_launch)
     self.entity_manager.entity_created.connect(on_entity_created)
@@ -98,11 +97,6 @@ func on_LIDAR_request() -> void:
     var entity_list = self.entity_manager.get_entity_list()
     self.LIDAR_child.update_display(entity_list)
     self.LIDAR_child.request_flag = false
-    
-#Update targeting's entity info
-func on_target_list_request() -> void:
-    var entity_list = self.entity_manager.get_entity_list()
-    self.target_child.update_list(entity_list)
 
 #When a new entity is selectedssss
 func on_new_selection(id: String) -> void:

@@ -8,7 +8,6 @@ var target_box: RichTextLabel
 var target_selection_id_box: RichTextLabel
 var target_auto_light: Sprite2D
 
-signal entity_request
 signal new_selection
 var entity_list := {}
 var selected_target: String
@@ -50,7 +49,7 @@ func _process(delta: float) -> void:
     super._process(delta)
     #Process player input
     if(in_focus):
-        entity_request.emit()
+        update_entity_list()#Refresh positions
 
 func _input(event: InputEvent) -> void:
     if(in_focus):
@@ -67,13 +66,7 @@ func _input(event: InputEvent) -> void:
         if(event.is_action_pressed("Action_K")):
             #Launch tornado
             if(self.selected_torp_flag and self.selected_target_flag):
-                var launch_torp = self.torps_left[self.selected_torp]
-                var launch_target = self.entity_list[self.selected_target]
-                print(typeof(launch_torp))
-                print(typeof(launch_target))
-                print("LAUNCH TORP "+str(launch_torp)+" AT TARGET "+str(launch_target))
-                launch_torp.set_target(launch_target)
-                self.torpedo_launched.emit(launch_torp)
+                launch_torpedo()
         if(event.is_action_pressed("Enter")):
             #Entity seletion
             if(self.selected_box==1):#Pull from target select box
@@ -120,38 +113,57 @@ func update_selection_torpedo() -> void:
     
 #Launches selected torpedo at selected target
 func launch_torpedo() -> void:
-    pass
+    #Set up object launch
+    var launch_torp = self.torps_left[self.selected_torp]
+    var launch_target = self.entity_list[self.selected_target]
+    print("LAUNCH TORP "+str(launch_torp)+" AT TARGET "+str(launch_target))
+    launch_torp.set_target(launch_target)
+    
+    #Actually launch the torp
+    self.torpedo_launched.emit(launch_torp)
+    self.torps_left.erase(self.selected_torp)
+    self.torps_fired[self.selected_torp] = launch_torp
+    
+    #Update torpedo list
+    update_torpedo_list()
 
 #Increase the number of entities
 func add_new_entity(ent: EntityBase) -> void:
     self.entity_list[ent.get_id()] = ent
     
-#TODO: Document
-func update_list(new_entity_list) -> void:
+#Update the entity's position relative to the sub
+#Calculates distance and heading to each entity for ease of targeting and identification
+#And sets the text box accordingly
+func update_entity_list() -> void:
     var output_str = ""
-    var id = ""
     var distance = 0
     var direction_vec = Vector2(0,0)
     var direction_deg
-    for e in new_entity_list:    
-        id = e.get_id()
+    for cur_key in self.entity_list:    
+        var e = self.entity_list[cur_key]
         distance = desec_nmile_ratio*calc_distance(e.desec_pos)
         direction_vec = manager_node.sub_position.direction_to(e.desec_pos)
         direction_deg = rad_to_deg(atan2(direction_vec[0], direction_vec[1]))
         if(direction_deg<0):
             direction_deg = 360+direction_deg
-        output_str += id + (": %.4f, %.2f\n" % [distance, direction_deg])
-        self.entity_list[id] = e
+        output_str += e.get_id() + (": %.4f, %.2f\n" % [distance, direction_deg])
     self.target_box.set_text(output_str)
+    
+#Update the list of remaining torpedoes
+#And set the text box accordingly
+func update_torpedo_list() -> void:
+    var output_str = ""
+    for key in self.torps_left:
+        var t = self.torps_list[key]
+        output_str += t.get_id() +": "+str(t.get_range)+ "\n"
+    self.torp_box.set_text(output_str)
     
 #Returns the distance in desec between the entity and the player
 func calc_distance(entity_pos) -> float:
     return(manager_node.sub_position.distance_to(entity_pos))
 
-
 func _on_target_input_text_changed() -> void:
     pass#self.target_input_box.set_text(self.target_input_box.text.to_upper())
-
 
 func _on_torpedo_input_text_changed() -> void:
     pass#self.torp_input_box.set_text(self.torp_input_box.text.to_upper())
