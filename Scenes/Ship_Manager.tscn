@@ -21,14 +21,6 @@ position = Vector2(950, 540)
 scale = Vector2(95, 54)
 texture = ExtResource("2_qcah4")
 
-[node name="TestLabel" type="RichTextLabel" parent="."]
-visible = false
-offset_left = 412.0
-offset_top = 178.0
-offset_right = 1511.0
-offset_bottom = 477.0
-text = "abcd"
-
 [node name="ShipMenu" parent="." instance=ExtResource("4_fwxua")]
 
 [node name="ShipEngine" parent="." instance=ExtResource("5_mneo4")]

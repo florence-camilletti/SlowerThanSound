@@ -1,9 +1,11 @@
 extends ShipSystemBase
 
+# === NODE VARS ===
 var statusNumsText: RichTextLabel
 var inputNumsText: RichTextLabel
 var inputBox: TextEdit
 
+# === SETTING VARS ===
 enum {NONE, SPEED, HEADING, DEPTH}
 var setting_names = ["INPUT","Speed","Heading","Depth"]
 var selected_setting := NONE
@@ -32,28 +34,28 @@ func _input(event):
             input_flag = true
         elif(event.is_action_pressed("Action_J")):
             #TODO
-            manager_node.knot_speed = 0
+            manager_node.speed = 0
             
         elif(event.is_action_pressed("Action_I")):#Heading
             selected_setting = HEADING
             input_flag = true
         elif(event.is_action_pressed("Action_K")):
             #TODO
-            pass
+            manager_node.heading = 0
             
         elif(event.is_action_pressed("Action_O")):#Depth
             selected_setting = DEPTH
             input_flag = true
         elif(event.is_action_pressed("Action_L")):
             #TODO
-            pass
+            manager_node.depth = 0
             
         #Check for number input
         if(input_flag):
             self.inputBox.grab_focus()
             
         if(event.is_action_pressed("Enter")):
-            var inputNum = self.inputBox.get_text()
+            var inputNum = float(self.inputBox.get_text())
             self.inputBox.clear()
             self.inputBox.release_focus()
             
@@ -62,7 +64,7 @@ func _input(event):
             elif(selected_setting==DEPTH):
                 manager_node.depth = inputNum
             elif(selected_setting==SPEED):
-                manager_node.knot_speed = inputNum
+                manager_node.speed = inputNum*Global.knot_desectic_ratio
                 
         inputNumsText.set_text(setting_names[selected_setting])
                     

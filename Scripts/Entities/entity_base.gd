@@ -7,6 +7,7 @@ var num: int
 var type: String
 var desec_pos: Vector2#Decisecond
 var desec_vel: Vector2#Decisecond/tick
+var desec_speed: float
 
 var texture: Texture2D
 
@@ -16,6 +17,7 @@ func _init(n:int, t:String, p:Vector2, v:Vector2) -> void:
     self.type = t
     self.desec_pos = p
     self.desec_vel = v
+    self.desec_speed = v.length()
 
 func _ready() -> void:
     pass
@@ -33,10 +35,13 @@ func set_desec_pos(p: Vector2) -> void:
     self.desec_pos = p
 func set_desec_vel(v: Vector2) -> void:
     self.desec_vel = v
+    self.desec_speed = v.length()
 func get_desec_pos() -> Vector2:
     return(self.desec_pos)
 func get_desec_vel() -> Vector2:
     return(self.desec_vel)
+func get_desec_speed() -> float:
+    return(self.desec_speed)
 
 func get_id() -> String:
     return(self.type+str(self.num))

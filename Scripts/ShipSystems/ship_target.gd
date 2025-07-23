@@ -116,12 +116,10 @@ func launch_torpedo() -> void:
     #Set up object launch
     var launch_torp = self.torps_left[self.selected_torp]
     var launch_target = self.entity_list[self.selected_target]
-    launch_torp.set_desec_pos(manager_node.sub_position)
-    print(manager_node.calc_self_desectic_vel())
-    launch_torp.set_desec_vel(manager_node.calc_self_desectic_vel())
     launch_torp.set_target(launch_target)
     
     #Actually launch the torp
+    launch_torp.launch(manager_node.sub_position, manager_node.calc_self_desectic_vel())
     self.torpedo_launched.emit(launch_torp)
     self.torps_left.erase(self.selected_torp)
     self.torps_fired[self.selected_torp] = launch_torp
@@ -143,7 +141,7 @@ func update_entity_list() -> void:
     var direction_deg
     for cur_key in self.entity_list:    
         var e = self.entity_list[cur_key]
-        distance = desec_nmile_ratio*calc_distance(e.desec_pos)
+        distance = Global.desec_nmile_ratio*calc_distance(e.desec_pos)
         direction_vec = manager_node.sub_position.direction_to(e.desec_pos)
         direction_deg = rad_to_deg(atan2(direction_vec[0], direction_vec[1]))
         if(direction_deg<0):

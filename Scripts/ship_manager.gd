@@ -22,9 +22,8 @@ var heading := 0.0#Degrees; 0 - 360
 var delta_heading := 0.0#Turn rate; deg/tick
 var depth := 0.0#Meters; 0 - 240
 var delta_depth := 0.0#Float/sink rate; meter/tick
-var knot_speed := 0.0#Knots; 0 - 30#TODO: Change this to desectic speed instead of knot
-                                   #Knot speed is only needed for display 
-var delta_knot_speed := 0.0#Acceleration; knot/tick
+var speed := 0.0#Desectics; 0 - 1/12
+var delta_speed := 0.0#Acceleration; desectic/tick
 
 func _ready() -> void:
     self.LIDAR_child = $ShipLIDAR
@@ -52,8 +51,8 @@ func _process(_delta: float):
     #Update ship position and speed
     self.heading+=delta_heading
     self.depth+=delta_depth
-    self.knot_speed+=delta_knot_speed
-    self.sub_position+=(calc_self_desectic_vel())
+    self.speed+=delta_speed
+    self.sub_position+=calc_self_desectic_vel()
     self.LIDAR_child.update_sub_rotation(self.heading)
     
 func _input(event):
@@ -74,25 +73,14 @@ func _unhandled_input(event):#Quit on ESC
             get_tree().quit()
 
 func calc_self_knot_vel() -> Vector2:
-    return(calc_knot_vel(self.heading, self.knot_speed))
+    return(Global.calc_knot_vel(self.heading, self.speed))
 func calc_self_desectic_vel() -> Vector2:
-    return(calc_desectic_vel(self.heading, self.knot_speed))
-
-#Changes heading and speed into a vector2 of how much the sub has moved in 1 tick
-func calc_knot_vel(curr_heading: float, speed: float) -> Vector2:
-    #Translate heading (0-360 angle) into vector2 direction
-    var x = sin(deg_to_rad(curr_heading))
-    var y = cos(deg_to_rad(curr_heading))
-    var direction_scale = Vector2(x, y)#Angle sub is pointing
-    var new_vel = direction_scale * speed#knots
-    return(new_vel)
-func calc_desectic_vel(curr_heading: float, speed: float) -> Vector2:
-    return(calc_knot_vel(curr_heading, speed)*self.knot_desectic_ratio)
+    return(Global.calc_desectic_vel(self.heading, self.speed))
     
 #Returns a string about the sub's position and movement info
 func get_sub_info() -> String:
-    var rtn = str(self.sub_position*self.desec_deg_ratio) + "\n"
-    rtn += str(knot_speed) + "\n" + str(delta_knot_speed) + "\n"
+    var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"
+    rtn += str(speed*Global.desectic_knot_ratio) + "\n" + str(delta_speed) + "\n"
     rtn += str(heading) + "\n" + str(delta_heading) + "\n"
     rtn += str(depth) + "\n" + str(delta_depth)
     return(rtn)
