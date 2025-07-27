@@ -16,7 +16,7 @@ var entity_manager: Node2D
 
 # === MOVEMENT VARS ===
 #Location details in long,lat
-var sub_position := Vector2(0, 0)#Deciseconds; [-6,480,000 - 6,480,000, -3,240,000 - 3,240,000]
+var sub_position := Global.map_middle#Deciseconds; [0 - 720,000| 0 - 720,000]
 #Movement details
 var heading := 0.0#Degrees; 0 - 360
 var delta_heading := 0.0#Turn rate; deg/tick
@@ -34,6 +34,7 @@ func _ready() -> void:
     self.target_child.new_selection.connect(on_new_selection)
     self.target_child.torpedo_launched.connect(on_torpedo_launch)
     self.entity_manager.entity_created.connect(on_entity_created)
+    self.entity_manager.entity_destroyed.connect(on_entity_destroyed)
     
     self.menu_choice = 0
     
@@ -109,3 +110,7 @@ func on_torpedo_launch(torpedo: BasicTorp) -> void:
 func on_entity_created(ent: EntityBase) -> void:
     self.LIDAR_child.add_new_entity(ent)
     self.target_child.add_new_entity(ent)
+
+func on_entity_destroyed(ent: EntityBase) -> void:
+    self.LIDAR_child.destroy_entity(ent)
+    self.target_child.destroy_entity(ent)

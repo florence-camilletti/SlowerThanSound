@@ -112,7 +112,7 @@ func update_selection_torpedo() -> void:
     self.torp_auto_light.set_visible(self.selected_torp_flag)
     
 #Launches selected torpedo at selected target
-func launch_torpedo() -> void:
+func launch_torpedo() -> void:    
     #Set up object launch
     var launch_torp = self.torps_left[self.selected_torp]
     var launch_target = self.entity_list[self.selected_target]
@@ -126,10 +126,19 @@ func launch_torpedo() -> void:
     
     #Update torpedo list
     update_torpedo_list()
+    self.selected_target_flag = false
+    self.selected_torp_flag = false
 
 #Increase the number of entities
 func add_new_entity(ent: EntityBase) -> void:
     self.entity_list[ent.get_id()] = ent
+    
+func destroy_entity(ent: EntityBase) -> void:
+    var tmp_obj = entity_list[ent.get_id()]
+    entity_list.erase(ent.get_id())
+    tmp_obj.queue_free()
+    update_entity_list()
+    update_torpedo_list()
     
 #Update the entity's position relative to the sub
 #Calculates distance and heading to each entity for ease of targeting and identification
@@ -141,7 +150,8 @@ func update_entity_list() -> void:
     var direction_deg
     for cur_key in self.entity_list:    
         var e = self.entity_list[cur_key]
-        distance = Global.desec_nmile_ratio*calc_distance(e.desec_pos)
+        #distance = Global.desec_nmile_ratio*calc_distance(e.desec_pos)
+        distance = calc_distance(e.desec_pos)
         direction_vec = manager_node.sub_position.direction_to(e.desec_pos)
         direction_deg = rad_to_deg(atan2(direction_vec[0], direction_vec[1]))
         if(direction_deg<0):
@@ -161,9 +171,3 @@ func update_torpedo_list() -> void:
 #Returns the distance in desec between the entity and the player
 func calc_distance(entity_pos) -> float:
     return(manager_node.sub_position.distance_to(entity_pos))
-
-func _on_target_input_text_changed() -> void:
-    pass#self.target_input_box.set_text(self.target_input_box.text.to_upper())
-
-func _on_torpedo_input_text_changed() -> void:
-    pass#self.torp_input_box.set_text(self.torp_input_box.text.to_upper())
