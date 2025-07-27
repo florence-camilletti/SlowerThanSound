@@ -119,7 +119,7 @@ func launch_torpedo() -> void:
     launch_torp.set_target(launch_target)
     
     #Actually launch the torp
-    launch_torp.launch(manager_node.sub_position, manager_node.calc_self_desectic_vel())
+    launch_torp.launch(manager_node.sub_position, manager_node.heading, manager_node.speed)
     self.torpedo_launched.emit(launch_torp)
     self.torps_left.erase(self.selected_torp)
     self.torps_fired[self.selected_torp] = launch_torp

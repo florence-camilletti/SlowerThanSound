@@ -24,6 +24,7 @@ var depth := 0.0#Meters; 0 - 240
 var delta_depth := 0.0#Float/sink rate; meter/tick
 var speed := 0.0#Desectics; 0 - 1/12
 var delta_speed := 0.0#Acceleration; desectic/tick
+var velocity := Vector2(0,0)
 
 func _ready() -> void:
     self.LIDAR_child = $ShipLIDAR
@@ -52,7 +53,7 @@ func _process(_delta: float):
     self.heading+=delta_heading
     self.depth+=delta_depth
     self.speed+=delta_speed
-    self.sub_position+=calc_self_desectic_vel()
+    self.sub_position+=self.velocity
     self.LIDAR_child.update_sub_rotation(self.heading)
     
 func _input(event):
@@ -71,11 +72,17 @@ func _unhandled_input(event):#Quit on ESC
     if event is InputEventKey:
         if event.pressed and event.keycode == KEY_ESCAPE:
             get_tree().quit()
-
-func calc_self_knot_vel() -> Vector2:
-    return(Global.calc_knot_vel(self.heading, self.speed))
-func calc_self_desectic_vel() -> Vector2:
-    return(Global.calc_desectic_vel(self.heading, self.speed))
+    
+func set_heading(h: float) -> void:
+    self.heading = h
+    self.update_vel()
+func set_depth(d: float) -> void:
+    self.depth = d
+func set_speed(s: float) -> void:
+    self.speed = s
+    self.update_vel()
+func update_vel() -> void:
+    self.velocity = Global.calc_desectic_vel(self.heading, self.speed)
     
 #Returns a string about the sub's position and movement info
 func get_sub_info() -> String:

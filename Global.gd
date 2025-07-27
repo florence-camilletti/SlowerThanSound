@@ -26,7 +26,7 @@ var desec_nmile_ratio := 1/600.0
 var desectic_knot_ratio := 360
 var knot_desectic_ratio := 1/360.0
 
-#Changes heading and speed into a vector2 of how much the sub has moved in 1 tick
+#Changes heading and speed into a velocity vector of how much the sub has moved in 1 tick
 func calc_desectic_vel(curr_heading: float, speed: float) -> Vector2:
     #Translate heading (0-360 angle) into vector2 direction
     var x = sin(deg_to_rad(curr_heading))
@@ -35,4 +35,18 @@ func calc_desectic_vel(curr_heading: float, speed: float) -> Vector2:
     var new_vel = direction_scale * speed#desectics
     return(new_vel)
 func calc_knot_vel(curr_heading: float, speed: float) -> Vector2:
-    return(calc_desectic_vel(curr_heading, speed)*Global.desectic_ratio)
+    return(calc_desectic_vel(curr_heading, speed)*Global.desectic_knot_ratio)
+
+#Changes a velocity vector into heading and speed
+#Returns Vector2[Heading, Speed]
+func calc_desectic_speed(curr_velocity: Vector2) -> Vector2:
+    var speed = curr_velocity.length()
+    
+    var direction = rad_to_deg(atan2(curr_velocity[0], curr_velocity[1]))
+    if(direction<0):
+        direction+=360
+    return(Vector2(direction, speed))
+    
+    
+func calc_knot_pseed(curr_velocity: Vector2) -> Vector2:
+    return(calc_desectic_speed(curr_velocity)*Global.desectic_knot_ratio)

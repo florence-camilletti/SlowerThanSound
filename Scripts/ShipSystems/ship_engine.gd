@@ -34,21 +34,21 @@ func _input(event):
             input_flag = true
         elif(event.is_action_pressed("Action_J")):
             #TODO
-            manager_node.speed = 0
+            manager_node.set_speed(0)
             
         elif(event.is_action_pressed("Action_I")):#Heading
             selected_setting = HEADING
             input_flag = true
         elif(event.is_action_pressed("Action_K")):
             #TODO
-            manager_node.heading = 0
+            manager_node.set_heading(0)
             
         elif(event.is_action_pressed("Action_O")):#Depth
             selected_setting = DEPTH
             input_flag = true
         elif(event.is_action_pressed("Action_L")):
             #TODO
-            manager_node.depth = 0
+            manager_node.set_depth(0)
             
         #Check for number input
         if(input_flag):
@@ -60,11 +60,11 @@ func _input(event):
             self.inputBox.release_focus()
             
             if(selected_setting==HEADING):
-                manager_node.heading = inputNum
+                manager_node.set_heading(inputNum)
             elif(selected_setting==DEPTH):
-                manager_node.depth = inputNum
+                manager_node.set_depth(inputNum)
             elif(selected_setting==SPEED):
-                manager_node.speed = inputNum*Global.knot_desectic_ratio
+                manager_node.set_speed(inputNum*Global.knot_desectic_ratio)
                 
         inputNumsText.set_text(setting_names[selected_setting])
                     
