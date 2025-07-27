@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://cc5hivvk8lrs3"]
+
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_0fvnq"]
+[ext_resource type="Script" uid="uid://cyim88fakf5xt" path="res://Scripts/ShipSystems/ship_weapons.gd" id="2_cbrcw"]
+
+[node name="ShipWeapons" instance=ExtResource("1_0fvnq")]
+script = ExtResource("2_cbrcw")
+
+[node name="StatusLabels" type="RichTextLabel" parent="." index="0"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 128.0
+offset_bottom = 320.0
+text = "Torps left:"
+
+[node name="TorpsLeft" type="RichTextLabel" parent="." index="1"]
+offset_left = 150.0
+offset_top = 16.0
+offset_right = 200.0
+offset_bottom = 184.0
+text = "123"
+
+[node name="TmpLabel" type="RichTextLabel" parent="." index="2"]
+offset_left = 5.0
+offset_top = 1018.0
+offset_right = 703.0
+offset_bottom = 1077.0
+text = "WEAPONSS"
