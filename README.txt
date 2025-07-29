@@ -12,7 +12,6 @@ Shift+S..........Oxygen screen
 Shift+D..........Bulkhead screen
 Shift+F..........Weapons screen
 Shift+T/Shift+G..LIDAR screen
-
 == Power controls ==
 TBD
 == AI controls ==
@@ -36,3 +35,4 @@ TBD
 -auto
 == LIDAR controls ==
 Shift+K...Set auto-ping
+Shift+L...Manual ping
