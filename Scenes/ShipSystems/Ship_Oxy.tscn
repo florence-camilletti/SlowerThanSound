@@ -12,3 +12,9 @@ offset_top = 954.0
 offset_right = 464.0
 offset_bottom = 1059.0
 text = "OXYGEN"
+
+[node name="SelectedSystem" type="TextEdit" parent="." index="1"]
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 160.0
+offset_bottom = 128.0

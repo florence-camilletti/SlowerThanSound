@@ -1,13 +1,13 @@
 extends Node2D
 
 # === NODE VARS ===
-var manager_node
+var manager_node: ShipSystemBase
 var rng = RandomNumberGenerator.new()
 var timer: Timer
-signal entity_destroyed
 
 # === ENTITY VARS ===
 signal entity_created
+signal entity_destroyed
 var entity_list := []
 
 # === ENEMY VARS ===
@@ -18,62 +18,51 @@ var max_enemies := 3
 func _ready() -> void:
     self.timer = $EnemySpawn
     self.timer.timeout.connect(_on_timer_timeout)
-    #self.timer.wait_time = 5
-    self.timer.wait_time = 1
-    self.timer.one_shot = false
-    self.timer.start()
     
     self.manager_node = get_parent()
 
 func _process(_delta: float) -> void:
+    #If check collisions becomes too costly, this might be done
+    # every few tics instead of every tic
     check_collisions()
 
 func _on_timer_timeout() -> void:
     #Chance for a new enemy
     if(self.num_enemies < self.max_enemies):
         if(rng.randf() < self.enemy_chance):
-            make_new_enemy()
+            _make_new_enemy()
 
-func on_entity_death(ent: EntityBase) -> void:
-    print(str(ent)+" is D E A D")
-    var pos = entity_list.find(ent)
-    entity_list.remove_at(pos)
-    entity_destroyed.emit(ent)
-
-func create_entity(ent: EntityBase) -> void:
+#Add ent to the manager's lists and connects it to the trees
+func add_entity(ent: EntityBase) -> void:
     self.entity_list.append(ent)
     ent.death.connect(on_entity_death)
     add_child(ent)
     entity_created.emit(ent)
     
+func add_enemy(enemy: BasicEnemy) -> void:
+    add_entity(enemy)
+func add_torpedo(torp: BasicTorp) -> void:
+    add_entity(torp)
+    
+#When an entity signals their destruction, update and emit a signals
+#and destroy the ent object
+func on_entity_death(ent: EntityBase) -> void:
+    var pos = entity_list.find(ent)
+    entity_list.remove_at(pos)
+    entity_destroyed.emit(ent)
+    ent.queue_free()
+    
 #Create a new enemy and update the manager
-func make_new_enemy() -> void:
+func _make_new_enemy() -> void:#TESTING FUNCTION
     var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
     tmp_pos += Global.map_middle
-    #var tmp_vel = Vector2(rng.randi_range(-1,1),rng.randi_range(-1,1))
-    var tmp_vel = Vector2(0,0)
+    var tmp_vel = Vector2(rng.randf_range(-0.1,0.1),rng.randf_range(-0.1,0.1))
     self.num_enemies += 1
     var new_enemy = BasicEnemy.new(num_enemies, tmp_pos, tmp_vel)#TODO: CHANGE THIS
     #Add enemy to parent objects
-    create_entity(new_enemy)
+    add_entity(new_enemy)
     
-func create_torpedo_launch(torp: BasicTorp) -> void:
-    create_entity(torp)
-    
-func get_num_entities() -> int:
-    return(self.num_entities)
-    
-func get_entity_list() -> Array:
-    return(self.entity_list)
-    
-#String info about the entity
-func _to_string() -> String:
-    var rtn = ""
-    for entity in self.entity_list:
-        rtn+=str(entity)+"\n"
-    return(rtn)
-
-#TODO: Document
+#Uses a spacial cell hash to determin if any torpedoes have collided with something
 func check_collisions():
     var grid = {}
     var cell_size = 100#Desec
@@ -99,3 +88,16 @@ func check_collisions():
                                 if(hit):
                                     torp.set_health(0)
                                     target.damage(torp.get_damage_points())
+
+func get_num_entities() -> int:
+    return(self.num_entities)
+    
+func get_entity_list() -> Array:
+    return(self.entity_list)
+
+#String info about the entity
+func _to_string() -> String:
+    var rtn = ""
+    for entity in self.entity_list:
+        rtn+=str(entity)+"\n"
+    return(rtn)

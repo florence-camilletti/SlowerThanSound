@@ -2,12 +2,9 @@ extends ShipSystemBase#THIS MAY NEED TO BE CHANGED BACK TO NODE2D IF IT GETS MES
 class_name ShipManager
 
 # === MENU VARS ===
-var menu_choice: int;
-enum {MENU,ENGINE,POWER,OXY,AI,BULK,TARGET,WEAP,LIDAR}#Manual controls
-var actions := ["MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"]#Names of possible menu actions
-var num_actions := len(actions)
+var menu_choice := 0
 var system_nodes := []#Child nodes belonging to each one
-var focuses := []#Which one is currently being focused on
+var focuses := [true, false, false, false, false, false, false, false, false]#Which one is currently being focused on
 
 # === NODE VARS ===
 var LIDAR_child: ShipSystemBase
@@ -17,14 +14,13 @@ var entity_manager: Node2D
 # === MOVEMENT VARS ===
 #Location details in long,lat
 var sub_position := Global.map_middle#Deciseconds; [0 - 720,000| 0 - 720,000]
-#Movement details
 var heading := 0.0#Degrees; 0 - 360
 var delta_heading := 0.0#Turn rate; deg/tick
 var depth := 0.0#Meters; 0 - 240
 var delta_depth := 0.0#Float/sink rate; meter/tick
 var speed := 0.0#Desectics; 0 - 1/12
 var delta_speed := 0.0#Acceleration; desectic/tick
-var velocity := Vector2(0,0)
+var velocity := Vector2(0,0)#Speed and direction
 
 func _ready() -> void:
     self.LIDAR_child = $ShipLIDAR
@@ -36,8 +32,6 @@ func _ready() -> void:
     self.entity_manager.entity_created.connect(on_entity_created)
     self.entity_manager.entity_destroyed.connect(on_entity_destroyed)
     
-    self.menu_choice = 0
-    
     self.system_nodes = [$ShipMenu,
                     $ShipEngine,
                     $ShipPower,
@@ -47,7 +41,6 @@ func _ready() -> void:
                     $ShipTarget,
                     $ShipWeapons,
                     $ShipLIDAR]
-    self.focuses = [true, false, false, false, false, false, false, false, false]
 
 func _process(_delta: float):
     #Update ship position and speed
@@ -55,13 +48,14 @@ func _process(_delta: float):
     self.depth+=delta_depth
     self.speed+=delta_speed
     self.sub_position+=self.velocity
+    #Update ship rotation
     self.LIDAR_child.update_sub_rotation(self.heading)
     
 func _input(event):
-    for possible_action in range(num_actions):#Check for menu change
-        if(event.is_action_pressed(actions[possible_action])):
+    for possible_action in range(Global.num_systems):#Check for menu change
+        if(event.is_action_pressed(Global.systems[possible_action])):
             self.menu_choice = possible_action#Set the menu choice
-            for n in range(num_actions):#Set the focuses
+            for n in range(Global.num_systems):#Set the focuses
                 if(possible_action==n):
                     self.system_nodes[n].set_focus(true)
                     self.focuses[n]=true
@@ -85,6 +79,34 @@ func set_speed(s: float) -> void:
 func update_vel() -> void:
     self.velocity = Global.calc_desectic_vel(self.heading, self.speed)
     
+#Update LIDAR's entity list from the entity manager
+func on_LIDAR_request() -> void:
+    var entity_list = self.entity_manager.get_entity_list()
+    self.LIDAR_child.update_display(entity_list)
+    self.LIDAR_child.request_flag = false
+
+#When a new entity is selected, update LIDAR
+#Signaled by Target
+func on_new_selection(id: String) -> void:
+    self.LIDAR_child.update_selection(id)
+
+#When torpedo is launched, update Entity Manager
+#Signaled by Target
+func on_torpedo_launch(torpedo: BasicTorp) -> void:
+    self.entity_manager.add_torpedo(torpedo)
+
+#When ent has been created, update LIDAR and target
+#Signaled by Entity Manager
+func on_entity_created(ent: EntityBase) -> void:
+    self.LIDAR_child.add_new_entity(ent)
+    self.target_child.add_new_entity(ent)
+
+#When ent had been destroyed, update LIDAR and target
+#Signaled by Entity Manager
+func on_entity_destroyed(ent: EntityBase) -> void:
+    self.LIDAR_child.destroy_entity(ent)
+    self.target_child.destroy_entity(ent)
+
 #Returns a string about the sub's position and movement info
 func get_sub_info() -> String:
     var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"
@@ -93,24 +115,5 @@ func get_sub_info() -> String:
     rtn += str(depth) + "\n" + str(delta_depth)
     return(rtn)
 
-#Update LIDAR's entity info
-func on_LIDAR_request() -> void:
-    var entity_list = self.entity_manager.get_entity_list()
-    self.LIDAR_child.update_display(entity_list)
-    self.LIDAR_child.request_flag = false
-
-#When a new entity is selectedssss
-func on_new_selection(id: String) -> void:
-    self.LIDAR_child.update_selection(id)
-
-func on_torpedo_launch(torpedo: BasicTorp) -> void:
-    self.entity_manager.create_torpedo_launch(torpedo)
-
-#When the entity managers signals a new entity has been made
-func on_entity_created(ent: EntityBase) -> void:
-    self.LIDAR_child.add_new_entity(ent)
-    self.target_child.add_new_entity(ent)
-
-func on_entity_destroyed(ent: EntityBase) -> void:
-    self.LIDAR_child.destroy_entity(ent)
-    self.target_child.destroy_entity(ent)
+func _to_string() -> String:
+    return(get_sub_info())

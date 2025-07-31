@@ -47,7 +47,6 @@ func _ready() -> void:
     
 func _process(delta: float) -> void:
     super._process(delta)
-    #Process player input
     if(in_focus):
         update_entity_list()#Refresh positions
 
@@ -134,11 +133,10 @@ func add_new_entity(ent: EntityBase) -> void:
     self.entity_list[ent.get_id()] = ent
     
 func destroy_entity(ent: EntityBase) -> void:
-    var tmp_obj = entity_list[ent.get_id()]
     entity_list.erase(ent.get_id())
-    tmp_obj.queue_free()
     update_entity_list()
     update_torpedo_list()
+    print(entity_list)
     
 #Update the entity's position relative to the sub
 #Calculates distance and heading to each entity for ease of targeting and identification

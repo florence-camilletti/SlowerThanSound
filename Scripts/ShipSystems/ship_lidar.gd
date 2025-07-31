@@ -92,10 +92,8 @@ func add_new_entity(ent: EntityBase) -> void:
     add_child(new_sprite)
 
 func destroy_entity(ent: EntityBase) -> void:
-    var obj_tmp = entity_list[ent.get_id()]
     entity_list.erase(ent.get_id())
-    obj_tmp.queue_free()
-    obj_tmp = sprite_list[ent.get_id()]
+    var obj_tmp = sprite_list[ent.get_id()]
     sprite_list.erase(ent.get_id())
     obj_tmp.queue_free()
     selected_entity = "-1"

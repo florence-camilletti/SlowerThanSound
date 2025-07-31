@@ -51,6 +51,11 @@ func get_health() -> int:
 func is_alive() -> bool:
     return(self.health>0)
 
+func is_torp() -> bool:
+    return(false)
+func is_torpedoe() -> bool:
+    return(is_torp())
+
 func set_texture(t: Texture2D) -> void:
     self.texture = t
 func set_desec_pos(p: Vector2) -> void:
@@ -82,8 +87,3 @@ func get_ID() -> String:
 
 func _to_string() -> String:
     return("ID: "+get_id()+", POS: "+str(self.desec_pos)+", VEL: "+str(self.desec_vel))
-
-func is_torp() -> bool:
-    return(false)
-func is_torpedoe() -> bool:
-    return(is_torp())
