@@ -9,11 +9,11 @@
 [node name="ShipOxy" instance=ExtResource("1_3dum8")]
 script = ExtResource("2_0pxto")
 
-[node name="Sprite2D" type="Sprite2D" parent="." index="0"]
+[node name="Background" type="Sprite2D" parent="." index="0"]
 position = Vector2(952, 544)
 texture = ExtResource("3_b8qn3")
 
-[node name="SelectedSystem" type="TextEdit" parent="." index="1"]
+[node name="SelectedSystem" type="LineEdit" parent="." index="1"]
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 160.0
@@ -84,3 +84,5 @@ texture = ExtResource("5_w308y")
 [node name="L2" type="Sprite2D" parent="WeapBars" index="3"]
 position = Vector2(1811, 673)
 texture = ExtResource("5_w308y")
+
+[connection signal="text_changed" from="SelectedSystem" to="." method="_on_selected_system_text_changed"]

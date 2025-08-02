@@ -5,7 +5,8 @@ var manager_node: ShipManager
 var global_viewport: SubViewport
 var in_focus: bool
 
-var health: int
+var health := 1.0
+var status := 1.0
 
 func _ready() -> void:
     self.manager_node = get_parent().get_parent().get_parent()

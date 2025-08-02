@@ -39,7 +39,7 @@ offset_right = 168.0
 offset_bottom = 248.0
 text = "INPUT"
 
-[node name="InputBox" type="TextEdit" parent="." index="3"]
+[node name="InputBox" type="LineEdit" parent="." index="3"]
 offset_left = 64.0
 offset_top = 256.0
 offset_right = 168.0

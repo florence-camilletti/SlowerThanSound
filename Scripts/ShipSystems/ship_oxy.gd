@@ -1,7 +1,7 @@
 extends ShipSystemBase
 
 # === NODE VARS ===
-@onready var input_box := $SelectedSystem
+@onready var inputBox := $SelectedSystem
 @onready var AI_fuel_sprites := [$AIBars/F1]
 @onready var AI_lube_sprites := [$AIBars/L1]
 @onready var Bulk_lube_sprites := [$BulkBars/L1, $BulkBars/L2]
@@ -17,19 +17,18 @@ var selection_choices := [0,Global.AI, Global.BULK, Global.ENGINE, Global.LIDAR,
 
 # === FLUID VARS ===
 var fuel_reserves := 100.0
-var lube_reserves := 200.0
-
 var fuel_regen := 0.1
-var lube_regen := 0.1
-
 var fuel_cap := 100.0
+
+var lube_reserves := 200.0
+var lube_regen := 0.1
 var lube_cap := 100.0
 
 #"MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"
 var fuel_levels := [0, 3, 0, 0, 1, 0, 0, 2, 0] #Fuel goes to AI, Engine, Weapons
-var lube_levels := [0, 2, 0, 0, 1, 2, 0, 2, 1] #Lubricant goes to AI, Bulkhead, Engine, LIDAR, Weapons
-
 var fuel_max := [0, 3, 0, 0, 1, 0, 0, 2, 0]
+
+var lube_levels := [0, 2, 0, 0, 1, 2, 0, 2, 1] #Lubricant goes to AI, Bulkhead, Engine, LIDAR, Weapons
 var lube_max := [0, 2, 0, 0, 1, 2, 0, 2, 1]
 
 func _ready() -> void:
@@ -39,7 +38,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
     super._process(delta)
     if(in_focus):
-        self.input_box.grab_focus()
+        self.inputBox.grab_focus()
 
 func _input(event: InputEvent) -> void:
     if(self.in_focus):
@@ -61,15 +60,14 @@ func _input(event: InputEvent) -> void:
             update_all_sprites()
             
         if(event.is_action_pressed("Enter")):
-            self.input_box.release_focus()
-            var input = self.input_box.get_text()
+            var input = self.inputBox.get_text()
             if(input.is_valid_int()):
                 var num_input = int(input)
                 if(num_input>=1 and num_input<=5):
                     self.selected_system=self.selection_choices[num_input]
                 
-            self.input_box.clear()
-            self.input_box.grab_focus()
+            self.inputBox.clear()
+            self.inputBox.grab_focus()
         
 #TODO: document
 func update_all_sprites() -> void:
@@ -87,9 +85,19 @@ func update_all_sprites() -> void:
     update_fuel_sprite(self.Weap_fuel_sprites, Global.WEAP)
     update_lube_sprite(self.Weap_lube_sprites, Global.WEAP)
 
+func get_fuel(indx: int) -> int:
+    return(self.fuel_levels[indx])
+func get_lube(indx: int) -> int:
+    return(self.lube_levels[indx])
+
 func update_fuel_sprite(sprites: Array, indx: int) -> void:
     for level in range(len(sprites)):
         sprites[level].set_visible(self.fuel_levels[indx]==level+1)
 func update_lube_sprite(sprites: Array, indx: int) -> void:
     for level in range(len(sprites)):
         sprites[level].set_visible(self.lube_levels[indx]==level+1)
+
+func _on_selected_system_text_changed(new_text: String) -> void:
+    #Check for only nums
+    if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
+        self.inputBox.clear()

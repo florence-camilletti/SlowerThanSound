@@ -23,7 +23,7 @@ texture = ExtResource("4_vgnkx")
 
 [node name="SweepTimer" type="Timer" parent="." index="2"]
 
-[node name="AutoInput" type="TextEdit" parent="." index="3"]
+[node name="AutoInput" type="LineEdit" parent="." index="3"]
 offset_left = 16.0
 offset_top = 64.0
 offset_right = 256.0

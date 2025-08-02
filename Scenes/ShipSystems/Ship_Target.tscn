@@ -16,7 +16,7 @@ texture = ExtResource("3_urawi")
 
 [node name="Torpedo" type="Node2D" parent="." index="1"]
 
-[node name="IDInput" type="TextEdit" parent="Torpedo" index="0"]
+[node name="IDInput" type="LineEdit" parent="Torpedo" index="0"]
 offset_left = 48.0
 offset_top = 576.0
 offset_right = 200.0
@@ -47,7 +47,7 @@ text = "TORPS LEFT:"
 
 [node name="Targeting" type="Node2D" parent="." index="2"]
 
-[node name="IDInput" type="TextEdit" parent="Targeting" index="0"]
+[node name="IDInput" type="LineEdit" parent="Targeting" index="0"]
 offset_left = 48.0
 offset_top = 24.0
 offset_right = 193.0

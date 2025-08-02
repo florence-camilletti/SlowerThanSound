@@ -64,7 +64,7 @@ func _input(event):
                 
         inputNumsText.set_text(setting_names[selected_setting])
                     
-func _on_input_box_text_changed() -> void:
+func _on_input_box_text_changed(new_text: String) -> void:
     #Check for only nums
     if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
         self.inputBox.clear()
