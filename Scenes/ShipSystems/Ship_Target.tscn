@@ -14,38 +14,7 @@ position = Vector2(951.5, 538)
 scale = Vector2(1.00794, 1.0037)
 texture = ExtResource("3_urawi")
 
-[node name="Targeting" type="Node2D" parent="." index="1"]
-
-[node name="IDInput" type="TextEdit" parent="Targeting" index="0"]
-offset_left = 48.0
-offset_top = 24.0
-offset_right = 193.0
-offset_bottom = 64.0
-
-[node name="AutoLight" type="Node2D" parent="Targeting" index="1"]
-position = Vector2(248, 72)
-
-[node name="AutoLightR" type="Sprite2D" parent="Targeting/AutoLight" index="0"]
-texture = ExtResource("3_vrtcm")
-
-[node name="AutoLightG" type="Sprite2D" parent="Targeting/AutoLight" index="1"]
-visible = false
-texture = ExtResource("4_wqkqm")
-
-[node name="SelectionID" type="RichTextLabel" parent="Targeting" index="2"]
-offset_left = 272.0
-offset_top = 64.0
-offset_right = 312.0
-offset_bottom = 104.0
-
-[node name="EntityList" type="RichTextLabel" parent="Targeting" index="3"]
-offset_left = 52.0
-offset_top = 159.0
-offset_right = 1698.0
-offset_bottom = 512.0
-text = "TARGET"
-
-[node name="Torpedo" type="Node2D" parent="." index="2"]
+[node name="Torpedo" type="Node2D" parent="." index="1"]
 
 [node name="IDInput" type="TextEdit" parent="Torpedo" index="0"]
 offset_left = 48.0
@@ -76,5 +45,36 @@ offset_right = 728.0
 offset_bottom = 864.0
 text = "TORPS LEFT:"
 
-[connection signal="text_changed" from="Targeting/IDInput" to="." method="_on_target_input_text_changed"]
+[node name="Targeting" type="Node2D" parent="." index="2"]
+
+[node name="IDInput" type="TextEdit" parent="Targeting" index="0"]
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 193.0
+offset_bottom = 64.0
+
+[node name="AutoLight" type="Node2D" parent="Targeting" index="1"]
+position = Vector2(248, 72)
+
+[node name="AutoLightR" type="Sprite2D" parent="Targeting/AutoLight" index="0"]
+texture = ExtResource("3_vrtcm")
+
+[node name="AutoLightG" type="Sprite2D" parent="Targeting/AutoLight" index="1"]
+visible = false
+texture = ExtResource("4_wqkqm")
+
+[node name="SelectionID" type="RichTextLabel" parent="Targeting" index="2"]
+offset_left = 272.0
+offset_top = 64.0
+offset_right = 312.0
+offset_bottom = 104.0
+
+[node name="EntityList" type="RichTextLabel" parent="Targeting" index="3"]
+offset_left = 52.0
+offset_top = 159.0
+offset_right = 1698.0
+offset_bottom = 512.0
+text = "TARGET"
+
 [connection signal="text_changed" from="Torpedo/IDInput" to="." method="_on_torpedo_input_text_changed"]
+[connection signal="text_changed" from="Targeting/IDInput" to="." method="_on_target_input_text_changed"]

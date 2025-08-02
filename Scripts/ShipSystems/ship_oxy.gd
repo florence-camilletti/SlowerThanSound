@@ -1,15 +1,15 @@
 extends ShipSystemBase
 
 # === NODE VARS ===
-var input_box: TextEdit
-var AI_fuel := []
-var AI_lube := []
-var Bulk_lube := []
-var Engine_fuel := []
-var Engine_lube := []
-var LIDAR_lube := []
-var Weap_fuel := []
-var Weap_lube := []
+@onready var input_box := $SelectedSystem
+@onready var AI_fuel_sprites := [$AIBars/F1]
+@onready var AI_lube_sprites := [$AIBars/L1]
+@onready var Bulk_lube_sprites := [$BulkBars/L1, $BulkBars/L2]
+@onready var Engine_fuel_sprites := [$EngineBars/F1, $EngineBars/F2, $EngineBars/F3]
+@onready var Engine_lube_sprites := [$EngineBars/L1, $EngineBars/L2]
+@onready var LIDAR_lube_sprites := [$LIDARBars/L1]
+@onready var Weap_fuel_sprites := [$WeapBars/F1, $WeapBars/F2]
+@onready var Weap_lube_sprites := [$WeapBars/L1, $WeapBars/L2]
 
 # === SELECTION VARS ===
 var selected_system := 0
@@ -33,16 +33,8 @@ var fuel_max := [0, 3, 0, 0, 1, 0, 0, 2, 0]
 var lube_max := [0, 2, 0, 0, 1, 2, 0, 2, 1]
 
 func _ready() -> void:
-    super._ready()
-    self.input_box = $SelectedSystem
-    self.AI_fuel = [$AIBars/F1]
-    self.AI_lube = [$AIBars/L1]
-    self.Bulk_lube = [$BulkBars/L1, $BulkBars/L2]
-    self.Engine_fuel = [$EngineBars/F1, $EngineBars/F2, $EngineBars/F3]
-    self.Engine_lube = [$EngineBars/L1, $EngineBars/L2]
-    self.LIDAR_lube = [$LIDARBars/L1]
-    self.Weap_fuel = [$WeapBars/F1, $WeapBars/F2]
-    self.Weap_lube = [$WeapBars/L1, $WeapBars/L2]
+    super._ready()    
+    update_all_sprites()
     
 func _process(delta: float) -> void:
     super._process(delta)
@@ -53,16 +45,20 @@ func _input(event: InputEvent) -> void:
     if(self.in_focus):
         if(event.is_action_pressed("Action_U")):
             #Add fuel
-            print("FUEL INC {0}".format(self.selection_choices[self.selected_system]))
+            self.fuel_levels[self.selected_system] = min(self.fuel_levels[self.selected_system]+1, self.fuel_max[self.selected_system])
+            update_all_sprites()
         if(event.is_action_pressed("Action_J")):
             #Remove fuel
-            print("FUEL DEC {0}".format(self.selection_choices[self.selected_system]))
+            self.fuel_levels[self.selected_system] = max(self.fuel_levels[self.selected_system]-1, 0)
+            update_all_sprites()
         if(event.is_action_pressed("Action_I")):
             #Add lube
-            print("LUBE INC {0}".format(self.selection_choices[self.selected_system]))
+            self.lube_levels[self.selected_system] = min(self.lube_levels[self.selected_system]+1, self.lube_max[self.selected_system])
+            update_all_sprites()
         if(event.is_action_pressed("Action_K")):
             #Remove lube
-            print("LUBE DEC {0}".format(self.selection_choices[self.selected_system]))
+            self.lube_levels[self.selected_system] = max(self.lube_levels[self.selected_system]-1, 0)
+            update_all_sprites()
             
         if(event.is_action_pressed("Enter")):
             self.input_box.release_focus()
@@ -70,8 +66,30 @@ func _input(event: InputEvent) -> void:
             if(input.is_valid_int()):
                 var num_input = int(input)
                 if(num_input>=1 and num_input<=5):
-                    self.selected_system=num_input
+                    self.selected_system=self.selection_choices[num_input]
                 
             self.input_box.clear()
             self.input_box.grab_focus()
         
+#TODO: document
+func update_all_sprites() -> void:
+    #Update AI
+    update_fuel_sprite(self.AI_fuel_sprites, Global.AI)
+    update_lube_sprite(self.AI_lube_sprites, Global.AI)
+    #Update Bulk
+    update_lube_sprite(self.Bulk_lube_sprites, Global.BULK)
+    #Update Engine
+    update_fuel_sprite(self.Engine_fuel_sprites, Global.ENGINE)
+    update_lube_sprite(self.Engine_lube_sprites, Global.ENGINE)
+    #Update LIDAR
+    update_lube_sprite(self.LIDAR_lube_sprites, Global.LIDAR)
+    #Update Weap
+    update_fuel_sprite(self.Weap_fuel_sprites, Global.WEAP)
+    update_lube_sprite(self.Weap_lube_sprites, Global.WEAP)
+
+func update_fuel_sprite(sprites: Array, indx: int) -> void:
+    for level in range(len(sprites)):
+        sprites[level].set_visible(self.fuel_levels[indx]==level+1)
+func update_lube_sprite(sprites: Array, indx: int) -> void:
+    for level in range(len(sprites)):
+        sprites[level].set_visible(self.lube_levels[indx]==level+1)

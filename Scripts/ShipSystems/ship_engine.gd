@@ -1,20 +1,16 @@
 extends ShipSystemBase
 
 # === NODE VARS ===
-var statusNumsText: RichTextLabel
-var inputNumsText: RichTextLabel
-var inputBox: TextEdit
+@onready var statusNumsText := $StatusNums
+@onready var inputNumsText := $InputText
+@onready var inputBox := $InputBox
 
 # === SETTING VARS ===
 enum {NONE, SPEED, HEADING, DEPTH}
 var setting_names = ["INPUT","Speed","Heading","Depth"]
 var selected_setting := NONE
 
-func _ready() -> void:
-    statusNumsText = $StatusNums
-    inputNumsText = $InputText
-    inputBox = $InputBox
-    
+func _ready() -> void:    
     super._ready()
     
 func _process(delta: float) -> void:

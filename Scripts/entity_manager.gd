@@ -1,9 +1,9 @@
 extends Node2D
 
 # === NODE VARS ===
-var manager_node: ShipSystemBase
+var manager_node: ShipManager
 var rng = RandomNumberGenerator.new()
-var timer: Timer
+@onready var timer := $EnemySpawn
 
 # === ENTITY VARS ===
 signal entity_created
@@ -16,10 +16,9 @@ var num_enemies := 0
 var max_enemies := 3
 
 func _ready() -> void:
-    self.timer = $EnemySpawn
     self.timer.timeout.connect(_on_timer_timeout)
     
-    self.manager_node = get_parent()
+    self.manager_node = get_parent().get_parent().get_parent()
 
 func _process(_delta: float) -> void:
     #If check collisions becomes too costly, this might be done

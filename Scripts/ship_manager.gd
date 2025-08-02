@@ -1,15 +1,24 @@
-extends ShipSystemBase#THIS MAY NEED TO BE CHANGED BACK TO NODE2D IF IT GETS MESSY
+extends Node2D#THIS MAY NEED TO BE CHANGED BACK TO NODE2D IF IT GETS MESSY
 class_name ShipManager
 
 # === MENU VARS ===
+@onready var system_nodes := [$VC/V/ShipMenu,#Child nodes belonging to each one
+                    $VC/V/ShipEngine,
+                    $VC/V/ShipPower,
+                    $VC/V/ShipOxy,
+                    $VC/V/ShipAI,
+                    $VC/V/ShipBulk,
+                    $VC/V/ShipTarget,
+                    $VC/V/ShipWeapons,
+                    $VC/V/ShipLIDAR]
 var menu_choice := 0
-var system_nodes := []#Child nodes belonging to each one
 var focuses := [true, false, false, false, false, false, false, false, false]#Which one is currently being focused on
 
 # === NODE VARS ===
-var LIDAR_child: ShipSystemBase
-var target_child: ShipSystemBase
-var entity_manager: Node2D
+@onready var global_view := $VC/V
+@onready var LIDAR_child := $VC/V/ShipLIDAR
+@onready var target_child := $VC/V/ShipTarget
+@onready var entity_manager := $VC/V/EntityManager
 
 # === MOVEMENT VARS ===
 #Location details in long,lat
@@ -23,24 +32,11 @@ var delta_speed := 0.0#Acceleration; desectic/tick
 var velocity := Vector2(0,0)#Speed and direction
 
 func _ready() -> void:
-    self.LIDAR_child = $ShipLIDAR
-    self.target_child = $ShipTarget
-    self.entity_manager = $EntityManager
     self.LIDAR_child.entity_request.connect(on_LIDAR_request)
     self.target_child.new_selection.connect(on_new_selection)
     self.target_child.torpedo_launched.connect(on_torpedo_launch)
     self.entity_manager.entity_created.connect(on_entity_created)
     self.entity_manager.entity_destroyed.connect(on_entity_destroyed)
-    
-    self.system_nodes = [$ShipMenu,
-                    $ShipEngine,
-                    $ShipPower,
-                    $ShipOxy,
-                    $ShipAI,
-                    $ShipBulk,
-                    $ShipTarget,
-                    $ShipWeapons,
-                    $ShipLIDAR]
 
 func _process(_delta: float):
     #Update ship position and speed
@@ -114,6 +110,9 @@ func get_sub_info() -> String:
     rtn += str(heading) + "\n" + str(delta_heading) + "\n"
     rtn += str(depth) + "\n" + str(delta_depth)
     return(rtn)
+    
+func get_viewport_object():
+    return(self.global_view)
 
 func _to_string() -> String:
     return(get_sub_info())
