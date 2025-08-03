@@ -25,6 +25,9 @@ var entity_list := {} #Key - entity ID, Value - entity obj
 var sprite_list := {} #Key - entity ID, Value - sprite obj
 var selected_entity := "-1"
 
+func _init() -> void:
+    super._init(false, Global.LIDAR)
+
 func _ready() -> void:
     super._ready()
     

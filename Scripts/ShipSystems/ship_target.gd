@@ -27,6 +27,9 @@ var torps_fired := {} #List of launched torps
 var selected_torp: String
 var selected_torp_flag := false
 
+func _init() -> void:
+    super._init(false, Global.TARGET)
+
 func _ready() -> void:
     super._ready()  
     

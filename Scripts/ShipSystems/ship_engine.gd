@@ -10,6 +10,9 @@ enum {NONE, SPEED, HEADING, DEPTH}
 var setting_names = ["INPUT","Speed","Heading","Depth"]
 var selected_setting := NONE
 
+func _init() -> void:
+    super._init(false, Global.ENGINE)
+
 func _ready() -> void:    
     super._ready()
     

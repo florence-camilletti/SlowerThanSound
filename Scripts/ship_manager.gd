@@ -17,6 +17,8 @@ var focuses := [true, false, false, false, false, false, false, false, false]#Wh
 # === NODE VARS ===
 @onready var global_view := $VC/V
 @onready var LIDAR_child := $VC/V/ShipLIDAR
+@onready var oxy_child   := $VC/V/ShipOxy
+@onready var power_child := $VC/V/ShipPower
 @onready var target_child := $VC/V/ShipTarget
 @onready var entity_manager := $VC/V/EntityManager
 
@@ -75,6 +77,24 @@ func set_speed(s: float) -> void:
 func update_vel() -> void:
     self.velocity = Global.calc_desectic_vel(self.heading, self.speed)
     
+#Returns a string about the sub's position and movement info
+func get_sub_info() -> String:
+    var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"
+    rtn += str(speed*Global.desectic_knot_ratio) + "\n" + str(delta_speed) + "\n"
+    rtn += str(heading) + "\n" + str(delta_heading) + "\n"
+    rtn += str(depth) + "\n" + str(delta_depth)
+    return(rtn)
+    
+func get_viewport_object():
+    return(self.global_view)
+    
+func get_fuel(indx: int) -> float:
+    return(self.oxy_child.get_indx_fuel(indx))
+func get_lube(indx: int) -> float:
+    return(self.oxy_child.get_indx_lube(indx))
+func get_power(indx: int) -> float:
+    return(self.power_child.get_indx_power(indx))
+    
 #Update LIDAR's entity list from the entity manager
 func on_LIDAR_request() -> void:
     var entity_list = self.entity_manager.get_entity_list()
@@ -102,17 +122,6 @@ func on_entity_created(ent: EntityBase) -> void:
 func on_entity_destroyed(ent: EntityBase) -> void:
     self.LIDAR_child.destroy_entity(ent)
     self.target_child.destroy_entity(ent)
-
-#Returns a string about the sub's position and movement info
-func get_sub_info() -> String:
-    var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"
-    rtn += str(speed*Global.desectic_knot_ratio) + "\n" + str(delta_speed) + "\n"
-    rtn += str(heading) + "\n" + str(delta_heading) + "\n"
-    rtn += str(depth) + "\n" + str(delta_depth)
-    return(rtn)
-    
-func get_viewport_object():
-    return(self.global_view)
 
 func _to_string() -> String:
     return(get_sub_info())

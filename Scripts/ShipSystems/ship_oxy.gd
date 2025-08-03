@@ -26,10 +26,13 @@ var lube_cap := 100.0
 
 #"MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"
 var fuel_levels := [0, 3, 0, 0, 1, 0, 0, 2, 0] #Fuel goes to AI, Engine, Weapons
-var fuel_max := [0, 3, 0, 0, 1, 0, 0, 2, 0]
+var fuel_levels_max := [0, 3, 0, 0, 1, 0, 0, 2, 0]
 
 var lube_levels := [0, 2, 0, 0, 1, 2, 0, 2, 1] #Lubricant goes to AI, Bulkhead, Engine, LIDAR, Weapons
-var lube_max := [0, 2, 0, 0, 1, 2, 0, 2, 1]
+var lube_levels_max := [0, 2, 0, 0, 1, 2, 0, 2, 1]
+
+func _init() -> void:
+    super._init(false, Global.OXY)
 
 func _ready() -> void:
     super._ready()    
@@ -44,7 +47,7 @@ func _input(event: InputEvent) -> void:
     if(self.in_focus):
         if(event.is_action_pressed("Action_U")):
             #Add fuel
-            self.fuel_levels[self.selected_system] = min(self.fuel_levels[self.selected_system]+1, self.fuel_max[self.selected_system])
+            self.fuel_levels[self.selected_system] = min(self.fuel_levels[self.selected_system]+1, self.fuel_levels_max[self.selected_system])
             update_all_sprites()
         if(event.is_action_pressed("Action_J")):
             #Remove fuel
@@ -52,7 +55,7 @@ func _input(event: InputEvent) -> void:
             update_all_sprites()
         if(event.is_action_pressed("Action_I")):
             #Add lube
-            self.lube_levels[self.selected_system] = min(self.lube_levels[self.selected_system]+1, self.lube_max[self.selected_system])
+            self.lube_levels[self.selected_system] = min(self.lube_levels[self.selected_system]+1, self.lube_levels_max[self.selected_system])
             update_all_sprites()
         if(event.is_action_pressed("Action_K")):
             #Remove lube
@@ -85,10 +88,10 @@ func update_all_sprites() -> void:
     update_fuel_sprite(self.Weap_fuel_sprites, Global.WEAP)
     update_lube_sprite(self.Weap_lube_sprites, Global.WEAP)
 
-func get_fuel(indx: int) -> int:
-    return(self.fuel_levels[indx])
-func get_lube(indx: int) -> int:
-    return(self.lube_levels[indx])
+func get_indx_fuel(indx: int) -> float:
+    return((self.fuel_levels[indx]+1.0)/(self.fuel_levels_max[indx]+1.0))
+func get_indx_lube(indx: int) -> float:
+    return((self.lube_levels[indx]+1.0)/(self.lube_levels_max[indx]+1.0))
 
 func update_fuel_sprite(sprites: Array, indx: int) -> void:
     for level in range(len(sprites)):

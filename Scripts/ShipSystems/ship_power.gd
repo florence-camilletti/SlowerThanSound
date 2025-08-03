@@ -21,7 +21,10 @@ var power_cap = 1.0
 
 #"MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"
 var power_levels := [0, 0, 0, 1, 6, 1, 3, 1, 3]
-var power_max := [0, 0, 0, 1, 6, 1, 3, 1, 3]
+var power_levels_max := [0, 0, 0, 1, 6, 1, 3, 1, 3]
+
+func _init() -> void:
+    super._init(false, Global.POWER)
 
 func _ready() -> void:
     super._ready()
@@ -36,7 +39,7 @@ func _input(event: InputEvent) -> void:
     if(self.in_focus):
         if(event.is_action_pressed("Action_U")):
             #Add power
-            self.power_levels[self.selected_system] = min(self.power_levels[self.selected_system]+1, self.power_max[self.selected_system])
+            self.power_levels[self.selected_system] = min(self.power_levels[self.selected_system]+1, self.power_levels_max[self.selected_system])
             update_all_sprites()
         if(event.is_action_pressed("Action_J")):
             #Remove power
@@ -53,8 +56,8 @@ func _input(event: InputEvent) -> void:
             self.inputBox.clear()
             self.inputBox.grab_focus()
 
-func get_power(indx: int) -> int:
-    return(self.power_levels[indx])
+func get_indx_power(indx: int) -> float:
+    return((self.power_levels[indx]+1.0)/(self.power_levels_max[indx]+1.0))
 
 func update_all_sprites() -> void:
     #Update AI

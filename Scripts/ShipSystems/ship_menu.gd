@@ -2,6 +2,9 @@ extends ShipSystemBase
 
 @onready var statusNumsText := $StatusNums
 
+func _init() -> void:
+    super._init(true, Global.MENU)
+
 func _ready() -> void:
     super._ready()
     self.in_focus = true
