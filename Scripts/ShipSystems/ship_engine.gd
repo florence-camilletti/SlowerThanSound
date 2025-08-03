@@ -1,20 +1,19 @@
 extends ShipSystemBase
 
 # === NODE VARS ===
-var statusNumsText: RichTextLabel
-var inputNumsText: RichTextLabel
-var inputBox: TextEdit
+@onready var statusNumsText := $StatusNums
+@onready var inputNumsText := $InputText
+@onready var inputBox := $InputBox
 
 # === SETTING VARS ===
 enum {NONE, SPEED, HEADING, DEPTH}
 var setting_names = ["INPUT","Speed","Heading","Depth"]
 var selected_setting := NONE
 
-func _ready() -> void:
-    statusNumsText = $StatusNums
-    inputNumsText = $InputText
-    inputBox = $InputBox
-    
+func _init() -> void:
+    super._init(false, Global.ENGINE)
+
+func _ready() -> void:    
     super._ready()
     
 func _process(delta: float) -> void:
@@ -68,7 +67,7 @@ func _input(event):
                 
         inputNumsText.set_text(setting_names[selected_setting])
                     
-func _on_input_box_text_changed() -> void:
+func _on_input_box_text_changed(new_text: String) -> void:
     #Check for only nums
     if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
         self.inputBox.clear()

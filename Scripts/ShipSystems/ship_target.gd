@@ -2,22 +2,24 @@ extends ShipSystemBase
 
 var selected_box := 0
 
-# === SELECTION VARS ===
-var target_input_box: TextEdit
-var target_box: RichTextLabel
-var target_selection_id_box: RichTextLabel
-var target_auto_light: Sprite2D
-
+# === SELECCTION VARS ===
 signal new_selection
 var entity_list := {}
 var selected_target: String
 var selected_target_flag := false
 
+# === TARGETING VARS ===
+@onready var target_input_box := $Targeting/IDInput
+@onready var target_box := $Targeting/EntityList
+@onready var target_selection_id_box := $Targeting/SelectionID
+@onready var target_auto_light := $Targeting/AutoLight/AutoLightG
+
 # === TORPEDO VARS ===
-var torp_input_box: TextEdit
-var torp_box: RichTextLabel
-var torp_selection_id_box: RichTextLabel
-var torp_auto_light: Sprite2D
+@onready var torp_view := $Torpedo/V
+@onready var torp_input_box := $Torpedo/IDInput
+@onready var torp_box := $Torpedo/TorpsLeft
+@onready var torp_selection_id_box := $Torpedo/SelectionID
+@onready var torp_auto_light := $Torpedo/AutoLight/AutoLightG
 
 signal torpedo_launched
 var torps_left := {} #List of unlaunched torps
@@ -25,17 +27,11 @@ var torps_fired := {} #List of launched torps
 var selected_torp: String
 var selected_torp_flag := false
 
+func _init() -> void:
+    super._init(false, Global.TARGET)
+
 func _ready() -> void:
-    super._ready()
-    self.target_input_box = $Targeting/IDInput
-    self.target_box = $Targeting/EntityList
-    self.target_selection_id_box = $Targeting/SelectionID
-    self.target_auto_light = $Targeting/AutoLight/AutoLightG
-    
-    self.torp_input_box = $Torpedo/IDInput
-    self.torp_box = $Torpedo/TorpsLeft
-    self.torp_selection_id_box = $Torpedo/SelectionID
-    self.torp_auto_light = $Torpedo/AutoLight/AutoLightG
+    super._ready()  
     
     var output_str = ""
     for n in range(5):#Dummy torpedoes
@@ -55,11 +51,13 @@ func _input(event: InputEvent) -> void:
         if(event.is_action_pressed("Action_U")):
             #Select a target
             self.selected_box = 1
+            self.global_viewport.set_input_as_handled()
             self.target_input_box.clear()
             self.target_input_box.grab_focus()
         if(event.is_action_pressed("Action_J")):
             #Select a torpedo
             self.selected_box = 2
+            self.global_viewport.set_input_as_handled()
             self.torp_input_box.clear()
             self.torp_input_box.grab_focus()
         if(event.is_action_pressed("Action_K")):

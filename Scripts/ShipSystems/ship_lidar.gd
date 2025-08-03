@@ -1,7 +1,7 @@
 extends ShipSystemBase
 
 # === Map Vars ===
-var player_sprite: Sprite2D
+@onready var player_sprite := $PlayerSprite
 var rng := RandomNumberGenerator.new()
 var map_pixel_radius := 488
 var map_pixel_center := Vector2(896,536)
@@ -10,30 +10,26 @@ var map_desec_radius := map_deg_radius*36000 #1 degree = 36,000 desecsec
 #Final map is [-360,360] desecsec
 
 # === Input Vars ===
-var inputBox: TextEdit
-var autoLightG: Sprite2D
+@onready var inputBox := $AutoInput
+@onready var autoLightG := $AutoLight/AutoLightG
+@onready var timer := $SweepTimer
 var autoFlag := false
 var autoRate: float
-var timer
 
 # === Entity Vars ===
+@onready var selected_sprite := $SelectionBox
 signal entity_request
 var request_flag := false
 var num_entities := 0
 var entity_list := {} #Key - entity ID, Value - entity obj
 var sprite_list := {} #Key - entity ID, Value - sprite obj
-var selected_sprite: Sprite2D
 var selected_entity := "-1"
+
+func _init() -> void:
+    super._init(false, Global.LIDAR)
 
 func _ready() -> void:
     super._ready()
-    self.player_sprite = $PlayerSprite
-    
-    self.timer = $SweepTimer
-    self.inputBox = $AutoInput
-    self.autoLightG = $AutoLight/AutoLightG
-    
-    self.selected_sprite = $SelectionBox
     
 func _process(delta: float) -> void:
     super._process(delta)
@@ -130,7 +126,7 @@ func _on_timer_timeout() -> void:
     #Automatically refresh LIDAR
     refresh_map()
 
-func _on_auto_input_text_changed() -> void:
+func _on_auto_input_text_changed(new_text: String) -> void:
     #Check for only nums
     if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
         self.inputBox.clear()

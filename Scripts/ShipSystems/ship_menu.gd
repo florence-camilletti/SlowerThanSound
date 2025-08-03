@@ -1,13 +1,14 @@
 extends ShipSystemBase
 
-var statusNumsText: RichTextLabel
+@onready var statusNumsText := $StatusNums
+
+func _init() -> void:
+    super._init(true, Global.MENU)
 
 func _ready() -> void:
     super._ready()
     self.in_focus = true
     self.visible = true
-    
-    self.statusNumsText = $StatusNums
     
 func _process(delta: float) -> void:
     super._process(delta)

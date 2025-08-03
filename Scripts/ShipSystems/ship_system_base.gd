@@ -1,19 +1,61 @@
 extends Node2D
 class_name ShipSystemBase
 
-var manager_node#: ShipManager
+# === META VARS ===
+@onready var status_label = $StatusLabel
+var manager_node: ShipManager
+var global_viewport: SubViewport
 var in_focus: bool
+var indx: int
 
-var health: int
+# === STATUS VARS ===
+var health := 1.0
+var fuel := 1.0
+var lube := 1.0
+var power := 1.0
+var total_status := 1.0
+
+func _init(f:bool, i:int) -> void:
+    self.in_focus=f
+    self.indx=i
 
 func _ready() -> void:
-    manager_node = get_parent()
+    self.manager_node = get_parent().get_parent().get_parent()
+        
+    self.global_viewport = self.get_viewport()
     in_focus = false
     self.visible = false
     
 func _process(_delta: float) -> void:
-    pass
+    update_vars()
 
 func set_focus(f) -> void:
     in_focus = f
     self.visible = f
+
+func get_health() -> float:
+    return(self.health)
+func get_fuel() -> float:
+    return(self.fuel)
+func get_lube() -> float:
+    return(self.lube)
+func get_power() -> float:
+    return(self.power)
+func get_total_status() -> float:
+    return(self.total_status)
+
+func update_vars() -> void:
+    self.fuel = self.manager_node.get_fuel(self.indx)
+    self.lube = self.manager_node.get_lube(self.indx)
+    self.power = self.manager_node.get_power(self.indx)
+    self.total_status = self.health*self.fuel*self.lube*self.power
+    update_UI_text()
+
+func update_UI_text() -> void:
+    var output = ""
+    output += "H: %.3f\n" % [self.health]
+    output += "F: %.3f\n" % [self.fuel]
+    output += "L: %.3f\n" % [self.lube]
+    output += "P: %.3f\n" % [self.power]
+    output += "T: %.3f\n" % [self.total_status]
+    self.status_label.set_text(output)
