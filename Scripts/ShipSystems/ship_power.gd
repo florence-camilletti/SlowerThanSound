@@ -56,8 +56,8 @@ func _input(event: InputEvent) -> void:
             self.inputBox.clear()
             self.inputBox.grab_focus()
 
-func get_indx_power(indx: int) -> float:
-    return((self.power_levels[indx]+1.0)/(self.power_levels_max[indx]+1.0))
+func get_indx_power(curr_indx: int) -> float:
+    return((self.power_levels[curr_indx]+1.0)/(self.power_levels_max[curr_indx]+1.0))
 
 func update_all_sprites() -> void:
     #Update AI
@@ -68,11 +68,11 @@ func update_all_sprites() -> void:
     update_system_sprite(self.Target_sprites, Global.TARGET)
     update_system_sprite(self.Weap_sprites, Global.WEAP)
     
-func update_system_sprite(sprites: Array, indx: int) -> void:
+func update_system_sprite(sprites: Array, curr_indx: int) -> void:
     for level in range(len(sprites)):
-        sprites[level].set_visible(self.power_levels[indx]==level+1)
+        sprites[level].set_visible(self.power_levels[curr_indx]==level+1)
 
-func _on_selected_system_text_changed(new_text: String) -> void:
+func _on_selected_system_text_changed(_new_text: String) -> void:
     #Check for only nums
     if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
         self.inputBox.clear()

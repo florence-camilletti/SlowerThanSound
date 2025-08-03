@@ -37,7 +37,7 @@ func _ready() -> void:
     for n in range(5):#Dummy torpedoes
         var new_torp = BasicTorp.new(n)
         self.torps_left[new_torp.get_id()] = new_torp
-        output_str += new_torp.get_ID()+": "+str(new_torp.get_range())+"\n"
+        output_str += new_torp.get_ID()+": "+str(new_torp.get_torp_range())+"\n"
     self.torp_box.set_text(output_str)
     
     
@@ -161,7 +161,7 @@ func update_torpedo_list() -> void:
     var output_str = ""
     for key in self.torps_left:
         var t = self.torps_left[key]
-        output_str += t.get_id() +": "+str(t.get_range())+ "\n"
+        output_str += t.get_id() +": "+str(t.get_torp_range())+ "\n"
     self.torp_box.set_text(output_str)
     
 #Returns the distance in desec between the entity and the player

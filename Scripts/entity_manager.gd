@@ -64,7 +64,6 @@ func _make_new_enemy() -> void:#TESTING FUNCTION
 #Uses a spacial cell hash to determin if any torpedoes have collided with something
 func check_collisions():
     var grid = {}
-    var cell_size = 100#Desec
     #Create collision map
     for ent in entity_list:
         var cell_spot = ent.get_map_cell()

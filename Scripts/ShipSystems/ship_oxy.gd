@@ -88,19 +88,19 @@ func update_all_sprites() -> void:
     update_fuel_sprite(self.Weap_fuel_sprites, Global.WEAP)
     update_lube_sprite(self.Weap_lube_sprites, Global.WEAP)
 
-func get_indx_fuel(indx: int) -> float:
-    return((self.fuel_levels[indx]+1.0)/(self.fuel_levels_max[indx]+1.0))
-func get_indx_lube(indx: int) -> float:
-    return((self.lube_levels[indx]+1.0)/(self.lube_levels_max[indx]+1.0))
+func get_indx_fuel(curr_indx: int) -> float:
+    return((self.fuel_levels[curr_indx]+1.0)/(self.fuel_levels_max[curr_indx]+1.0))
+func get_indx_lube(curr_indx: int) -> float:
+    return((self.lube_levels[curr_indx]+1.0)/(self.lube_levels_max[curr_indx]+1.0))
 
-func update_fuel_sprite(sprites: Array, indx: int) -> void:
+func update_fuel_sprite(sprites: Array, curr_indx: int) -> void:
     for level in range(len(sprites)):
-        sprites[level].set_visible(self.fuel_levels[indx]==level+1)
-func update_lube_sprite(sprites: Array, indx: int) -> void:
+        sprites[level].set_visible(self.fuel_levels[curr_indx]==level+1)
+func update_lube_sprite(sprites: Array, curr_indx: int) -> void:
     for level in range(len(sprites)):
-        sprites[level].set_visible(self.lube_levels[indx]==level+1)
+        sprites[level].set_visible(self.lube_levels[curr_indx]==level+1)
 
-func _on_selected_system_text_changed(new_text: String) -> void:
+func _on_selected_system_text_changed(_new_text: String) -> void:
     #Check for only nums
     if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
         self.inputBox.clear()

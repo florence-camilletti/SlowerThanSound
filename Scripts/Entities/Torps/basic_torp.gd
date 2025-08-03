@@ -1,7 +1,7 @@
 extends EntityBase
 class_name BasicTorp
 
-var range := 300#Range in desec
+var torp_range := 300#Range in desec
 var kill_bubble := 10#Radius in desec
 var kill_bubble_square := kill_bubble*kill_bubble # Used for calculating distances
 var damage_points := 200
@@ -37,8 +37,8 @@ func set_target(ent: EntityBase) -> void:
     self.target = ent
 func get_target_pos() -> Vector2:
     return(target.get_pos())
-func get_range() -> float:
-    return(self.range)
+func get_torp_range() -> float:
+    return(self.torp_range)
 func get_kill_bubble() -> float:
     return(self.kill_bubble)
 func get_kill_bubble_sqr() -> float:
