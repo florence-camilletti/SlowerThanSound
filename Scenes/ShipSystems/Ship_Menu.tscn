@@ -16,9 +16,7 @@ text = "POSITION:
 SPEED:  
 ΔSPEED:
 HEADING:
-ΔHEADING:
 DEPTH:  
-ΔDEPTH:
 
 POWER: 69%
 OXY: 666 ppm
@@ -35,9 +33,7 @@ text = "DIE
 123
 456
 789
-123
-456
-789"
+123"
 
 [node name="ShipSprite" type="Sprite2D" parent="." index="2"]
 position = Vector2(944, 888)

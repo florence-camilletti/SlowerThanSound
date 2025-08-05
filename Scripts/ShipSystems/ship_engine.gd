@@ -33,7 +33,7 @@ func _input(event):
             input_flag = true
         elif(event.is_action_pressed("Action_J")):
             #TODO
-            manager_node.set_speed(0)
+            manager_node.emergency_speed()
             
         elif(event.is_action_pressed("Action_I")):#Heading
             selected_setting = HEADING
@@ -59,11 +59,11 @@ func _input(event):
             self.inputBox.release_focus()
             
             if(selected_setting==HEADING):
-                manager_node.set_heading(inputNum)
+                manager_node.set_desire_heading(inputNum)
             elif(selected_setting==DEPTH):
-                manager_node.set_depth(inputNum)
+                manager_node.set_desire_depth(inputNum)
             elif(selected_setting==SPEED):
-                manager_node.set_speed(inputNum*Global.knot_desectic_ratio)
+                manager_node.set_engine_power(inputNum)
                 
         inputNumsText.set_text(setting_names[selected_setting])
                     

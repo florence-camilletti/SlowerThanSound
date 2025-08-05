@@ -38,6 +38,9 @@ var map_offset := Vector2(4392000, 144000)
 var map_limit  := Vector2(4428000, 180000)
 var cell_size := 50
 
+# === PHYSICS ===
+var friction_coef := 0.5
+
 #Changes heading and speed into a velocity vector of how much the sub has moved in 1 tick
 func calc_desectic_vel(curr_heading: float, speed: float) -> Vector2:
     #Translate heading (0-360 angle) into vector2 direction

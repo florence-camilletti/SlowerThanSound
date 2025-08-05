@@ -55,7 +55,8 @@ func on_entity_death(ent: EntityBase) -> void:
 func _make_new_enemy() -> void:#TESTING FUNCTION
     var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
     tmp_pos += Global.map_middle
-    var tmp_vel = Vector2(rng.randf_range(-0.1,0.1),rng.randf_range(-0.1,0.1))
+    #var tmp_vel = Vector2(rng.randf_range(-0.1,0.1),rng.randf_range(-0.1,0.1))
+    var tmp_vel = Vector2(0,0)
     self.num_enemies += 1
     var new_enemy = BasicEnemy.new(num_enemies, tmp_pos, tmp_vel)#TODO: CHANGE THIS
     #Add enemy to parent objects

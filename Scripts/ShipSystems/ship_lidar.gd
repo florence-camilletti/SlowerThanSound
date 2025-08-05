@@ -44,7 +44,7 @@ func _input(event: InputEvent) -> void:
             self.inputBox.clear()
             self.inputBox.grab_focus()
         if(event.is_action_pressed("Enter")):
-            self.autoRate = int(self.inputBox.get_text())
+            self.autoRate = float(self.inputBox.get_text())
             self.autoFlag = (autoRate!=0)
             self.autoLightG.set_visible(self.autoFlag)
             if(self.autoFlag):
@@ -127,6 +127,6 @@ func _on_timer_timeout() -> void:
     refresh_map()
 
 func _on_auto_input_text_changed(_new_text: String) -> void:
-    #Check for only nums
-    if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
-        self.inputBox.clear()
+    pass    #Check for only nums
+    #if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
+    #    self.inputBox.clear()

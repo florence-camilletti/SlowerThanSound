@@ -25,12 +25,26 @@ var focuses := [true, false, false, false, false, false, false, false, false]#Wh
 # === MOVEMENT VARS ===
 #Location details in long,lat
 var sub_position := Global.map_middle#Deciseconds; [0 - 720,000| 0 - 720,000]
+
 var heading := 0.0#Degrees; 0 - 360
-var delta_heading := 0.0#Turn rate; deg/tick
+var desire_heading := 0.0
+var turning_flag := false
+var turn_direction := -1#1: CW, -1: CCW
+var turn_speed := 0.0
+var max_turn_speed := 1.0
+var turn_speed_gain := 0.05
+
 var depth := 0.0#Meters; 0 - 240
-var delta_depth := 0.0#Float/sink rate; meter/tick
+var desire_depth := 0.0
+var diving_flag := false
+var dive_direction := -1#1: Sink, -1: Raise
+var dive_speed := 0.0
+var max_dive_speed := 0.4
+var dive_speed_gain := 0.01
+
 var speed := 0.0#Desectics; 0 - 1/12
-var delta_speed := 0.0#Acceleration; desectic/tick
+var max_accel := 0.1
+var engine_power := 0.0# 0 - 100
 var velocity := Vector2(0,0)#Speed and direction
 
 func _ready() -> void:
@@ -40,14 +54,39 @@ func _ready() -> void:
     self.entity_manager.entity_created.connect(on_entity_created)
     self.entity_manager.entity_destroyed.connect(on_entity_destroyed)
 
-func _process(_delta: float):
-    #Update ship position and speed
-    self.heading+=delta_heading
-    self.depth+=delta_depth
-    self.speed+=delta_speed
+func _process(delta: float):
+    #Update rotation
+    if(self.turning_flag):
+        self.turn_speed += self.turn_speed_gain*self.turn_direction*delta
+        self.turn_speed = clamp(self.turn_speed, -self.max_turn_speed, self.max_turn_speed)#Update turning velocity
+        self.heading+=turn_speed
+        while(self.heading>360):#Make sure heading stays within 0-360
+            self.heading-=360
+        while(self.heading<0):
+            self.heading+=360
+        
+        if(abs(self.heading-self.desire_heading)<=1):#If close enough, stop turning
+            self.heading = self.desire_heading
+            self.turn_speed = 0
+            self.turning_flag = false
+        
+        self.LIDAR_child.update_sub_rotation(self.heading)
+    
+    #Update depth
+    if(self.diving_flag):
+        self.dive_speed += self.dive_speed_gain*self.dive_direction*delta
+        self.dive_speed = clamp(self.dive_speed, -self.max_dive_speed, self.dive_speed)#Update diving speed
+        self.depth+=self.dive_speed
+        
+        if(abs(self.depth-self.desire_depth)<=2):
+            self.depth = self.desire_depth
+            self.dive_speed = 0
+            self.diving_flag = false
+    
+    #Update ship speed
+    self.speed = self.speed + ((self.engine_power - (self.speed*Global.friction_coef))*delta)
+    update_vel()
     self.sub_position+=self.velocity
-    #Update ship rotation
-    self.LIDAR_child.update_sub_rotation(self.heading)
     
 func _input(event):
     for possible_action in range(Global.num_systems):#Check for menu change
@@ -66,23 +105,66 @@ func _unhandled_input(event):#Quit on ESC
         if event.pressed and event.keycode == KEY_ESCAPE:
             get_tree().quit()
     
+func start_turn() -> void:
+    #Determine CW or CCW
+    self.turning_flag = true
+    var tmp = self.desire_heading-self.heading
+    while(tmp<0):
+        tmp+=360
+    if(tmp<=180):
+        #Clockwise
+        self.turn_direction = 1
+    else:
+        #Counter-clockwise
+        self.turn_direction = -1
+    
+func start_dive() -> void:
+    #Determine dive or raise
+    self.diving_flag = true
+    if(self.desire_depth<self.depth):
+        #Raise
+        self.dive_direction = -1
+    else:
+        #Sink
+        self.dive_direction = 1
+        
 func set_heading(h: float) -> void:
     self.heading = h
     self.update_vel()
+func set_desire_heading(h: float) -> void:
+    self.desire_heading = h
+    start_turn()
 func set_depth(d: float) -> void:
     self.depth = d
+func set_desire_depth(d: float) -> void:
+    self.desire_depth = d
+    start_dive()
 func set_speed(s: float) -> void:
     self.speed = s
     self.update_vel()
+func set_engine_power(a: float) -> void:
+    self.engine_power = self.max_accel*a/100
 func update_vel() -> void:
     self.velocity = Global.calc_desectic_vel(self.heading, self.speed)
+    
+func emergency_speed() -> void:
+    if(self.engine_power==0):
+        self.engine_power=self.max_accel
+    else:
+        self.engine_power=0
+func emergency_depth() -> void:
+    if(self.depth==0):
+        self.set_desire_depth(50)
+    else:
+        self.set_desire_depth(0)
+        
+    
     
 #Returns a string about the sub's position and movement info
 func get_sub_info() -> String:
     var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"
-    rtn += str(speed*Global.desectic_knot_ratio) + "\n" + str(delta_speed) + "\n"
-    rtn += str(heading) + "\n" + str(delta_heading) + "\n"
-    rtn += str(depth) + "\n" + str(delta_depth)
+    rtn += ("%.2f \n%.2f\n" % [self.speed*Global.desectic_knot_ratio, self.engine_power/self.max_accel])
+    rtn += ("%.2f \n%.2f" % [self.heading, self.depth])
     return(rtn)
     
 func get_viewport_object():
