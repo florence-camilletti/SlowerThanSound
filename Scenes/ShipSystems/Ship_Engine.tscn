@@ -13,11 +13,9 @@ offset_right = 175.0
 offset_bottom = 198.0
 text = "POSITION:
 SPEED:  
-ΔSPEED:
+ENGINE:
 HEADING:
-ΔHEADING:
-DEPTH:  
-ΔDEPTH:"
+DEPTH:  "
 
 [node name="StatusNums" type="RichTextLabel" parent="." index="1"]
 offset_left = 192.0
@@ -45,12 +43,5 @@ offset_top = 256.0
 offset_right = 168.0
 offset_bottom = 304.0
 virtual_keyboard_enabled = false
-
-[node name="TmpLabel" type="RichTextLabel" parent="." index="4"]
-offset_left = 184.0
-offset_top = 936.0
-offset_right = 608.0
-offset_bottom = 1064.0
-text = "ENGINE"
 
 [connection signal="text_changed" from="InputBox" to="." method="_on_input_box_text_changed"]

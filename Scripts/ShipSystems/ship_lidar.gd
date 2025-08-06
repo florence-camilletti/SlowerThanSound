@@ -127,6 +127,6 @@ func _on_timer_timeout() -> void:
     refresh_map()
 
 func _on_auto_input_text_changed(_new_text: String) -> void:
-    pass    #Check for only nums
-    #if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
-    #    self.inputBox.clear()
+    #Check for only nums
+    if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_float()):
+        self.inputBox.clear()

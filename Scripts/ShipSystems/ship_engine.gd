@@ -40,14 +40,14 @@ func _input(event):
             input_flag = true
         elif(event.is_action_pressed("Action_K")):
             #TODO
-            manager_node.set_heading(0)
+            manager_node.emergency_heading()
             
         elif(event.is_action_pressed("Action_O")):#Depth
             selected_setting = DEPTH
             input_flag = true
         elif(event.is_action_pressed("Action_L")):
             #TODO
-            manager_node.set_depth(0)
+            manager_node.emergency_depth()
             
         #Check for number input
         if(input_flag):

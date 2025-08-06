@@ -152,6 +152,8 @@ func emergency_speed() -> void:
         self.engine_power=self.max_accel
     else:
         self.engine_power=0
+func emergency_heading() -> void:
+    self.set_desire_heading(int(self.heading+90)%360)
 func emergency_depth() -> void:
     if(self.depth==0):
         self.set_desire_depth(50)

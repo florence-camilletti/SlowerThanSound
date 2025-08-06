@@ -15,7 +15,6 @@ var selected_target_flag := false
 @onready var target_auto_light := $Targeting/AutoLight/AutoLightG
 
 # === TORPEDO VARS ===
-@onready var torp_view := $Torpedo/V
 @onready var torp_input_box := $Torpedo/IDInput
 @onready var torp_box := $Torpedo/TorpsLeft
 @onready var torp_selection_id_box := $Torpedo/SelectionID
