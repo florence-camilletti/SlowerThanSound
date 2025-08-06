@@ -90,4 +90,10 @@ texture = ExtResource("4_xqrfh")
 position = Vector2(1782, 795)
 texture = ExtResource("4_xqrfh")
 
+[node name="BalanceLevel" type="RichTextLabel" parent="." index="9"]
+offset_left = 256.0
+offset_top = 64.0
+offset_right = 384.0
+offset_bottom = 192.0
+
 [connection signal="text_changed" from="SelectedSystem" to="." method="_on_selected_system_text_changed"]
