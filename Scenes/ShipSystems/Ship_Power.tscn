@@ -2,23 +2,19 @@
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_hkqgm"]
 [ext_resource type="Script" uid="uid://cbmyl68867y5i" path="res://Scripts/ShipSystems/ship_power.gd" id="2_pvwxx"]
-[ext_resource type="Texture2D" uid="uid://d0w3b6bgpcypr" path="res://Assets/Textures/PowerScreen.png" id="3_83i07"]
+[ext_resource type="Texture2D" uid="uid://bknvdivx577po" path="res://Assets/Textures/Screens/PowerScreen.png" id="4_k0rem"]
 [ext_resource type="Texture2D" uid="uid://dfvnqxgvoayaw" path="res://Assets/Textures/power_bar.png" id="4_xqrfh"]
 
 [node name="ShipPower" instance=ExtResource("1_hkqgm")]
 script = ExtResource("2_pvwxx")
 
-[node name="Background" type="Sprite2D" parent="." index="0"]
-position = Vector2(952, 544)
-texture = ExtResource("3_83i07")
-
-[node name="SelectedSystem" type="LineEdit" parent="." index="1"]
+[node name="SelectedSystem" type="LineEdit" parent="." index="0"]
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 160.0
 offset_bottom = 128.0
 
-[node name="AI" type="Node2D" parent="." index="2"]
+[node name="AI" type="Node2D" parent="." index="1"]
 
 [node name="P1" type="Sprite2D" parent="AI" index="0"]
 position = Vector2(130, 795)
@@ -44,13 +40,13 @@ texture = ExtResource("4_xqrfh")
 position = Vector2(130, 558)
 texture = ExtResource("4_xqrfh")
 
-[node name="Bulk" type="Node2D" parent="." index="3"]
+[node name="Bulk" type="Node2D" parent="." index="2"]
 
 [node name="P1" type="Sprite2D" parent="Bulk" index="0"]
 position = Vector2(443, 795)
 texture = ExtResource("4_xqrfh")
 
-[node name="LIDAR" type="Node2D" parent="." index="4"]
+[node name="LIDAR" type="Node2D" parent="." index="3"]
 
 [node name="P1" type="Sprite2D" parent="LIDAR" index="0"]
 position = Vector2(802, 795)
@@ -64,13 +60,13 @@ texture = ExtResource("4_xqrfh")
 position = Vector2(802, 701)
 texture = ExtResource("4_xqrfh")
 
-[node name="Oxy" type="Node2D" parent="." index="5"]
+[node name="Oxy" type="Node2D" parent="." index="4"]
 
 [node name="P1" type="Sprite2D" parent="Oxy" index="0"]
 position = Vector2(1126, 795)
 texture = ExtResource("4_xqrfh")
 
-[node name="Target" type="Node2D" parent="." index="6"]
+[node name="Target" type="Node2D" parent="." index="5"]
 
 [node name="P1" type="Sprite2D" parent="Target" index="0"]
 position = Vector2(1472, 795)
@@ -84,16 +80,14 @@ texture = ExtResource("4_xqrfh")
 position = Vector2(1472, 701)
 texture = ExtResource("4_xqrfh")
 
-[node name="Weap" type="Node2D" parent="." index="7"]
+[node name="Weap" type="Node2D" parent="." index="6"]
 
 [node name="P1" type="Sprite2D" parent="Weap" index="0"]
 position = Vector2(1782, 795)
 texture = ExtResource("4_xqrfh")
 
-[node name="BalanceLevel" type="RichTextLabel" parent="." index="9"]
-offset_left = 256.0
-offset_top = 64.0
-offset_right = 384.0
-offset_bottom = 192.0
+[node name="Background" type="Sprite2D" parent="." index="7"]
+position = Vector2(950, 540)
+texture = ExtResource("4_k0rem")
 
 [connection signal="text_changed" from="SelectedSystem" to="." method="_on_selected_system_text_changed"]

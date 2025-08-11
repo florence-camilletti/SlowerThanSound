@@ -1,26 +1,25 @@
 extends Node2D#THIS MAY NEED TO BE CHANGED BACK TO NODE2D IF IT GETS MESSY
 class_name ShipManager
 
-# === MENU VARS ===
-@onready var system_nodes := [$VC/V/ShipMenu,#Child nodes belonging to each one
-                    $VC/V/ShipEngine,
-                    $VC/V/ShipPower,
-                    $VC/V/ShipOxy,
-                    $VC/V/ShipAI,
-                    $VC/V/ShipBulk,
-                    $VC/V/ShipTarget,
-                    $VC/V/ShipWeapons,
-                    $VC/V/ShipLIDAR]
-var menu_choice := 0
-var focuses := [true, false, false, false, false, false, false, false, false]#Which one is currently being focused on
-
 # === NODE VARS ===
 @onready var global_view := $VC/V
+@onready var entity_manager := $VC/V/EntityManager
+
+@onready var menu_child := $VC/V/ShipMenu
 @onready var LIDAR_child := $VC/V/ShipLIDAR
+@onready var weap_child := $VC/V/ShipWeapons
+@onready var target_child := $VC/V/ShipTarget
+@onready var bulk_child := $VC/V/ShipBulk
+@onready var AI_child := $VC/V/ShipAI
 @onready var oxy_child   := $VC/V/ShipOxy
 @onready var power_child := $VC/V/ShipPower
-@onready var target_child := $VC/V/ShipTarget
-@onready var entity_manager := $VC/V/EntityManager
+@onready var engine_child := $VC/V/ShipEngine
+
+# === MENU VARS ===
+var menu_choice := 0
+var select_names := ["MENU","ENGINE","POWER","WEAP"]
+@onready var select_nodes := [self.menu_child, self.engine_child, self.power_child, self.weap_child]
+var num_selects := len(select_names)
 
 # === MOVEMENT VARS ===
 #Location details in long,lat
@@ -89,16 +88,13 @@ func _process(delta: float):
     self.sub_position+=self.velocity
     
 func _input(event):
-    for possible_action in range(Global.num_systems):#Check for menu change
-        if(event.is_action_pressed(Global.systems[possible_action])):
-            self.menu_choice = possible_action#Set the menu choice
-            for n in range(Global.num_systems):#Set the focuses
+    for possible_action in range(self.num_selects):#Check for menu change
+        if(event.is_action_pressed(select_names[possible_action])):
+            for n in range(self.num_selects):#Set the focuses
                 if(possible_action==n):
-                    self.system_nodes[n].set_focus(true)
-                    self.focuses[n]=true
+                    self.select_nodes[n].set_focus(true)
                 else:
-                    self.system_nodes[n].set_focus(false)        
-                    self.focuses[n]=false
+                    self.select_nodes[n].set_focus(false)
     
 func _unhandled_input(event):#Quit on ESC
     if event is InputEventKey:

@@ -6,6 +6,7 @@
 script = ExtResource("1_tqmyt")
 
 [node name="StatusLabel" type="RichTextLabel" parent="."]
-offset_left = 1728.0
-offset_right = 1896.0
-offset_bottom = 280.0
+offset_left = 448.0
+offset_top = 968.0
+offset_right = 1840.0
+offset_bottom = 1080.0

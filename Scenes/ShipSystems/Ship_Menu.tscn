@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_5erjh"]
 [ext_resource type="Script" uid="uid://dftv80lcqy7rb" path="res://Scripts/ShipSystems/ship_menu.gd" id="2_hfdcm"]
-[ext_resource type="Texture2D" uid="uid://c0f8h1xc0enso" path="res://Assets/Textures/Screens/MenuScreen.png" id="4_utkp0"]
+[ext_resource type="Texture2D" uid="uid://2octekmt118x" path="res://Assets/Textures/Screens/MenuScreen.png" id="4_utkp0"]
 
 [node name="ShipMenu" instance=ExtResource("1_5erjh")]
 script = ExtResource("2_hfdcm")
