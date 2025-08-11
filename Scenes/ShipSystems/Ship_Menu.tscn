@@ -9,20 +9,3 @@ script = ExtResource("2_hfdcm")
 
 [node name="Background" parent="." index="0"]
 texture = ExtResource("4_utkp0")
-
-[node name="EngineStats" type="Node2D" parent="." index="1"]
-
-[node name="RichTextLabel" type="RichTextLabel" parent="EngineStats" index="0"]
-offset_left = 50.0
-offset_top = 121.0
-offset_right = 285.0
-offset_bottom = 426.0
-text = "ABABABAB"
-
-[node name="SystemStats" type="Node2D" parent="." index="2"]
-
-[node name="ELCStats" type="Node2D" parent="." index="3"]
-
-[node name="SignalStats" type="Node2D" parent="." index="4"]
-
-[node name="TargetingStats" type="Node2D" parent="." index="5"]

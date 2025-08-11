@@ -94,17 +94,12 @@ func _process(delta: float):
 func _input(event):
     for action_indx in range(self.num_chunks):
         if(event.is_action_pressed(chunk_names[action_indx])):#Check if a SysChunk event
-            print(event)
             for chunk_indx in range(self.num_chunks):#Set the chunk focuses
                 if(action_indx==chunk_indx):#Activate this chunk
-                    print(str(chunk_indx)+" T")
                     for system in self.chunk_nodes[chunk_indx]:
-                        print(system)
                         system.set_focus(true)
                 else:#Deactivate these chunks
-                    print(str(chunk_indx)+" F")
                     for system in self.chunk_nodes[chunk_indx]:
-                        print(system)
                         system.set_focus(false)
     
 func _unhandled_input(event):#Quit on ESC
@@ -167,14 +162,16 @@ func emergency_depth() -> void:
     else:
         self.set_desire_depth(0)
         
-#Returns a string about the sub's position and movement info
-func get_sub_info() -> String:
-    var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"
-    rtn += ("%.2f \n%.2f\n" % [self.speed*Global.desectic_knot_ratio, self.engine_power/self.max_accel])
-    rtn += ("%.2f \n%.2f" % [self.heading, self.depth])
+#Returns a string about the sub's position and movement info    
+func get_engine_info() -> Array:
+    #[Speed, Power%, Heading, Depth]
+    var rtn = [self.speed*Global.desectic_knot_ratio,
+               self.engine_power/self.max_accel,
+               self.heading,
+               self.depth]
     return(rtn)
     
-func get_viewport_object():
+func get_viewport_object() -> Viewport:
     return(self.global_view)
     
 func get_fuel(indx: int) -> float:
@@ -213,4 +210,7 @@ func on_entity_destroyed(ent: EntityBase) -> void:
     self.target_child.destroy_entity(ent)
 
 func _to_string() -> String:
-    return(get_sub_info())
+    var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"
+    rtn += ("%.2f \n%.2f\n" % [self.speed*Global.desectic_knot_ratio, self.engine_power/self.max_accel])
+    rtn += ("%.2f \n%.2f" % [self.heading, self.depth])
+    return(rtn)

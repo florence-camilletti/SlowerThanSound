@@ -1,13 +1,18 @@
 extends ShipSystemBase
 
 # === NODE VARS ===
-@onready var statusNumsText := $StatusNums
-@onready var inputNumsText := $InputText
-@onready var inputBox := $InputBox
+@onready var PowerStatusText := $PowerStatus
+@onready var HeadingStatusText := $HeadingStatus
+@onready var DepthStatusText := $DepthStatus
+
+@onready var PowerInput := $PowerInput
+@onready var HeadingInput := $HeadingInput
+@onready var DepthInput := $DepthInput
+
+@onready var inputBoxes := [null, PowerInput, HeadingInput, DepthInput]
 
 # === SETTING VARS ===
-enum {NONE, SPEED, HEADING, DEPTH}
-var setting_names = ["INPUT","Speed","Heading","Depth"]
+enum {NONE, POWER, HEADING, DEPTH}
 var selected_setting := NONE
 
 func _init() -> void:
@@ -20,54 +25,59 @@ func _process(delta: float) -> void:
     super._process(delta)
     if(self.in_focus):
         #Update text
-        statusNumsText.set_text(manager_node.get_sub_info())
-    
+        var engine_status = self.manager_node.get_engine_info()
+        self.PowerStatusText.set_text("%.2f \t%.2f" % [engine_status[0], engine_status[1]])
+        self.HeadingStatusText.set_text("%.2f" % [engine_status[2]])
+        self.DepthStatusText.set_text("%.2f" % [engine_status[3]])
+        
 func _input(event):
     #Process player input
-    var input_flag = false
     if(in_focus):
-        '''TODO Have changes be gradual
-           instead of instant'''
-        if(event.is_action_pressed("Action_U")):#Speed
-            selected_setting = SPEED
-            input_flag = true
+        if(event.is_action_pressed("Action_U")):#Engine power
+            self.selected_setting = POWER
+            self.PowerInput.grab_focus()
         elif(event.is_action_pressed("Action_J")):
-            #TODO
             manager_node.emergency_speed()
             
         elif(event.is_action_pressed("Action_I")):#Heading
-            selected_setting = HEADING
-            input_flag = true
+            self.selected_setting = HEADING
+            self.HeadingInput.grab_focus()
         elif(event.is_action_pressed("Action_K")):
-            #TODO
             manager_node.emergency_heading()
             
         elif(event.is_action_pressed("Action_O")):#Depth
-            selected_setting = DEPTH
-            input_flag = true
+            self.selected_setting = DEPTH
+            self.DepthInput.grab_focus()
         elif(event.is_action_pressed("Action_L")):
-            #TODO
-            manager_node.emergency_depth()
-            
-        #Check for number input
-        if(input_flag):
-            self.inputBox.grab_focus()
+            manager_node.emergency_depth()            
             
         if(event.is_action_pressed("Enter")):
-            var inputNum = float(self.inputBox.get_text())
-            self.inputBox.clear()
-            self.inputBox.release_focus()
+            print(self.inputBoxes[self.selected_setting])
+            var inputNum = float(self.inputBoxes[self.selected_setting].get_text())
+            print(inputNum)
+            for b in range(1, len(self.inputBoxes)):
+                self.inputBoxes[b].clear()
+                self.inputBoxes[b].release_focus()
             
             if(selected_setting==HEADING):
                 manager_node.set_desire_heading(inputNum)
             elif(selected_setting==DEPTH):
                 manager_node.set_desire_depth(inputNum)
-            elif(selected_setting==SPEED):
+            elif(selected_setting==POWER):
                 manager_node.set_engine_power(inputNum)
-                
-        inputNumsText.set_text(setting_names[selected_setting])
-                    
-func _on_input_box_text_changed(_new_text: String) -> void:
+
+
+func _on_power_input_text_changed(new_text: String) -> void:
     #Check for only nums
-    if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
-        self.inputBox.clear()
+    if(not self.PowerInput.text.is_empty() and not self.PowerInput.text.is_valid_float()):
+        self.PowerInput.clear()
+
+func _on_heading_input_text_changed(new_text: String) -> void:
+    #Check for only nums
+    if(not self.HeadingInput.text.is_empty() and not self.HeadingInput.text.is_valid_float()):
+        self.HeadingInput.clear()
+
+func _on_depth_input_text_changed(new_text: String) -> void:
+    #Check for only nums
+    if(not self.DepthInput.text.is_empty() and not self.DepthInput.text.is_valid_float()):
+        self.DepthInput.clear()
