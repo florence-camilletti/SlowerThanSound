@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dxi3bv5po13eg"
-path="res://.godot/imported/Ship_Outline.png-0915a6b3e271f89cb1ecbd573757ff48.ctex"
+uid="uid://dg3qbekcq01tm"
+path="res://.godot/imported/WeaponsScreen.png-65e75e069a10f938f51a7a06805204f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/Ships/Ship_Outline.png"
-dest_files=["res://.godot/imported/Ship_Outline.png-0915a6b3e271f89cb1ecbd573757ff48.ctex"]
+source_file="res://Assets/Textures/Screens/WeaponsScreen.png"
+dest_files=["res://.godot/imported/WeaponsScreen.png-65e75e069a10f938f51a7a06805204f4.ctex"]
 
 [params]
 

@@ -1,7 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://by6ibt8eqsgjk"]
+[gd_scene load_steps=12 format=3 uid="uid://by6ibt8eqsgjk"]
 
 [ext_resource type="Script" uid="uid://jojeowbnx382" path="res://Scripts/ship_manager.gd" id="1_tio8k"]
-[ext_resource type="Texture2D" uid="uid://d0ara2tk00xts" path="res://Assets/Textures/back.png" id="2_qcah4"]
 [ext_resource type="PackedScene" uid="uid://d7h8318elmx6" path="res://Scenes/ShipSystems/Ship_Menu.tscn" id="4_fwxua"]
 [ext_resource type="PackedScene" uid="uid://dkl1ls4rou68o" path="res://Scenes/ShipSystems/Ship_AI.tscn" id="5_kpqe6"]
 [ext_resource type="PackedScene" uid="uid://bchrej7d20kxs" path="res://Scenes/ShipSystems/Ship_Engine.tscn" id="5_mneo4"]
@@ -25,13 +24,10 @@ handle_input_locally = false
 size = Vector2i(1980, 1200)
 render_target_update_mode = 4
 
-[node name="Background" type="Sprite2D" parent="VC/V"]
-position = Vector2(950, 540)
-scale = Vector2(95, 54)
-texture = ExtResource("2_qcah4")
-
 [node name="EntityManager" parent="VC/V" instance=ExtResource("12_tio8k")]
 visible = false
+
+[node name="ShipMenu" parent="VC/V" instance=ExtResource("4_fwxua")]
 
 [node name="ShipLIDAR" parent="VC/V" instance=ExtResource("7_mneo4")]
 visible = false
@@ -56,5 +52,3 @@ visible = false
 
 [node name="ShipEngine" parent="VC/V" instance=ExtResource("5_mneo4")]
 visible = false
-
-[node name="ShipMenu" parent="VC/V" instance=ExtResource("4_fwxua")]

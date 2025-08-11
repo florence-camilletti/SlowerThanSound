@@ -160,8 +160,6 @@ func emergency_depth() -> void:
     else:
         self.set_desire_depth(0)
         
-    
-    
 #Returns a string about the sub's position and movement info
 func get_sub_info() -> String:
     var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"

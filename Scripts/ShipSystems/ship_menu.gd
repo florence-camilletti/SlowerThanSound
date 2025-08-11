@@ -1,7 +1,5 @@
 extends ShipSystemBase
 
-@onready var statusNumsText := $StatusNums
-
 func _init() -> void:
     super._init(true, Global.MENU)
 
@@ -14,5 +12,7 @@ func _process(delta: float) -> void:
     super._process(delta)
     #Process player input
     if(in_focus):
-        #Update text
-        statusNumsText.set_text(manager_node.get_sub_info())
+        pass
+
+func set_focus(f) -> void:
+    pass
