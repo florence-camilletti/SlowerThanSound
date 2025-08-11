@@ -5,21 +5,25 @@ class_name ShipManager
 @onready var global_view := $VC/V
 @onready var entity_manager := $VC/V/EntityManager
 
-@onready var menu_child := $VC/V/ShipMenu
-@onready var LIDAR_child := $VC/V/ShipLIDAR
-@onready var weap_child := $VC/V/ShipWeapons
-@onready var target_child := $VC/V/ShipTarget
-@onready var bulk_child := $VC/V/ShipBulk
-@onready var AI_child := $VC/V/ShipAI
-@onready var oxy_child   := $VC/V/ShipOxy
-@onready var power_child := $VC/V/ShipPower
-@onready var engine_child := $VC/V/ShipEngine
+@onready var menu_child   := $VC/V/SysChunkM/ShipMenu
+
+@onready var engine_child := $VC/V/SysChunk1/ShipEngine
+@onready var bulk_child   := $VC/V/SysChunk1/ShipBulk
+@onready var AI_child     := $VC/V/SysChunk1/ShipAI
+@onready var power_child  := $VC/V/SysChunk2/ShipPower
+@onready var oxy_child    := $VC/V/SysChunk2/ShipOxy
+@onready var LIDAR_child  := $VC/V/SysChunk3/ShipLIDAR
+@onready var weap_child   := $VC/V/SysChunk3/ShipWeapons
+@onready var target_child := $VC/V/SysChunk3/ShipTarget
 
 # === MENU VARS ===
 var menu_choice := 0
-var select_names := ["MENU","ENGINE","POWER","WEAP"]
-@onready var select_nodes := [self.menu_child, self.engine_child, self.power_child, self.weap_child]
-var num_selects := len(select_names)
+var chunk_names := ["SysChunkM","SysChunk1","SysChunk2","SysChunk3"]
+@onready var chunk_nodes := [[self.menu_child],
+                              [self.engine_child],
+                              [self.power_child, self.oxy_child],
+                              [self.target_child, self.weap_child, self.LIDAR_child]]
+var num_chunks := len(chunk_names)
 
 # === MOVEMENT VARS ===
 #Location details in long,lat
@@ -88,13 +92,20 @@ func _process(delta: float):
     self.sub_position+=self.velocity
     
 func _input(event):
-    for possible_action in range(self.num_selects):#Check for menu change
-        if(event.is_action_pressed(select_names[possible_action])):
-            for n in range(self.num_selects):#Set the focuses
-                if(possible_action==n):
-                    self.select_nodes[n].set_focus(true)
-                else:
-                    self.select_nodes[n].set_focus(false)
+    for action_indx in range(self.num_chunks):
+        if(event.is_action_pressed(chunk_names[action_indx])):#Check if a SysChunk event
+            print(event)
+            for chunk_indx in range(self.num_chunks):#Set the chunk focuses
+                if(action_indx==chunk_indx):#Activate this chunk
+                    print(str(chunk_indx)+" T")
+                    for system in self.chunk_nodes[chunk_indx]:
+                        print(system)
+                        system.set_focus(true)
+                else:#Deactivate these chunks
+                    print(str(chunk_indx)+" F")
+                    for system in self.chunk_nodes[chunk_indx]:
+                        print(system)
+                        system.set_focus(false)
     
 func _unhandled_input(event):#Quit on ESC
     if event is InputEventKey:

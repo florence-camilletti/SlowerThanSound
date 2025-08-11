@@ -24,31 +24,39 @@ handle_input_locally = false
 size = Vector2i(1980, 1200)
 render_target_update_mode = 4
 
+[node name="SysChunk3" type="Node2D" parent="VC/V"]
+
+[node name="ShipWeapons" parent="VC/V/SysChunk3" instance=ExtResource("9_hkh0f")]
+visible = false
+
+[node name="ShipLIDAR" parent="VC/V/SysChunk3" instance=ExtResource("7_mneo4")]
+visible = false
+
+[node name="ShipTarget" parent="VC/V/SysChunk3" instance=ExtResource("10_hkh0f")]
+visible = false
+
+[node name="SysChunk2" type="Node2D" parent="VC/V"]
+
+[node name="ShipOxy" parent="VC/V/SysChunk2" instance=ExtResource("8_252ws")]
+visible = false
+
+[node name="ShipPower" parent="VC/V/SysChunk2" instance=ExtResource("6_3a267")]
+visible = false
+
+[node name="SysChunk1" type="Node2D" parent="VC/V"]
+
+[node name="ShipEngine" parent="VC/V/SysChunk1" instance=ExtResource("5_mneo4")]
+visible = false
+
+[node name="ShipAI" parent="VC/V/SysChunk1" instance=ExtResource("5_kpqe6")]
+visible = false
+
+[node name="ShipBulk" parent="VC/V/SysChunk1" instance=ExtResource("9_252ws")]
+visible = false
+
+[node name="SysChunkM" type="Node2D" parent="VC/V"]
+
+[node name="ShipMenu" parent="VC/V/SysChunkM" instance=ExtResource("4_fwxua")]
+
 [node name="EntityManager" parent="VC/V" instance=ExtResource("12_tio8k")]
-visible = false
-
-[node name="ShipMenu" parent="VC/V" instance=ExtResource("4_fwxua")]
-
-[node name="ShipLIDAR" parent="VC/V" instance=ExtResource("7_mneo4")]
-visible = false
-
-[node name="ShipWeapons" parent="VC/V" instance=ExtResource("9_hkh0f")]
-visible = false
-
-[node name="ShipTarget" parent="VC/V" instance=ExtResource("10_hkh0f")]
-visible = false
-
-[node name="ShipBulk" parent="VC/V" instance=ExtResource("9_252ws")]
-visible = false
-
-[node name="ShipAI" parent="VC/V" instance=ExtResource("5_kpqe6")]
-visible = false
-
-[node name="ShipOxy" parent="VC/V" instance=ExtResource("8_252ws")]
-visible = false
-
-[node name="ShipPower" parent="VC/V" instance=ExtResource("6_3a267")]
-visible = false
-
-[node name="ShipEngine" parent="VC/V" instance=ExtResource("5_mneo4")]
 visible = false

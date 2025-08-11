@@ -2,27 +2,27 @@
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_5erjh"]
 [ext_resource type="Script" uid="uid://dftv80lcqy7rb" path="res://Scripts/ShipSystems/ship_menu.gd" id="2_hfdcm"]
-[ext_resource type="Texture2D" uid="uid://2octekmt118x" path="res://Assets/Textures/Screens/MenuScreen.png" id="4_utkp0"]
+[ext_resource type="Texture2D" uid="uid://mgvt5s07lffd" path="res://Assets/Textures/Screens/MenuScreen.png" id="4_utkp0"]
 
 [node name="ShipMenu" instance=ExtResource("1_5erjh")]
 script = ExtResource("2_hfdcm")
 
-[node name="Background" type="Sprite2D" parent="." index="0"]
-position = Vector2(950, 540)
+[node name="Background" parent="." index="0"]
 texture = ExtResource("4_utkp0")
 
-[node name="Sec1" type="Node2D" parent="." index="2"]
+[node name="EngineStats" type="Node2D" parent="." index="1"]
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Sec1" index="0"]
-offset_left = 24.0
-offset_top = 481.0
-offset_right = 152.0
-offset_bottom = 550.0
+[node name="RichTextLabel" type="RichTextLabel" parent="EngineStats" index="0"]
+offset_left = 50.0
+offset_top = 121.0
+offset_right = 285.0
+offset_bottom = 426.0
+text = "ABABABAB"
 
-[node name="Sec2" type="Node2D" parent="." index="3"]
+[node name="SystemStats" type="Node2D" parent="." index="2"]
 
-[node name="Sec3" type="Node2D" parent="." index="4"]
+[node name="ELCStats" type="Node2D" parent="." index="3"]
 
-[node name="Sec4" type="Node2D" parent="." index="5"]
+[node name="SignalStats" type="Node2D" parent="." index="4"]
 
-[node name="Sec5" type="Node2D" parent="." index="6"]
+[node name="TargetingStats" type="Node2D" parent="." index="5"]

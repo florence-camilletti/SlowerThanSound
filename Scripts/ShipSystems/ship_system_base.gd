@@ -2,7 +2,7 @@ extends Node2D
 class_name ShipSystemBase
 
 # === META VARS ===
-@onready var status_label = $StatusLabel
+@onready var ElecLubeHeat = $ElecLubeHeat
 var manager_node: ShipManager
 var global_viewport: SubViewport
 var in_focus: bool
@@ -20,7 +20,7 @@ func _init(f:bool, i:int) -> void:
     self.indx=i
 
 func _ready() -> void:
-    self.manager_node = get_parent().get_parent().get_parent()
+    self.manager_node = get_parent().get_parent().get_parent().get_parent()#ew
         
     self.global_viewport = self.get_viewport()
     in_focus = false
@@ -53,9 +53,9 @@ func update_vars() -> void:
 
 func update_UI_text() -> void:
     var output = ""
-    output += "H: %.3f\n" % [self.health]
-    output += "F: %.3f\n" % [self.fuel]
-    output += "L: %.3f\n" % [self.lube]
-    output += "P: %.3f\n" % [self.power]
-    output += "T: %.3f\n" % [self.total_status]
-    self.status_label.set_text(output)
+    output += "H: %.3f\t" % [self.health]
+    output += "F: %.3f\t" % [self.fuel]
+    output += "L: %.3f\t" % [self.lube]
+    output += "P: %.3f\t" % [self.power]
+    output += "T: %.3f\t" % [self.total_status]
+    self.ElecLubeHeat.set_text(output)

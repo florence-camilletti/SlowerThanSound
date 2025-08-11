@@ -2,11 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_0fvnq"]
 [ext_resource type="Script" uid="uid://cyim88fakf5xt" path="res://Scripts/ShipSystems/ship_weapons.gd" id="2_cbrcw"]
-[ext_resource type="Texture2D" uid="uid://dg3qbekcq01tm" path="res://Assets/Textures/Screens/WeaponsScreen.png" id="3_0slap"]
+[ext_resource type="Texture2D" uid="uid://chhhmi4qr6tcm" path="res://Assets/Textures/Screens/WeaponsScreen.png" id="3_0slap"]
 
 [node name="ShipWeapons" instance=ExtResource("1_0fvnq")]
 script = ExtResource("2_cbrcw")
 
-[node name="Background" type="Sprite2D" parent="." index="0"]
-position = Vector2(950, 540)
+[node name="Background" parent="." index="0"]
 texture = ExtResource("3_0slap")

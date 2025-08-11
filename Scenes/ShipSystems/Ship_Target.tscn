@@ -1,20 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://cnnchfc25huf5"]
+[gd_scene load_steps=5 format=3 uid="uid://cnnchfc25huf5"]
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_ynqdo"]
 [ext_resource type="Script" uid="uid://bphx60wjugmxg" path="res://Scripts/ShipSystems/ship_target.gd" id="2_ln1ya"]
-[ext_resource type="Texture2D" uid="uid://didgotwsoajlu" path="res://Assets/Textures/split.png" id="3_urawi"]
 [ext_resource type="Texture2D" uid="uid://cv2j4rp3n6ksd" path="res://Assets/Textures/red_circle.png" id="3_vrtcm"]
 [ext_resource type="Texture2D" uid="uid://cnao21055w77d" path="res://Assets/Textures/green_circle.png" id="4_wqkqm"]
 
 [node name="ShipTarget" instance=ExtResource("1_ynqdo")]
 script = ExtResource("2_ln1ya")
 
-[node name="Background" type="Sprite2D" parent="." index="0"]
-position = Vector2(951.5, 538)
-scale = Vector2(1.00794, 1.0037)
-texture = ExtResource("3_urawi")
-
-[node name="Torpedo" type="Node2D" parent="." index="1"]
+[node name="Torpedo" type="Node2D" parent="." index="0"]
 
 [node name="IDInput" type="LineEdit" parent="Torpedo" index="0"]
 offset_left = 48.0
@@ -45,7 +39,7 @@ offset_right = 728.0
 offset_bottom = 864.0
 text = "TORPS LEFT:"
 
-[node name="Targeting" type="Node2D" parent="." index="2"]
+[node name="Targeting" type="Node2D" parent="." index="1"]
 
 [node name="IDInput" type="LineEdit" parent="Targeting" index="0"]
 offset_left = 48.0
