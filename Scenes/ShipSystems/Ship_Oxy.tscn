@@ -2,93 +2,349 @@
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_3dum8"]
 [ext_resource type="Script" uid="uid://0qqwrvc417u8" path="res://Scripts/ShipSystems/ship_oxy.gd" id="2_0pxto"]
-[ext_resource type="Texture2D" uid="uid://dt8s1keq38e8c" path="res://Assets/Textures/OxyScreen.png" id="3_b8qn3"]
-[ext_resource type="Texture2D" uid="uid://c77rcla4j4nad" path="res://Assets/Textures/fuel_bar.png" id="4_j0g4i"]
-[ext_resource type="Texture2D" uid="uid://bktmdtbn6wvf0" path="res://Assets/Textures/lube_bar.png" id="5_w308y"]
+[ext_resource type="Texture2D" uid="uid://c7o4pbcj6dkma" path="res://Assets/Textures/Screens/PowerScreen.png" id="3_a1yd6"]
+[ext_resource type="Texture2D" uid="uid://ctjuwh75oar3e" path="res://Assets/Textures/cool_bar.png" id="5_b8qn3"]
+[ext_resource type="Texture2D" uid="uid://cxqhjgw1ydda2" path="res://Assets/Textures/lube_bar.png" id="5_w308y"]
 
 [node name="ShipOxy" instance=ExtResource("1_3dum8")]
 script = ExtResource("2_0pxto")
 
-[node name="Background" type="Sprite2D" parent="." index="0"]
-position = Vector2(952, 544)
-texture = ExtResource("3_b8qn3")
+[node name="Background" parent="." index="0"]
+visible = false
+texture = ExtResource("3_a1yd6")
 
-[node name="SelectedSystem" type="LineEdit" parent="." index="1"]
-offset_left = 64.0
-offset_top = 64.0
-offset_right = 160.0
-offset_bottom = 128.0
+[node name="ENG" type="Node2D" parent="." index="1"]
 
-[node name="AIBars" type="Node2D" parent="." index="2"]
-
-[node name="F1" type="Sprite2D" parent="AIBars" index="0"]
-position = Vector2(78, 764)
-texture = ExtResource("4_j0g4i")
-
-[node name="L1" type="Sprite2D" parent="AIBars" index="1"]
-position = Vector2(198, 764)
+[node name="L1" type="Sprite2D" parent="ENG" index="0"]
+position = Vector2(624, 486)
 texture = ExtResource("5_w308y")
 
-[node name="BulkBars" type="Node2D" parent="." index="3"]
+[node name="C1" type="Sprite2D" parent="ENG" index="1"]
+position = Vector2(718, 485)
+texture = ExtResource("5_b8qn3")
 
-[node name="L1" type="Sprite2D" parent="BulkBars" index="0"]
-position = Vector2(597, 764)
+[node name="L2" type="Sprite2D" parent="ENG" index="2"]
+position = Vector2(624, 437)
 texture = ExtResource("5_w308y")
 
-[node name="L2" type="Sprite2D" parent="BulkBars" index="1"]
-position = Vector2(597, 674)
+[node name="C2" type="Sprite2D" parent="ENG" index="3"]
+position = Vector2(718, 436)
+texture = ExtResource("5_b8qn3")
+
+[node name="L3" type="Sprite2D" parent="ENG" index="4"]
+position = Vector2(624, 391)
 texture = ExtResource("5_w308y")
 
-[node name="EngineBars" type="Node2D" parent="." index="4"]
+[node name="C3" type="Sprite2D" parent="ENG" index="5"]
+position = Vector2(718, 390)
+texture = ExtResource("5_b8qn3")
 
-[node name="F1" type="Sprite2D" parent="EngineBars" index="0"]
-position = Vector2(891, 763)
-texture = ExtResource("4_j0g4i")
-
-[node name="F2" type="Sprite2D" parent="EngineBars" index="1"]
-position = Vector2(892, 674)
-texture = ExtResource("4_j0g4i")
-
-[node name="F3" type="Sprite2D" parent="EngineBars" index="2"]
-position = Vector2(892, 583)
-texture = ExtResource("4_j0g4i")
-
-[node name="L1" type="Sprite2D" parent="EngineBars" index="3"]
-position = Vector2(1012, 763)
+[node name="L4" type="Sprite2D" parent="ENG" index="6"]
+position = Vector2(624.5, 346)
 texture = ExtResource("5_w308y")
 
-[node name="L2" type="Sprite2D" parent="EngineBars" index="4"]
-position = Vector2(1012, 674)
+[node name="C4" type="Sprite2D" parent="ENG" index="7"]
+position = Vector2(718.5, 345)
+texture = ExtResource("5_b8qn3")
+
+[node name="L5" type="Sprite2D" parent="ENG" index="8"]
+position = Vector2(624, 302)
 texture = ExtResource("5_w308y")
 
-[node name="LIDARBars" type="Node2D" parent="." index="5"]
+[node name="C5" type="Sprite2D" parent="ENG" index="9"]
+position = Vector2(718, 301)
+texture = ExtResource("5_b8qn3")
 
-[node name="L1" type="Sprite2D" parent="LIDARBars" index="0"]
-position = Vector2(1413, 765)
+[node name="PWR" type="Node2D" parent="." index="2"]
+
+[node name="L1" type="Sprite2D" parent="PWR" index="0"]
+position = Vector2(973.5, 486)
 texture = ExtResource("5_w308y")
 
-[node name="WeapBars" type="Node2D" parent="." index="6"]
+[node name="C1" type="Sprite2D" parent="PWR" index="1"]
+position = Vector2(1067.5, 485)
+texture = ExtResource("5_b8qn3")
 
-[node name="F1" type="Sprite2D" parent="WeapBars" index="0"]
-position = Vector2(1691, 764)
-texture = ExtResource("4_j0g4i")
-
-[node name="F2" type="Sprite2D" parent="WeapBars" index="1"]
-position = Vector2(1691, 674)
-texture = ExtResource("4_j0g4i")
-
-[node name="L1" type="Sprite2D" parent="WeapBars" index="2"]
-position = Vector2(1811, 764)
+[node name="L2" type="Sprite2D" parent="PWR" index="2"]
+position = Vector2(973.5, 437)
 texture = ExtResource("5_w308y")
 
-[node name="L2" type="Sprite2D" parent="WeapBars" index="3"]
-position = Vector2(1811, 673)
+[node name="C2" type="Sprite2D" parent="PWR" index="3"]
+position = Vector2(1067.5, 436)
+texture = ExtResource("5_b8qn3")
+
+[node name="L3" type="Sprite2D" parent="PWR" index="4"]
+position = Vector2(973.5, 391)
 texture = ExtResource("5_w308y")
 
-[node name="BalanceLevel" type="RichTextLabel" parent="." index="8"]
-offset_left = 256.0
-offset_top = 64.0
-offset_right = 384.0
-offset_bottom = 192.0
+[node name="C3" type="Sprite2D" parent="PWR" index="5"]
+position = Vector2(1067.5, 390)
+texture = ExtResource("5_b8qn3")
 
-[connection signal="text_changed" from="SelectedSystem" to="." method="_on_selected_system_text_changed"]
+[node name="L4" type="Sprite2D" parent="PWR" index="6"]
+position = Vector2(974, 346)
+texture = ExtResource("5_w308y")
+
+[node name="C4" type="Sprite2D" parent="PWR" index="7"]
+position = Vector2(1068, 345)
+texture = ExtResource("5_b8qn3")
+
+[node name="L5" type="Sprite2D" parent="PWR" index="8"]
+position = Vector2(973.5, 302)
+texture = ExtResource("5_w308y")
+
+[node name="C5" type="Sprite2D" parent="PWR" index="9"]
+position = Vector2(1067.5, 301)
+texture = ExtResource("5_b8qn3")
+
+[node name="TRG" type="Node2D" parent="." index="3"]
+
+[node name="L1" type="Sprite2D" parent="TRG" index="0"]
+position = Vector2(1349.5, 486)
+texture = ExtResource("5_w308y")
+
+[node name="C1" type="Sprite2D" parent="TRG" index="1"]
+position = Vector2(1443.5, 485)
+texture = ExtResource("5_b8qn3")
+
+[node name="L2" type="Sprite2D" parent="TRG" index="2"]
+position = Vector2(1349.5, 437)
+texture = ExtResource("5_w308y")
+
+[node name="C2" type="Sprite2D" parent="TRG" index="3"]
+position = Vector2(1443.5, 436)
+texture = ExtResource("5_b8qn3")
+
+[node name="L3" type="Sprite2D" parent="TRG" index="4"]
+position = Vector2(1349.5, 391)
+texture = ExtResource("5_w308y")
+
+[node name="C3" type="Sprite2D" parent="TRG" index="5"]
+position = Vector2(1443.5, 390)
+texture = ExtResource("5_b8qn3")
+
+[node name="L4" type="Sprite2D" parent="TRG" index="6"]
+position = Vector2(1350, 346)
+texture = ExtResource("5_w308y")
+
+[node name="C4" type="Sprite2D" parent="TRG" index="7"]
+position = Vector2(1444, 345)
+texture = ExtResource("5_b8qn3")
+
+[node name="L5" type="Sprite2D" parent="TRG" index="8"]
+position = Vector2(1349.5, 302)
+texture = ExtResource("5_w308y")
+
+[node name="C5" type="Sprite2D" parent="TRG" index="9"]
+position = Vector2(1443.5, 301)
+texture = ExtResource("5_b8qn3")
+
+[node name="AI" type="Node2D" parent="." index="4"]
+
+[node name="L1" type="Sprite2D" parent="AI" index="0"]
+position = Vector2(1736.5, 486)
+texture = ExtResource("5_w308y")
+
+[node name="C1" type="Sprite2D" parent="AI" index="1"]
+position = Vector2(1830.5, 485)
+texture = ExtResource("5_b8qn3")
+
+[node name="L2" type="Sprite2D" parent="AI" index="2"]
+position = Vector2(1736.5, 437)
+texture = ExtResource("5_w308y")
+
+[node name="C2" type="Sprite2D" parent="AI" index="3"]
+position = Vector2(1830.5, 436)
+texture = ExtResource("5_b8qn3")
+
+[node name="L3" type="Sprite2D" parent="AI" index="4"]
+position = Vector2(1736.5, 391)
+texture = ExtResource("5_w308y")
+
+[node name="C3" type="Sprite2D" parent="AI" index="5"]
+position = Vector2(1830.5, 390)
+texture = ExtResource("5_b8qn3")
+
+[node name="L4" type="Sprite2D" parent="AI" index="6"]
+position = Vector2(1737, 346)
+texture = ExtResource("5_w308y")
+
+[node name="C4" type="Sprite2D" parent="AI" index="7"]
+position = Vector2(1831, 345)
+texture = ExtResource("5_b8qn3")
+
+[node name="L5" type="Sprite2D" parent="AI" index="8"]
+position = Vector2(1736.5, 302)
+texture = ExtResource("5_w308y")
+
+[node name="C5" type="Sprite2D" parent="AI" index="9"]
+position = Vector2(1830.5, 301)
+texture = ExtResource("5_b8qn3")
+
+[node name="OXY" type="Node2D" parent="." index="5"]
+
+[node name="L1" type="Sprite2D" parent="OXY" index="0"]
+position = Vector2(624, 909)
+texture = ExtResource("5_w308y")
+
+[node name="C1" type="Sprite2D" parent="OXY" index="1"]
+position = Vector2(718, 908)
+texture = ExtResource("5_b8qn3")
+
+[node name="L2" type="Sprite2D" parent="OXY" index="2"]
+position = Vector2(624, 860)
+texture = ExtResource("5_w308y")
+
+[node name="C2" type="Sprite2D" parent="OXY" index="3"]
+position = Vector2(718, 859)
+texture = ExtResource("5_b8qn3")
+
+[node name="L3" type="Sprite2D" parent="OXY" index="4"]
+position = Vector2(624, 814)
+texture = ExtResource("5_w308y")
+
+[node name="C3" type="Sprite2D" parent="OXY" index="5"]
+position = Vector2(718, 813)
+texture = ExtResource("5_b8qn3")
+
+[node name="L4" type="Sprite2D" parent="OXY" index="6"]
+position = Vector2(624.5, 769)
+texture = ExtResource("5_w308y")
+
+[node name="C4" type="Sprite2D" parent="OXY" index="7"]
+position = Vector2(718.5, 768)
+texture = ExtResource("5_b8qn3")
+
+[node name="L5" type="Sprite2D" parent="OXY" index="8"]
+position = Vector2(624, 725)
+texture = ExtResource("5_w308y")
+
+[node name="C5" type="Sprite2D" parent="OXY" index="9"]
+position = Vector2(718, 724)
+texture = ExtResource("5_b8qn3")
+
+[node name="BLK" type="Node2D" parent="." index="6"]
+
+[node name="L1" type="Sprite2D" parent="BLK" index="0"]
+position = Vector2(974.5, 909)
+texture = ExtResource("5_w308y")
+
+[node name="C1" type="Sprite2D" parent="BLK" index="1"]
+position = Vector2(1068.5, 908)
+texture = ExtResource("5_b8qn3")
+
+[node name="L2" type="Sprite2D" parent="BLK" index="2"]
+position = Vector2(974.5, 860)
+texture = ExtResource("5_w308y")
+
+[node name="C2" type="Sprite2D" parent="BLK" index="3"]
+position = Vector2(1068.5, 859)
+texture = ExtResource("5_b8qn3")
+
+[node name="L3" type="Sprite2D" parent="BLK" index="4"]
+position = Vector2(974.5, 814)
+texture = ExtResource("5_w308y")
+
+[node name="C3" type="Sprite2D" parent="BLK" index="5"]
+position = Vector2(1068.5, 813)
+texture = ExtResource("5_b8qn3")
+
+[node name="L4" type="Sprite2D" parent="BLK" index="6"]
+position = Vector2(975, 769)
+texture = ExtResource("5_w308y")
+
+[node name="C4" type="Sprite2D" parent="BLK" index="7"]
+position = Vector2(1069, 768)
+texture = ExtResource("5_b8qn3")
+
+[node name="L5" type="Sprite2D" parent="BLK" index="8"]
+position = Vector2(974.5, 725)
+texture = ExtResource("5_w308y")
+
+[node name="C5" type="Sprite2D" parent="BLK" index="9"]
+position = Vector2(1068.5, 724)
+texture = ExtResource("5_b8qn3")
+
+[node name="WEP" type="Node2D" parent="." index="7"]
+
+[node name="L1" type="Sprite2D" parent="WEP" index="0"]
+position = Vector2(1350.5, 909)
+texture = ExtResource("5_w308y")
+
+[node name="C1" type="Sprite2D" parent="WEP" index="1"]
+position = Vector2(1444.5, 908)
+texture = ExtResource("5_b8qn3")
+
+[node name="L2" type="Sprite2D" parent="WEP" index="2"]
+position = Vector2(1350.5, 860)
+texture = ExtResource("5_w308y")
+
+[node name="C2" type="Sprite2D" parent="WEP" index="3"]
+position = Vector2(1444.5, 859)
+texture = ExtResource("5_b8qn3")
+
+[node name="L3" type="Sprite2D" parent="WEP" index="4"]
+position = Vector2(1350.5, 814)
+texture = ExtResource("5_w308y")
+
+[node name="C3" type="Sprite2D" parent="WEP" index="5"]
+position = Vector2(1444.5, 813)
+texture = ExtResource("5_b8qn3")
+
+[node name="L4" type="Sprite2D" parent="WEP" index="6"]
+position = Vector2(1351, 769)
+texture = ExtResource("5_w308y")
+
+[node name="C4" type="Sprite2D" parent="WEP" index="7"]
+position = Vector2(1445, 768)
+texture = ExtResource("5_b8qn3")
+
+[node name="L5" type="Sprite2D" parent="WEP" index="8"]
+position = Vector2(1350.5, 725)
+texture = ExtResource("5_w308y")
+
+[node name="C5" type="Sprite2D" parent="WEP" index="9"]
+position = Vector2(1444.5, 724)
+texture = ExtResource("5_b8qn3")
+
+[node name="LDR" type="Node2D" parent="." index="8"]
+
+[node name="L1" type="Sprite2D" parent="LDR" index="0"]
+position = Vector2(1737.5, 909)
+texture = ExtResource("5_w308y")
+
+[node name="C1" type="Sprite2D" parent="LDR" index="1"]
+position = Vector2(1831.5, 908)
+texture = ExtResource("5_b8qn3")
+
+[node name="L2" type="Sprite2D" parent="LDR" index="2"]
+position = Vector2(1737.5, 860)
+texture = ExtResource("5_w308y")
+
+[node name="C2" type="Sprite2D" parent="LDR" index="3"]
+position = Vector2(1831.5, 859)
+texture = ExtResource("5_b8qn3")
+
+[node name="L3" type="Sprite2D" parent="LDR" index="4"]
+position = Vector2(1737.5, 814)
+texture = ExtResource("5_w308y")
+
+[node name="C3" type="Sprite2D" parent="LDR" index="5"]
+position = Vector2(1831.5, 813)
+texture = ExtResource("5_b8qn3")
+
+[node name="L4" type="Sprite2D" parent="LDR" index="6"]
+position = Vector2(1738, 769)
+texture = ExtResource("5_w308y")
+
+[node name="C4" type="Sprite2D" parent="LDR" index="7"]
+position = Vector2(1832, 768)
+texture = ExtResource("5_b8qn3")
+
+[node name="L5" type="Sprite2D" parent="LDR" index="8"]
+position = Vector2(1737.5, 725)
+texture = ExtResource("5_w308y")
+
+[node name="C5" type="Sprite2D" parent="LDR" index="9"]
+position = Vector2(1831.5, 724)
+texture = ExtResource("5_b8qn3")

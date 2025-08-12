@@ -174,8 +174,8 @@ func get_engine_info() -> Array:
 func get_viewport_object() -> Viewport:
     return(self.global_view)
     
-func get_fuel(indx: int) -> float:
-    return(self.oxy_child.get_indx_fuel(indx))
+func get_coolant(indx: int) -> float:
+    return(self.oxy_child.get_indx_coolant(indx))
 func get_lube(indx: int) -> float:
     return(self.oxy_child.get_indx_lube(indx))
 func get_power(indx: int) -> float:

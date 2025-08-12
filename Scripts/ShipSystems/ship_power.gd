@@ -1,18 +1,36 @@
 extends ShipSystemBase
 
 # === NODE VARS ===
-@onready var inputBox := $SelectedSystem
-@onready var AI_sprites := [$AI/P1, $AI/P2, $AI/P3, $AI/P4, $AI/P5, $AI/P6]
-@onready var Bulk_sprites := [$Bulk/P1]
-@onready var LIDAR_sprites := [$LIDAR/P1, $LIDAR/P2, $LIDAR/P3]
-@onready var Oxy_sprites := [$Oxy/P1]
-@onready var Target_sprites := [$Target/P1, $Target/P2, $Target/P3]
-@onready var Weap_sprites := [$Weap/P1]
+@onready var Eng_sprites    := [$ENG/E1, $ENG/E2, $ENG/E3, $ENG/E4, $ENG/E5, $ENG/E6]
+@onready var Power_sprites  := [$PWR/E1, $PWR/E2, $PWR/E3, $PWR/E4, $PWR/E5, $PWR/E6]
+@onready var Target_sprites := [$TRG/E1, $TRG/E2, $TRG/E3, $TRG/E4, $TRG/E5, $TRG/E6]
+@onready var AI_sprites     := [$AI/E1, $AI/E2, $AI/E3, $AI/E4, $AI/E5, $AI/E6]
+@onready var Oxy_sprites    := [$OXY/E1, $OXY/E2, $OXY/E3, $OXY/E4, $OXY/E5, $OXY/E6]
+@onready var Bulk_sprites   := [$BLK/E1, $BLK/E2, $BLK/E3, $BLK/E4, $BLK/E5, $BLK/E6]
+@onready var Weap_sprites   := [$WEP/E1, $WEP/E2, $WEP/E3, $WEP/E4, $WEP/E5, $WEP/E6]
+@onready var LIDAR_sprites  := [$LDR/E1, $LDR/E2, $LDR/E3, $LDR/E4, $LDR/E5, $LDR/E6]
 
+@onready var all_power_sprites := [
+    null,
+    Eng_sprites,
+    Power_sprites,
+    Target_sprites,
+    AI_sprites,
+    Oxy_sprites,
+    Bulk_sprites,
+    Weap_sprites,
+    LIDAR_sprites
+]
 
 # === SELECTION VARS ===
-var selected_system := 0
-var selection_choices := [0,Global.AI, Global.BULK, Global.LIDAR, Global.OXY, Global.TARGET, Global.WEAP]
+var system_list = [null, "Action_Q","Action_W","Action_E","Action_R",
+                            "Action_A","Action_S","Action_D","Action_F"]
+var selected_indx := 0
+@onready var selection_sprite = $SelectedSystem
+var x_offset := 580
+var x_spacing := 350
+var y_offset := 156
+var y_spacing := 432
 
 # === POWER VARS ===
 var power_reserves = 1.0
@@ -20,8 +38,8 @@ var power_regen = 1.0
 var power_cap = 1.0
 
 #"MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"
-var power_levels := [0, 0, 0, 1, 6, 1, 3, 1, 3]
-var power_levels_max := [0, 0, 0, 1, 6, 1, 3, 1, 3]
+var power_levels := [0, 6, 6, 6, 6, 6, 6, 6, 6]
+var power_levels_max := [0, 6, 6, 6, 6, 6, 6, 6, 6]
 
 func _init() -> void:
     super._init(false, Global.POWER)
@@ -32,47 +50,41 @@ func _ready() -> void:
     
 func _process(delta: float) -> void:
     super._process(delta)
-    if(in_focus):
-        self.inputBox.grab_focus()
 
 func _input(event: InputEvent) -> void:
     if(self.in_focus):
+        for action_indx in range(1, len(self.system_list)):
+            if(event.is_action_pressed(self.system_list[action_indx])):
+                self.selected_indx = action_indx
+                self.selection_sprite.set_position(calc_dot_spot(self.selected_indx))
         if(event.is_action_pressed("Action_U")):
             #Add power
-            self.power_levels[self.selected_system] = min(self.power_levels[self.selected_system]+1, self.power_levels_max[self.selected_system])
+            self.power_levels[self.selected_indx] = min(self.power_levels[self.selected_indx]+1, self.power_levels_max[self.selected_indx])
             update_all_sprites()
         if(event.is_action_pressed("Action_J")):
             #Remove power
-            self.power_levels[self.selected_system] = max(self.power_levels[self.selected_system]-1, 0)
+            self.power_levels[self.selected_indx] = max(self.power_levels[self.selected_indx]-1, 0)
             update_all_sprites()
-        
-        if(event.is_action_pressed("Enter")):
-            var input = self.inputBox.get_text()
-            if(input.is_valid_int()):
-                var num_input = int(input)
-                if(num_input>=1 and num_input<=6):
-                    self.selected_system=self.selection_choices[num_input]
-                
-            self.inputBox.clear()
-            self.inputBox.grab_focus()
 
 func get_indx_power(curr_indx: int) -> float:
     return((self.power_levels[curr_indx]+1.0)/(self.power_levels_max[curr_indx]+1.0))
 
-func update_all_sprites() -> void:
-    #Update AI
-    update_system_sprite(self.AI_sprites, Global.AI)
-    update_system_sprite(self.Bulk_sprites, Global.BULK)
-    update_system_sprite(self.LIDAR_sprites, Global.LIDAR)
-    update_system_sprite(self.Oxy_sprites, Global.OXY)
-    update_system_sprite(self.Target_sprites, Global.TARGET)
-    update_system_sprite(self.Weap_sprites, Global.WEAP)
-    
-func update_system_sprite(sprites: Array, curr_indx: int) -> void:
-    for level in range(len(sprites)):
-        sprites[level].set_visible(self.power_levels[curr_indx]==level+1)
+func calc_dot_spot(indx: int) -> Vector2:
+    if(indx==-1):
+        return(Vector2(-10,10))
+        
+    var x_val = int((indx-1)%4)
+    var y_val = int((indx-1)/4)
+    x_val = x_offset + (x_val*x_spacing)
+    y_val = y_offset + (y_val*y_spacing)
+    return(Vector2(x_val,y_val))
 
-func _on_selected_system_text_changed(_new_text: String) -> void:
-    #Check for only nums
-    if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_int()):
-        self.inputBox.clear()
+func update_all_sprites() -> void:
+    for n in range(1, len(self.all_power_sprites)):
+        update_power_sprites(n)
+    
+func update_power_sprites(indx: int) -> void:
+    var new_level = self.power_levels[indx]
+    var sprites = self.all_power_sprites[indx]
+    for level in range(len(sprites)):
+        sprites[level].set_visible(new_level==level+1)

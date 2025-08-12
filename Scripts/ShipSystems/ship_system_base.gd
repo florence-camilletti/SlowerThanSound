@@ -10,7 +10,7 @@ var indx: int
 
 # === STATUS VARS ===
 var health := 1.0
-var fuel := 1.0
+var coolant := 1.0
 var lube := 1.0
 var power := 1.0
 var total_status := 1.0
@@ -35,8 +35,8 @@ func set_focus(f) -> void:
 
 func get_health() -> float:
     return(self.health)
-func get_fuel() -> float:
-    return(self.fuel)
+func get_coolant() -> float:
+    return(self.coolant)
 func get_lube() -> float:
     return(self.lube)
 func get_power() -> float:
@@ -45,16 +45,16 @@ func get_total_status() -> float:
     return(self.total_status)
 
 func update_vars() -> void:
-    self.fuel = self.manager_node.get_fuel(self.indx)
+    self.coolant = self.manager_node.get_coolant(self.indx)
     self.lube = self.manager_node.get_lube(self.indx)
     self.power = self.manager_node.get_power(self.indx)
-    self.total_status = self.health*self.fuel*self.lube*self.power
+    self.total_status = self.health*self.lube*self.power
     update_UI_text()
 
 func update_UI_text() -> void:
     var output = ""
     output += "H: %.3f\t" % [self.health]
-    output += "F: %.3f\t" % [self.fuel]
+    output += "F: %.3f\t" % [self.coolant]
     output += "L: %.3f\t" % [self.lube]
     output += "P: %.3f\t" % [self.power]
     output += "T: %.3f\t" % [self.total_status]

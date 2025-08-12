@@ -37,10 +37,10 @@ visible = false
 
 [node name="SysChunk2" type="Node2D" parent="VC/V"]
 
-[node name="ShipOxy" parent="VC/V/SysChunk2" instance=ExtResource("8_252ws")]
+[node name="ShipPower" parent="VC/V/SysChunk2" instance=ExtResource("6_3a267")]
 visible = false
 
-[node name="ShipPower" parent="VC/V/SysChunk2" instance=ExtResource("6_3a267")]
+[node name="ShipOxy" parent="VC/V/SysChunk2" instance=ExtResource("8_252ws")]
 visible = false
 
 [node name="SysChunk1" type="Node2D" parent="VC/V"]

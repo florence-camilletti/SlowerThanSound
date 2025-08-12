@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c77rcla4j4nad"
-path="res://.godot/imported/fuel_bar.png-a6e289724cf2190b563b05a4714d3314.ctex"
+uid="uid://dxo7ykbekiv12"
+path="res://.godot/imported/Gold_Dot.png-28f8f77a3b4ab3d516bb60af31cf8f3f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/fuel_bar.png"
-dest_files=["res://.godot/imported/fuel_bar.png-a6e289724cf2190b563b05a4714d3314.ctex"]
+source_file="res://Assets/Textures/Gold_Dot.png"
+dest_files=["res://.godot/imported/Gold_Dot.png-28f8f77a3b4ab3d516bb60af31cf8f3f.ctex"]
 
 [params]
 

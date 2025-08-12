@@ -67,17 +67,17 @@ func _input(event):
                 manager_node.set_engine_power(inputNum)
 
 
-func _on_power_input_text_changed(new_text: String) -> void:
+func _on_power_input_text_changed(_new_text: String) -> void:
     #Check for only nums
     if(not self.PowerInput.text.is_empty() and not self.PowerInput.text.is_valid_float()):
         self.PowerInput.clear()
 
-func _on_heading_input_text_changed(new_text: String) -> void:
+func _on_heading_input_text_changed(_new_text: String) -> void:
     #Check for only nums
     if(not self.HeadingInput.text.is_empty() and not self.HeadingInput.text.is_valid_float()):
         self.HeadingInput.clear()
 
-func _on_depth_input_text_changed(new_text: String) -> void:
+func _on_depth_input_text_changed(_new_text: String) -> void:
     #Check for only nums
     if(not self.DepthInput.text.is_empty() and not self.DepthInput.text.is_valid_float()):
         self.DepthInput.clear()

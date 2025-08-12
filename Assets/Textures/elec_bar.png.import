@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxqhjgw1ydda2"
-path="res://.godot/imported/lube_bar.png-599f4eb1747626f985ec81ea020c25fb.ctex"
+uid="uid://c3qm0j3gdojik"
+path="res://.godot/imported/elec_bar.png-fa60cf78eba824d7fdbf0ec18f99344f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/lube_bar.png"
-dest_files=["res://.godot/imported/lube_bar.png-599f4eb1747626f985ec81ea020c25fb.ctex"]
+source_file="res://Assets/Textures/elec_bar.png"
+dest_files=["res://.godot/imported/elec_bar.png-fa60cf78eba824d7fdbf0ec18f99344f.ctex"]
 
 [params]
 
