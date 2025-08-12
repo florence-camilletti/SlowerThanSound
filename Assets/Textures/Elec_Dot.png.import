@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dxo7ykbekiv12"
-path="res://.godot/imported/Gold_Dot.png-28f8f77a3b4ab3d516bb60af31cf8f3f.ctex"
+uid="uid://bl3ic2lrsol26"
+path="res://.godot/imported/Elec_Dot.png-12fabb6436bb0f96219a12b9237e78ed.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/Gold_Dot.png"
-dest_files=["res://.godot/imported/Gold_Dot.png-28f8f77a3b4ab3d516bb60af31cf8f3f.ctex"]
+source_file="res://Assets/Textures/Elec_Dot.png"
+dest_files=["res://.godot/imported/Elec_Dot.png-12fabb6436bb0f96219a12b9237e78ed.ctex"]
 
 [params]
 

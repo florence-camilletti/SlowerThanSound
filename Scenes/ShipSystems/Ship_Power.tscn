@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cbmyl68867y5i" path="res://Scripts/ShipSystems/ship_power.gd" id="2_pvwxx"]
 [ext_resource type="Texture2D" uid="uid://c7o4pbcj6dkma" path="res://Assets/Textures/Screens/PowerScreen.png" id="4_k0rem"]
 [ext_resource type="Texture2D" uid="uid://c3qm0j3gdojik" path="res://Assets/Textures/elec_bar.png" id="4_xqrfh"]
-[ext_resource type="Texture2D" uid="uid://dxo7ykbekiv12" path="res://Assets/Textures/Gold_Dot.png" id="5_k0rem"]
+[ext_resource type="Texture2D" uid="uid://bl3ic2lrsol26" path="res://Assets/Textures/Elec_Dot.png" id="5_k0rem"]
 
 [node name="ShipPower" instance=ExtResource("1_hkqgm")]
 script = ExtResource("2_pvwxx")

@@ -348,3 +348,9 @@ texture = ExtResource("5_w308y")
 [node name="C5" type="Sprite2D" parent="LDR" index="9"]
 position = Vector2(1831.5, 724)
 texture = ExtResource("5_b8qn3")
+
+[node name="LubeSelect" type="Sprite2D" parent="." index="9"]
+position = Vector2(950, 540)
+
+[node name="CoolSelect" type="Sprite2D" parent="." index="10"]
+position = Vector2(950, 540)

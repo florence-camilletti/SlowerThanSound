@@ -1,5 +1,26 @@
 extends ShipSystemBase
 
+@onready var Engine_lube_sprites    := [$ENG/L1, $ENG/L2, $ENG/L3, $ENG/L4, $ENG/L5]
+@onready var Power_lube_sprites     := [$PWR/L1, $PWR/L2, $PWR/L3, $PWR/L4, $PWR/L5]
+@onready var Target_lube_sprites    := [$TRG/L1, $TRG/L2, $TRG/L3, $TRG/L4, $TRG/L5]
+@onready var AI_lube_sprites        := [$AI/L1, $AI/L2, $AI/L3, $AI/L4, $AI/L5]
+@onready var Oxy_lube_sprites       := [$OXY/L1, $OXY/L2, $OXY/L3, $OXY/L4, $OXY/L5]
+@onready var Bulk_lube_sprites      := [$BLK/L1, $BLK/L2, $BLK/L3, $BLK/L4, $BLK/L5]
+@onready var Weap_lube_sprites      := [$WEP/L1, $WEP/L2, $WEP/L3, $WEP/L4, $WEP/L5]
+@onready var LIDAR_lube_sprites     := [$LDR/L1, $LDR/L2, $LDR/L3, $LDR/L4, $LDR/L5]
+
+@onready var all_lube_sprites := [
+    null,
+    Engine_lube_sprites,
+    Power_lube_sprites,
+    Target_lube_sprites,
+    AI_lube_sprites,
+    Oxy_lube_sprites,
+    Bulk_lube_sprites,
+    Weap_lube_sprites,
+    LIDAR_lube_sprites
+]
+
 # === NODE VARS ===
 @onready var Engine_coolant_sprites := [$ENG/C1, $ENG/C2, $ENG/C3, $ENG/C4, $ENG/C5]
 @onready var Power_coolant_sprites  := [$PWR/C1, $PWR/C2, $PWR/C3, $PWR/C4, $PWR/C5]
@@ -22,29 +43,10 @@ extends ShipSystemBase
     LIDAR_coolant_sprites
 ]
 
-@onready var Engine_lube_sprites    := [$ENG/L1, $ENG/L2, $ENG/L3, $ENG/L4, $ENG/L5]
-@onready var Power_lube_sprites     := [$PWR/L1, $PWR/L2, $PWR/L3, $PWR/L4, $PWR/L5]
-@onready var Target_lube_sprites    := [$TRG/L1, $TRG/L2, $TRG/L3, $TRG/L4, $TRG/L5]
-@onready var AI_lube_sprites        := [$AI/L1, $AI/L2, $AI/L3, $AI/L4, $AI/L5]
-@onready var Oxy_lube_sprites       := [$OXY/L1, $OXY/L2, $OXY/L3, $OXY/L4, $OXY/L5]
-@onready var Bulk_lube_sprites      := [$BLK/L1, $BLK/L2, $BLK/L3, $BLK/L4, $BLK/L5]
-@onready var Weap_lube_sprites      := [$WEP/L1, $WEP/L2, $WEP/L3, $WEP/L4, $WEP/L5]
-@onready var LIDAR_lube_sprites     := [$LDR/L1, $LDR/L2, $LDR/L3, $LDR/L4, $LDR/L5]
-
-@onready var all_lube_sprites := [
-    null,
-    Engine_lube_sprites,
-    Power_lube_sprites,
-    Target_lube_sprites,
-    AI_lube_sprites,
-    Oxy_lube_sprites,
-    Bulk_lube_sprites,
-    Weap_lube_sprites,
-    LIDAR_lube_sprites
-]
-
 # === SELECTION VARS ===
-var selected_system := 0
+var system_list = [null, "Action_Q","Action_W","Action_E","Action_R",
+                            "Action_A","Action_S","Action_D","Action_F"]
+var selected_indx := 0
 
 # === FLUID VARS ===
 var lube_reserves := 200.0
@@ -74,18 +76,25 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
     if(self.in_focus):
-        if(event.is_action_pressed("Action_U")):
-            #Add coolant
-            self.coolant_levels[self.selected_system] = min(self.coolant_levels[self.selected_system]+1, self.coolant_levels_max[self.selected_system])
-        if(event.is_action_pressed("Action_J")):
-            #Remove coolant
-            self.coolant_levels[self.selected_system] = max(self.coolant_levels[self.selected_system]-1, 0)
+        for action_indx in range(1, len(self.system_list)):
+            if(event.is_action_pressed(self.system_list[action_indx])):
+                self.selected_indx = action_indx
         if(event.is_action_pressed("Action_I")):
             #Add lube
-            self.lube_levels[self.selected_system] = min(self.lube_levels[self.selected_system]+1, self.lube_levels_max[self.selected_system])
+            self.lube_levels[self.selected_indx] = min(self.lube_levels[self.selected_indx]+1, self.lube_levels_max[self.selected_indx])
+            update_all_sprites()
         if(event.is_action_pressed("Action_K")):
             #Remove lube
-            self.lube_levels[self.selected_system] = max(self.lube_levels[self.selected_system]-1, 0)
+            self.lube_levels[self.selected_indx] = max(self.lube_levels[self.selected_indx]-1, 0)
+            update_all_sprites()
+        if(event.is_action_pressed("Action_O")):
+            #Add coolant
+            self.coolant_levels[self.selected_indx] = min(self.coolant_levels[self.selected_indx]+1, self.coolant_levels_max[self.selected_indx])
+            update_all_sprites()
+        if(event.is_action_pressed("Action_L")):
+            #Remove coolant
+            self.coolant_levels[self.selected_indx] = max(self.coolant_levels[self.selected_indx]-1, 0)
+            update_all_sprites()
 
 func get_indx_coolant(curr_indx: int) -> float:
     return((self.coolant_levels[curr_indx]+1.0)/(self.coolant_levels_max[curr_indx]+1.0))
