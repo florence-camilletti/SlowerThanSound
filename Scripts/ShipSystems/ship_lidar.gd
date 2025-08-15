@@ -42,12 +42,15 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
     if(in_focus):
-        if(event.is_action_pressed("Action_U")):
-            #Set auto-update rate
-            self.inputBox.clear()
-            self.inputBox.grab_focus()
+        if(self.command_focus_open):
+            if(event.is_action_pressed("Action_U")):
+                #Set auto-update rate
+                self.inputBox.clear()
+                self.inputBox.grab_focus()
+                self.request_command_focus.emit()
         if(event.is_action_pressed("Enter")):
             if(self.inputBox.has_focus()):
+                self.return_command_focus.emit()
                 self.autoRate = float(self.inputBox.get_text())
                 self.autoFlag = (autoRate!=0)
                 self.autoLightG.set_visible(self.autoFlag)

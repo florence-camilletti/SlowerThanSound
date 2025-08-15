@@ -24,12 +24,15 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
     if(in_focus):
-        if(event.is_action_pressed("Action_I")):
-            #Set auto-update rate
-            self.inputBox.clear()
-            self.inputBox.grab_focus()
+        if(self.command_focus_open):
+            if(event.is_action_pressed("Action_I")):
+                #Set auto-update rate
+                self.inputBox.clear()
+                self.inputBox.grab_focus()
+                self.request_command_focus.emit()
         if(event.is_action_pressed("Enter")):
             if(self.inputBox.has_focus()):
+                self.return_command_focus.emit()
                 var new_select = self.inputBox.get_text()
                 self.selected_entity = new_select
                 wait_flag = true
