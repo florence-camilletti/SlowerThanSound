@@ -62,6 +62,12 @@ func _make_new_enemy() -> void:#TESTING FUNCTION
     #Add enemy to parent objects
     add_entity(new_enemy)
     
+func check_ent_id(curr_ent: String) -> bool:
+    for e in entity_list:
+        if(e.get_id()==curr_ent):
+            return(true)
+    return(false)
+    
 #Uses a spacial cell hash to determin if any torpedoes have collided with something
 func check_collisions():
     var grid = {}

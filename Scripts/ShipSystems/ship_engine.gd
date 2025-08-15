@@ -33,26 +33,30 @@ func _process(delta: float) -> void:
 func _input(event):
     #Process player input
     if(in_focus):
-        if(event.is_action_pressed("Action_U")):#Engine power
-            self.selected_setting = POWER
-            self.PowerInput.grab_focus()
-        elif(event.is_action_pressed("Action_J")):
-            manager_node.emergency_speed()
-            
-        elif(event.is_action_pressed("Action_I")):#Heading
-            self.selected_setting = HEADING
-            self.HeadingInput.grab_focus()
-        elif(event.is_action_pressed("Action_K")):
-            manager_node.emergency_heading()
-            
-        elif(event.is_action_pressed("Action_O")):#Depth
-            self.selected_setting = DEPTH
-            self.DepthInput.grab_focus()
-        elif(event.is_action_pressed("Action_L")):
-            manager_node.emergency_depth()            
+        if(self.command_focus_open):
+            if(event.is_action_pressed("Action_U")):#Engine power
+                self.selected_setting = POWER
+                self.PowerInput.grab_focus()
+                request_command_focus.emit()
+            elif(event.is_action_pressed("Action_J")):
+                manager_node.emergency_speed()
+                
+            elif(event.is_action_pressed("Action_I")):#Heading
+                self.selected_setting = HEADING
+                self.HeadingInput.grab_focus()
+                request_command_focus.emit()
+            elif(event.is_action_pressed("Action_K")):
+                manager_node.emergency_heading()
+                
+            elif(event.is_action_pressed("Action_O")):#Depth
+                self.selected_setting = DEPTH
+                self.DepthInput.grab_focus()
+                request_command_focus.emit()
+            elif(event.is_action_pressed("Action_L")):
+                manager_node.emergency_depth()            
             
         if(event.is_action_pressed("Enter")):
-            print(self.inputBoxes[self.selected_setting])
+            return_command_focus.emit()
             var inputNum = float(self.inputBoxes[self.selected_setting].get_text())
             print(inputNum)
             for b in range(1, len(self.inputBoxes)):

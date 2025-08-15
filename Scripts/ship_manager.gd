@@ -15,6 +15,8 @@ class_name ShipManager
 @onready var LIDAR_child  := $VC/V/SysChunk3/ShipLIDAR
 @onready var weap_child   := $VC/V/SysChunk3/ShipWeapons
 @onready var target_child := $VC/V/SysChunk3/ShipTarget
+var active_chunk := -1
+var command_focus := true
 
 # === MENU VARS ===
 var menu_choice := 0
@@ -51,11 +53,25 @@ var engine_power := 0.0# 0 - 100
 var velocity := Vector2(0,0)#Speed and direction
 
 func _ready() -> void:
+    self.target_child.check_ID.connect(on_entity_check)
     self.LIDAR_child.entity_request.connect(on_LIDAR_request)
-    self.target_child.new_selection.connect(on_new_selection)
-    self.target_child.torpedo_launched.connect(on_torpedo_launch)
     self.entity_manager.entity_created.connect(on_entity_created)
     self.entity_manager.entity_destroyed.connect(on_entity_destroyed)
+    
+    for chunk in self.chunk_nodes:
+        for node in chunk:
+            node.request_command_focus.connect(request_command_focus)
+            node.return_command_focus.connect(return_command_focus)
+
+func request_command_focus() -> void:
+    update_command_focus(false)
+func return_command_focus() -> void:
+    update_command_focus(true)
+func update_command_focus(t: bool) -> void:
+    self.command_focus = t
+    for chunk in self.chunk_nodes:
+        for node in chunk:
+            node.set_command_focus(t)
 
 func _process(delta: float):
     #Update rotation
@@ -96,6 +112,9 @@ func _input(event):
         if(event.is_action_pressed(chunk_names[action_indx])):#Check if a SysChunk event
             for chunk_indx in range(self.num_chunks):#Set the chunk focuses
                 if(action_indx==chunk_indx):#Activate this chunk
+                    self.command_focus = (self.active_chunk != chunk_indx) or self.command_focus
+                    update_command_focus(self.command_focus)
+                    self.active_chunk = chunk_indx
                     for system in self.chunk_nodes[chunk_indx]:
                         system.set_focus(true)
                 else:#Deactivate these chunks
@@ -187,27 +206,25 @@ func on_LIDAR_request() -> void:
     self.LIDAR_child.update_display(entity_list)
     self.LIDAR_child.request_flag = false
 
-#When a new entity is selected, update LIDAR
-#Signaled by Target
-func on_new_selection(id: String) -> void:
-    self.LIDAR_child.update_selection(id)
-
-#When torpedo is launched, update Entity Manager
-#Signaled by Target
-func on_torpedo_launch(torpedo: BasicTorp) -> void:
-    self.entity_manager.add_torpedo(torpedo)
-
 #When ent has been created, update LIDAR and target
 #Signaled by Entity Manager
 func on_entity_created(ent: EntityBase) -> void:
     self.LIDAR_child.add_new_entity(ent)
-    self.target_child.add_new_entity(ent)
 
 #When ent had been destroyed, update LIDAR and target
 #Signaled by Entity Manager
 func on_entity_destroyed(ent: EntityBase) -> void:
     self.LIDAR_child.destroy_entity(ent)
-    self.target_child.destroy_entity(ent)
+
+#When new entity is selected
+#Signaled by Target
+func on_entity_check(curr_ent: String) -> void:
+    if(self.entity_manager.check_ent_id(curr_ent)):
+        self.target_child.update_selection(true)
+        self.LIDAR_child.update_selection(curr_ent)
+    else:
+        self.target_child.update_selection(false)
+        self.LIDAR_child.update_selection("-1")
 
 func _to_string() -> String:
     var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_ctw80"]
 [ext_resource type="Script" uid="uid://bol1r4odc751j" path="res://Scripts/ShipSystems/ship_lidar.gd" id="2_yj4yk"]
-[ext_resource type="Texture2D" uid="uid://5q3jclmmg811" path="res://Assets/Textures/sweep.jpg" id="3_s0o80"]
+[ext_resource type="Texture2D" uid="uid://b1avj7kkqlgs7" path="res://Assets/Textures/Screens/WeaponsScreen.png" id="3_js4q0"]
 [ext_resource type="Texture2D" uid="uid://bm85byyvxyveb" path="res://Assets/Textures/ship_tmp.png" id="4_vgnkx"]
 [ext_resource type="Texture2D" uid="uid://cv2j4rp3n6ksd" path="res://Assets/Textures/red_circle.png" id="5_3s6dt"]
 [ext_resource type="Texture2D" uid="uid://cnao21055w77d" path="res://Assets/Textures/green_circle.png" id="5_m1kkf"]
@@ -11,39 +11,40 @@
 [node name="ShipLIDAR" instance=ExtResource("1_ctw80")]
 script = ExtResource("2_yj4yk")
 
-[node name="RadarScreen" type="Sprite2D" parent="." index="0"]
-position = Vector2(896, 536)
-scale = Vector2(3.00556, 3.00556)
-texture = ExtResource("3_s0o80")
+[node name="Background" parent="." index="0"]
+texture = ExtResource("3_js4q0")
 
 [node name="PlayerSprite" type="Sprite2D" parent="." index="1"]
-position = Vector2(896, 536)
+position = Vector2(846, 476)
 scale = Vector2(2.00605, 1.87272)
 texture = ExtResource("4_vgnkx")
 
 [node name="SweepTimer" type="Timer" parent="." index="2"]
 
 [node name="AutoInput" type="LineEdit" parent="." index="3"]
-offset_left = 16.0
-offset_top = 64.0
-offset_right = 256.0
-offset_bottom = 128.0
+offset_left = 1536.0
+offset_top = 28.0
+offset_right = 1629.0
+offset_bottom = 64.0
 
-[node name="AutoLabel" type="RichTextLabel" parent="." index="4"]
-offset_left = 104.0
-offset_top = 160.0
-offset_right = 152.0
-offset_bottom = 184.0
-text = "AUTO"
+[node name="AutoBox" type="RichTextLabel" parent="." index="4"]
+offset_left = 1423.0
+offset_top = 73.0
+offset_right = 1502.0
+offset_bottom = 100.0
+text = "===="
+scroll_active = false
 
 [node name="AutoLight" type="Node2D" parent="." index="5"]
 position = Vector2(128, 208)
 
 [node name="AutoLightR" type="Sprite2D" parent="AutoLight" index="0"]
+position = Vector2(1268, -121)
 texture = ExtResource("5_3s6dt")
 
 [node name="AutoLightG" type="Sprite2D" parent="AutoLight" index="1"]
 visible = false
+position = Vector2(1268, -121)
 texture = ExtResource("5_m1kkf")
 
 [node name="SelectionBox" type="Sprite2D" parent="." index="6"]

@@ -69,12 +69,12 @@ func _input(event: InputEvent) -> void:
 func get_indx_power(curr_indx: int) -> float:
     return((self.power_levels[curr_indx]+1.0)/(self.power_levels_max[curr_indx]+1.0))
 
-func calc_dot_spot(indx: int) -> Vector2:
-    if(indx==-1):
+func calc_dot_spot(curr_indx: int) -> Vector2:
+    if(curr_indx==-1):
         return(Vector2(-10,10))
         
-    var x_val = int((indx-1)%4)
-    var y_val = int((indx-1)/4)
+    var x_val = int((curr_indx-1)%4)
+    var y_val = int((curr_indx-1)/4)
     x_val = x_offset + (x_val*x_spacing)
     y_val = y_offset + (y_val*y_spacing)
     return(Vector2(x_val,y_val))
@@ -83,8 +83,8 @@ func update_all_sprites() -> void:
     for n in range(1, len(self.all_power_sprites)):
         update_power_sprites(n)
     
-func update_power_sprites(indx: int) -> void:
-    var new_level = self.power_levels[indx]
-    var sprites = self.all_power_sprites[indx]
+func update_power_sprites(curr_indx: int) -> void:
+    var new_level = self.power_levels[curr_indx]
+    var sprites = self.all_power_sprites[curr_indx]
     for level in range(len(sprites)):
         sprites[level].set_visible(new_level==level+1)

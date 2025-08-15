@@ -106,13 +106,13 @@ func update_all_sprites() -> void:
         update_lube_sprite(n)
         update_coolant_sprite(n)
 
-func update_lube_sprite(indx: int) -> void:
-    var new_level = self.lube_levels[indx]
-    var sprites = self.all_lube_sprites[indx]
+func update_lube_sprite(curr_indx: int) -> void:
+    var new_level = self.lube_levels[curr_indx]
+    var sprites = self.all_lube_sprites[curr_indx]
     for level in range(len(sprites)):
         sprites[level].set_visible(new_level==level+1)
-func update_coolant_sprite(indx: int) -> void:
-    var new_level = self.coolant_levels[indx]
-    var sprites = self.all_coolant_sprites[indx]
+func update_coolant_sprite(curr_indx: int) -> void:
+    var new_level = self.coolant_levels[curr_indx]
+    var sprites = self.all_coolant_sprites[curr_indx]
     for level in range(len(sprites)):
         sprites[level].set_visible(new_level==level+1)
