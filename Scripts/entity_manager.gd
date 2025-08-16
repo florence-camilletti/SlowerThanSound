@@ -37,7 +37,6 @@ func add_entity(ent: EntityBase) -> void:
     ent.death.connect(on_entity_death)
     add_child(ent)
     entity_created.emit(ent)
-    print(self.entity_list)
     
 func add_enemy(enemy: BasicEnemy) -> void:
     add_entity(enemy)
