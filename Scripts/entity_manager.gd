@@ -37,10 +37,15 @@ func add_entity(ent: EntityBase) -> void:
     ent.death.connect(on_entity_death)
     add_child(ent)
     entity_created.emit(ent)
+    print(self.entity_list)
     
 func add_enemy(enemy: BasicEnemy) -> void:
     add_entity(enemy)
 func add_torpedo(torp: BasicTorp) -> void:
+    var target_id = torp.get_target_id()
+    for ent in self.entity_list:
+        if(ent.get_id() == target_id):
+            torp.set_target(ent)
     add_entity(torp)
     
 #When an entity signals their destruction, update and emit a signals
@@ -93,6 +98,12 @@ func check_collisions():
                                 if(hit):
                                     torp.set_health(0)
                                     target.damage(torp.get_damage_points())
+
+func get_ent_obj(ent_id: String) -> EntityBase:
+    for e in self.entity_list:
+        if(e.get_ID()==ent_id):
+            return(e)
+    return(null)
 
 func get_num_entities() -> int:
     return(self.num_entities)

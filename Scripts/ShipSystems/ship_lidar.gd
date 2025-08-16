@@ -50,7 +50,6 @@ func _input(event: InputEvent) -> void:
                 self.request_command_focus.emit()
         if(event.is_action_pressed("Enter")):
             if(self.inputBox.has_focus()):
-                self.return_command_focus.emit()
                 self.autoRate = float(self.inputBox.get_text())
                 self.autoFlag = (autoRate!=0)
                 self.autoLightG.set_visible(self.autoFlag)
@@ -65,9 +64,6 @@ func _input(event: InputEvent) -> void:
                     
                 self.inputBox.clear()
                 self.inputBox.release_focus()
-            
-        if(event.is_action_pressed("Action_L")):
-            refresh_map()
         
 func update_sub_rotation(deg) -> void:
     #Update player

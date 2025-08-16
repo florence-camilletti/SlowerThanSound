@@ -26,10 +26,10 @@ render_target_update_mode = 4
 
 [node name="SysChunk3" type="Node2D" parent="VC/V"]
 
-[node name="ShipWeapons" parent="VC/V/SysChunk3" instance=ExtResource("9_hkh0f")]
+[node name="ShipLIDAR" parent="VC/V/SysChunk3" instance=ExtResource("7_mneo4")]
 visible = false
 
-[node name="ShipLIDAR" parent="VC/V/SysChunk3" instance=ExtResource("7_mneo4")]
+[node name="ShipWeapons" parent="VC/V/SysChunk3" instance=ExtResource("9_hkh0f")]
 visible = false
 
 [node name="ShipTarget" parent="VC/V/SysChunk3" instance=ExtResource("10_hkh0f")]

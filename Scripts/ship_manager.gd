@@ -21,10 +21,12 @@ var command_focus := true
 # === MENU VARS ===
 var menu_choice := 0
 var chunk_names := ["SysChunkM","SysChunk1","SysChunk2","SysChunk3"]
-@onready var chunk_nodes := [[self.menu_child],
-                              [self.engine_child],
-                              [self.power_child, self.oxy_child],
-                              [self.target_child, self.weap_child, self.LIDAR_child]]
+@onready var chunk_nodes := [[self.menu_child],#Chunk M
+                              [self.engine_child, self.bulk_child, self.AI_child],#Chunk 1
+                              [self.power_child, self.oxy_child],#Chunk 2
+                              [self.target_child, self.weap_child, self.LIDAR_child]]#Chunk 3
+@onready var all_system_nodes := [self.menu_child, self.engine_child, self.AI_child, self.bulk_child, 
+                                  self.power_child, self.oxy_child, self.target_child, self.weap_child, self.LIDAR_child]
 var num_chunks := len(chunk_names)
 
 # === MOVEMENT VARS ===
@@ -53,15 +55,20 @@ var engine_power := 0.0# 0 - 100
 var velocity := Vector2(0,0)#Speed and direction
 
 func _ready() -> void:
+    #Connecting signals
     self.target_child.check_ID.connect(on_entity_check)
     self.LIDAR_child.entity_request.connect(on_LIDAR_request)
     self.entity_manager.entity_created.connect(on_entity_created)
     self.entity_manager.entity_destroyed.connect(on_entity_destroyed)
+    self.weap_child.torpedo_launched.connect(on_torpedo_launch)
     
-    for chunk in self.chunk_nodes:
-        for node in chunk:
-            node.request_command_focus.connect(request_command_focus)
-            node.return_command_focus.connect(return_command_focus)
+    for node in self.all_system_nodes:
+        node.request_command_focus.connect(request_command_focus)
+        node.return_command_focus.connect(return_command_focus)
+            
+    #Connecting systems to each other
+    for node in self.all_system_nodes:
+        node.set_siblings(self.all_system_nodes)
 
 func request_command_focus() -> void:
     update_command_focus(false)
@@ -69,9 +76,8 @@ func return_command_focus() -> void:
     update_command_focus(true)
 func update_command_focus(t: bool) -> void:
     self.command_focus = t
-    for chunk in self.chunk_nodes:
-        for node in chunk:
-            node.set_command_focus(t)
+    for node in self.all_system_nodes:
+        node.set_command_focus(t)
 
 func _process(delta: float):
     #Update rotation
@@ -108,6 +114,8 @@ func _process(delta: float):
     self.sub_position+=self.velocity
     
 func _input(event):
+    if(event.is_action_pressed("Enter")):
+        update_command_focus(true)
     for action_indx in range(self.num_chunks):
         if(event.is_action_pressed(chunk_names[action_indx])):#Check if a SysChunk event
             for chunk_indx in range(self.num_chunks):#Set the chunk focuses
@@ -225,6 +233,11 @@ func on_entity_check(curr_ent: String) -> void:
     else:
         self.target_child.update_selection(false)
         self.LIDAR_child.update_selection("-1")
+        
+#When weapons launches a torp obj
+#Signaled by Weapons
+func on_torpedo_launch(torp_obj: BasicTorp) -> void:
+    self.entity_manager.add_torpedo(torp_obj)
 
 func _to_string() -> String:
     var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"

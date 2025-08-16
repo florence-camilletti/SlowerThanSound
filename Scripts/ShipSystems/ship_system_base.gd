@@ -14,8 +14,12 @@ signal return_command_focus
 var command_focus_open: bool
 
 # === SIBLING VARS ===
-var engine_system: ShipSystemBase
-var target_system: ShipSystemBase
+var engine_system: ShipSystemBase#C1
+var AI_system: ShipSystemBase
+var bulk_system: ShipSystemBase
+var power_system: ShipSystemBase#C2
+var oxy_system: ShipSystemBase
+var target_system: ShipSystemBase#C3
 var weapons_system: ShipSystemBase
 var LIDAR_system: ShipSystemBase
 
@@ -42,6 +46,12 @@ func _process(_delta: float) -> void:
 
 func set_siblings(siblings: Array) -> void:
     self.engine_system = siblings[Global.ENGINE]
+    self.AI_system = siblings[Global.AI]
+    self.bulk_system = siblings[Global.BULK]
+    
+    self.power_system = siblings[Global.POWER]
+    self.oxy_system = siblings[Global.OXY]
+    
     self.target_system = siblings[Global.TARGET]
     self.weapons_system = siblings[Global.WEAP]
     self.LIDAR_system = siblings[Global.LIDAR]

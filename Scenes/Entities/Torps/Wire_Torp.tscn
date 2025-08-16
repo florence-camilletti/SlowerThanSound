@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://b8ks1vumgk2mv"]
+
+[ext_resource type="PackedScene" uid="uid://cbu56m84uraok" path="res://Scenes/Entities/Torps/Basic_Torp.tscn" id="1_tw4oo"]
+[ext_resource type="Script" uid="uid://dob0d1vb3ephe" path="res://Scripts/Entities/Torps/wire_torp.gd" id="2_ecq6i"]
+
+[node name="TorpBase" instance=ExtResource("1_tw4oo")]
+script = ExtResource("2_ecq6i")

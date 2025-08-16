@@ -56,9 +56,7 @@ func _input(event):
                 manager_node.emergency_depth()            
             
         if(event.is_action_pressed("Enter")):
-            return_command_focus.emit()
             var inputNum = float(self.inputBoxes[self.selected_setting].get_text())
-            print(inputNum)
             for b in range(1, len(self.inputBoxes)):
                 self.inputBoxes[b].clear()
                 self.inputBoxes[b].release_focus()

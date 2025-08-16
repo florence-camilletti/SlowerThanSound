@@ -43,10 +43,10 @@ offset_bottom = 872.0
 virtual_keyboard_enabled = false
 
 [node name="DepthInput" type="LineEdit" parent="." index="6"]
-offset_left = 1608.0
-offset_top = 784.0
-offset_right = 1808.0
-offset_bottom = 872.0
+offset_left = 1604.0
+offset_top = 782.0
+offset_right = 1804.0
+offset_bottom = 870.0
 virtual_keyboard_enabled = false
 
 [connection signal="text_changed" from="PowerInput" to="." method="_on_power_input_text_changed"]
