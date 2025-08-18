@@ -16,6 +16,7 @@ var map_desec_radius := map_deg_radius*36000 #1 degree = 36,000 desecsec
 @onready var timer := $SweepTimer
 var autoFlag := false
 var autoRate: float
+signal signal_update
 
 # === Entity Vars ===
 @onready var selected_sprite := $SelectionBox
@@ -26,7 +27,7 @@ var entity_list := {} #Key - entity ID, Value - entity obj
 var sprite_list := {} #Key - entity ID, Value - sprite obj
 var label_list  := {}
 var selected_entity := "-1"
-var label_offset := Vector2(20,20)
+var label_offset := Vector2(5,5)
 
 func _init() -> void:
     super._init(false, Global.LIDAR)
@@ -50,17 +51,22 @@ func _input(event: InputEvent) -> void:
                 self.request_command_focus.emit()
         if(event.is_action_pressed("Enter")):
             if(self.inputBox.has_focus()):
-                self.autoRate = float(self.inputBox.get_text())
-                self.autoFlag = (autoRate!=0)
-                self.autoLightG.set_visible(self.autoFlag)
-                if(self.autoFlag):
-                    #Start timer
-                    self.timer.start(self.autoRate)
-                    self.autoBox.set_text(str(self.autoRate))
-                else:
-                    #Stop timer
-                    self.timer.stop()
-                    self.autoBox.set_text("====")
+                var txt_input = self.inputBox.get_text()
+                var good_input = len(txt_input)>0
+                if(good_input):
+                    self.autoRate = float(txt_input)
+                    self.autoFlag = (autoRate!=0)
+                    self.autoLightG.set_visible(self.autoFlag)
+                    if(self.autoFlag):
+                        #Start timer
+                        self.timer.start(self.autoRate)
+                        self.autoBox.set_text(str(self.autoRate))
+                        self.signal_update.emit(true)
+                    else:
+                        #Stop timer
+                        self.timer.stop()
+                        self.autoBox.set_text("====")
+                        self.signal_update.emit(false)
                     
                 self.inputBox.clear()
                 self.inputBox.release_focus()

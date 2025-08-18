@@ -54,10 +54,18 @@ var max_accel := 0.1
 var engine_power := 0.0# 0 - 100
 var velocity := Vector2(0,0)#Speed and direction
 
+# === SIDEBAR VARS ===
+@onready var sidebar_engine := $VC/V/Sidebar/EngineStats
+@onready var signal_text  := $VC/V/Sidebar/Signal
+
+@onready var LLF_text := [$VC/V/Sidebar/Lock, $VC/V/Sidebar/Load, $VC/V/Sidebar/Flood]
+
+
 func _ready() -> void:
     #Connecting signals
     self.target_child.check_ID.connect(on_entity_check)
     self.LIDAR_child.entity_request.connect(on_LIDAR_request)
+    self.LIDAR_child.signal_update.connect(on_signal_update)
     self.entity_manager.entity_created.connect(on_entity_created)
     self.entity_manager.entity_destroyed.connect(on_entity_destroyed)
     self.weap_child.torpedo_launched.connect(on_torpedo_launch)
@@ -112,6 +120,9 @@ func _process(delta: float):
     self.speed = self.speed + ((self.engine_power - (self.speed*Global.friction_coef))*delta)
     update_vel()
     self.sub_position+=self.velocity
+    
+    #Update sidebar
+    update_sidebar()
     
 func _input(event):
     if(event.is_action_pressed("Enter")):
@@ -189,7 +200,7 @@ func emergency_depth() -> void:
     else:
         self.set_desire_depth(0)
         
-#Returns a string about the sub's position and movement info    
+#Returns an arr about the sub's position and movement info    
 func get_engine_info() -> Array:
     #[Speed, Power%, Heading, Depth]
     var rtn = [self.speed*Global.desectic_knot_ratio,
@@ -201,18 +212,42 @@ func get_engine_info() -> Array:
 func get_viewport_object() -> Viewport:
     return(self.global_view)
     
-func get_coolant(indx: int) -> float:
-    return(self.oxy_child.get_indx_coolant(indx))
+func get_electricity(indx: int) -> float:
+    return(self.power_child.get_indx_electricity(indx))
 func get_lube(indx: int) -> float:
     return(self.oxy_child.get_indx_lube(indx))
-func get_power(indx: int) -> float:
-    return(self.power_child.get_indx_power(indx))
+func get_coolant(indx: int) -> float:
+    return(self.oxy_child.get_indx_coolant(indx))
+    
+#TODO
+func update_sidebar() -> void:
+    #Update engine stats
+    #POS, SPEED, ENGINE %, HEADING, DEPTH
+    var output = ""
+    var tmp_pos = self.sub_position*Global.desec_deg_ratio
+    output += "%.4f, %.4f \n" % [tmp_pos[0], tmp_pos[1]]
+    var tmp = self.get_engine_info()
+    for i in tmp:
+        output += "%.2f \n" % [i]
+    self.sidebar_engine.set_text(output)
+    
+    #Update system stats
+    
+    #Update ELC
+    
+    #Update Signal
+    
+    #Update torp stats
     
 #Update LIDAR's entity list from the entity manager
 func on_LIDAR_request() -> void:
     var entity_list = self.entity_manager.get_entity_list()
     self.LIDAR_child.update_display(entity_list)
     self.LIDAR_child.request_flag = false
+
+#Signaled by LIDAR when lidar timing is changed
+func on_signal_update(s: bool) -> void:
+    self.signal_text.set_visible(s)
 
 #When ent has been created, update LIDAR and target
 #Signaled by Entity Manager
@@ -244,3 +279,6 @@ func _to_string() -> String:
     rtn += ("%.2f \n%.2f\n" % [self.speed*Global.desectic_knot_ratio, self.engine_power/self.max_accel])
     rtn += ("%.2f \n%.2f" % [self.heading, self.depth])
     return(rtn)
+
+func _on_signal_timer_timeout() -> void:
+   self.signal_text.set_visible(false)

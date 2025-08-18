@@ -17,13 +17,36 @@ visible = false
 position = Vector2(1402, 643)
 texture = ExtResource("4_0jjd3")
 
-[node name="TorpInput" type="LineEdit" parent="." index="2"]
-offset_left = 2030.0
-offset_top = 628.0
-offset_right = 2098.56
-offset_bottom = 659.0
+[node name="TypeLights" type="Node2D" parent="." index="2"]
+position = Vector2(1402, 643)
 
-[node name="TorpNumbers" type="Node2D" parent="." index="3"]
+[node name="DumbLight" type="Sprite2D" parent="TypeLights" index="0"]
+visible = false
+position = Vector2(71, 22)
+texture = ExtResource("4_0jjd3")
+
+[node name="HomingLight" type="Sprite2D" parent="TypeLights" index="1"]
+visible = false
+position = Vector2(317, 24)
+texture = ExtResource("4_0jjd3")
+
+[node name="LoiterLight" type="Sprite2D" parent="TypeLights" index="2"]
+visible = false
+position = Vector2(74, 135)
+texture = ExtResource("4_0jjd3")
+
+[node name="WireLight" type="Sprite2D" parent="TypeLights" index="3"]
+visible = false
+position = Vector2(319, 138)
+texture = ExtResource("4_0jjd3")
+
+[node name="TorpInput" type="LineEdit" parent="." index="3"]
+offset_left = 1955.0
+offset_top = 613.0
+offset_right = 2023.56
+offset_bottom = 644.0
+
+[node name="TorpNumbers" type="Node2D" parent="." index="4"]
 
 [node name="DumbNumber" type="RichTextLabel" parent="TorpNumbers" index="0"]
 offset_left = 1495.0
@@ -53,24 +76,25 @@ offset_right = 1801.0
 offset_bottom = 800.0
 text = "4"
 
-[node name="TubeLight" type="Sprite2D" parent="." index="4"]
+[node name="TubeLight" type="Sprite2D" parent="." index="5"]
 visible = false
 position = Vector2(1462, 500)
 texture = ExtResource("4_0jjd3")
 
-[node name="TubeInput" type="LineEdit" parent="." index="5"]
-offset_left = 2022.0
-offset_top = 693.0
-offset_right = 2090.56
-offset_bottom = 724.0
+[node name="TubeInput" type="LineEdit" parent="." index="6"]
+offset_left = 1955.0
+offset_top = 646.0
+offset_right = 2205.0
+offset_bottom = 677.0
+text = "why are you looking over here?"
 
-[node name="CurrentTube" type="RichTextLabel" parent="." index="6"]
+[node name="CurrentTube" type="RichTextLabel" parent="." index="7"]
 offset_left = 1496.0
 offset_top = 529.0
 offset_right = 1570.0
 offset_bottom = 587.0
 
-[node name="CurrentType" type="RichTextLabel" parent="." index="7"]
+[node name="CurrentType" type="RichTextLabel" parent="." index="8"]
 offset_left = 1662.0
 offset_top = 529.0
 offset_right = 1864.0

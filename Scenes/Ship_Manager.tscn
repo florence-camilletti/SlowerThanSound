@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://by6ibt8eqsgjk"]
+[gd_scene load_steps=13 format=3 uid="uid://by6ibt8eqsgjk"]
 
 [ext_resource type="Script" uid="uid://jojeowbnx382" path="res://Scripts/ship_manager.gd" id="1_tio8k"]
 [ext_resource type="PackedScene" uid="uid://d7h8318elmx6" path="res://Scenes/ShipSystems/Ship_Menu.tscn" id="4_fwxua"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cr28yyxlvbnsv" path="res://Scenes/ShipSystems/Ship_Bulk.tscn" id="9_252ws"]
 [ext_resource type="PackedScene" uid="uid://cc5hivvk8lrs3" path="res://Scenes/ShipSystems/Ship_Weapons.tscn" id="9_hkh0f"]
 [ext_resource type="PackedScene" uid="uid://cnnchfc25huf5" path="res://Scenes/ShipSystems/Ship_Target.tscn" id="10_hkh0f"]
+[ext_resource type="Texture2D" uid="uid://cb3crbnpt5v1o" path="res://Assets/Textures/Screens/SideBar.png" id="11_tio8k"]
 [ext_resource type="PackedScene" uid="uid://d1vfu7ka822wr" path="res://Scenes/Entity_Manager.tscn" id="12_tio8k"]
 
 [node name="ShipManager" type="Node2D"]
@@ -57,6 +58,66 @@ visible = false
 [node name="SysChunkM" type="Node2D" parent="VC/V"]
 
 [node name="ShipMenu" parent="VC/V/SysChunkM" instance=ExtResource("4_fwxua")]
+
+[node name="Sidebar" type="Node2D" parent="VC/V"]
+
+[node name="BaseSprite" type="Sprite2D" parent="VC/V/Sidebar"]
+position = Vector2(167, 540)
+texture = ExtResource("11_tio8k")
+
+[node name="EngineStats" type="RichTextLabel" parent="VC/V/Sidebar"]
+offset_left = 62.0
+offset_top = 130.0
+offset_right = 256.0
+offset_bottom = 440.0
+text = "Engine"
+
+[node name="Elec" type="RichTextLabel" parent="VC/V/Sidebar"]
+offset_left = 19.0
+offset_top = 857.0
+offset_right = 104.0
+offset_bottom = 897.0
+
+[node name="Lube" type="RichTextLabel" parent="VC/V/Sidebar"]
+offset_left = 113.0
+offset_top = 857.0
+offset_right = 198.0
+offset_bottom = 897.0
+
+[node name="Cool" type="RichTextLabel" parent="VC/V/Sidebar"]
+offset_left = 211.0
+offset_top = 857.0
+offset_right = 296.0
+offset_bottom = 897.0
+
+[node name="Signal" type="RichTextLabel" parent="VC/V/Sidebar"]
+visible = false
+offset_left = 92.0
+offset_top = 923.0
+offset_right = 224.0
+offset_bottom = 953.0
+text = "SIGNAL"
+
+[node name="Lock" type="RichTextLabel" parent="VC/V/Sidebar"]
+offset_left = 16.0
+offset_top = 983.0
+offset_right = 106.0
+offset_bottom = 1023.0
+text = "LOCK"
+
+[node name="Load" type="RichTextLabel" parent="VC/V/Sidebar"]
+offset_left = 112.0
+offset_top = 983.0
+offset_right = 202.0
+offset_bottom = 1023.0
+text = "LOAD"
+
+[node name="Flood" type="RichTextLabel" parent="VC/V/Sidebar"]
+offset_left = 209.0
+offset_top = 983.0
+offset_right = 299.0
+offset_bottom = 1023.0
+text = "FLOOD"
 
 [node name="EntityManager" parent="VC/V" instance=ExtResource("12_tio8k")]
 visible = false

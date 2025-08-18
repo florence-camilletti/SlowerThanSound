@@ -9,3 +9,211 @@ script = ExtResource("2_hfdcm")
 
 [node name="Background" parent="." index="0"]
 texture = ExtResource("4_utkp0")
+
+[node name="ENG" type="Node2D" parent="." index="1"]
+
+[node name="H" type="RichTextLabel" parent="ENG" index="0"]
+offset_left = 391.0
+offset_top = 555.0
+offset_right = 431.0
+offset_bottom = 595.0
+
+[node name="E" type="RichTextLabel" parent="ENG" index="1"]
+offset_left = 628.0
+offset_top = 555.0
+offset_right = 668.0
+offset_bottom = 595.0
+
+[node name="L" type="RichTextLabel" parent="ENG" index="2"]
+offset_left = 399.0
+offset_top = 646.0
+offset_right = 439.0
+offset_bottom = 686.0
+
+[node name="C" type="RichTextLabel" parent="ENG" index="3"]
+offset_left = 626.0
+offset_top = 647.0
+offset_right = 666.0
+offset_bottom = 687.0
+
+[node name="PWR" type="Node2D" parent="." index="2"]
+
+[node name="H" type="RichTextLabel" parent="PWR" index="0"]
+offset_left = 782.0
+offset_top = 555.0
+offset_right = 822.0
+offset_bottom = 595.0
+
+[node name="E" type="RichTextLabel" parent="PWR" index="1"]
+offset_left = 1019.0
+offset_top = 555.0
+offset_right = 1059.0
+offset_bottom = 595.0
+
+[node name="L" type="RichTextLabel" parent="PWR" index="2"]
+offset_left = 790.0
+offset_top = 646.0
+offset_right = 830.0
+offset_bottom = 686.0
+
+[node name="C" type="RichTextLabel" parent="PWR" index="3"]
+offset_left = 1017.0
+offset_top = 647.0
+offset_right = 1057.0
+offset_bottom = 687.0
+
+[node name="AI" type="Node2D" parent="." index="3"]
+
+[node name="H" type="RichTextLabel" parent="AI" index="0"]
+offset_left = 1163.0
+offset_top = 555.0
+offset_right = 1203.0
+offset_bottom = 595.0
+
+[node name="E" type="RichTextLabel" parent="AI" index="1"]
+offset_left = 1400.0
+offset_top = 555.0
+offset_right = 1440.0
+offset_bottom = 595.0
+
+[node name="L" type="RichTextLabel" parent="AI" index="2"]
+offset_left = 1171.0
+offset_top = 646.0
+offset_right = 1211.0
+offset_bottom = 686.0
+
+[node name="C" type="RichTextLabel" parent="AI" index="3"]
+offset_left = 1398.0
+offset_top = 647.0
+offset_right = 1438.0
+offset_bottom = 687.0
+
+[node name="TRG" type="Node2D" parent="." index="4"]
+
+[node name="H" type="RichTextLabel" parent="TRG" index="0"]
+offset_left = 1553.0
+offset_top = 555.0
+offset_right = 1593.0
+offset_bottom = 595.0
+
+[node name="E" type="RichTextLabel" parent="TRG" index="1"]
+offset_left = 1790.0
+offset_top = 555.0
+offset_right = 1830.0
+offset_bottom = 595.0
+
+[node name="L" type="RichTextLabel" parent="TRG" index="2"]
+offset_left = 1561.0
+offset_top = 646.0
+offset_right = 1601.0
+offset_bottom = 686.0
+
+[node name="C" type="RichTextLabel" parent="TRG" index="3"]
+offset_left = 1788.0
+offset_top = 647.0
+offset_right = 1828.0
+offset_bottom = 687.0
+
+[node name="OXY" type="Node2D" parent="." index="5"]
+
+[node name="H" type="RichTextLabel" parent="OXY" index="0"]
+offset_left = 391.0
+offset_top = 841.0
+offset_right = 431.0
+offset_bottom = 881.0
+
+[node name="E" type="RichTextLabel" parent="OXY" index="1"]
+offset_left = 628.0
+offset_top = 841.0
+offset_right = 668.0
+offset_bottom = 881.0
+
+[node name="L" type="RichTextLabel" parent="OXY" index="2"]
+offset_left = 399.0
+offset_top = 932.0
+offset_right = 439.0
+offset_bottom = 972.0
+
+[node name="C" type="RichTextLabel" parent="OXY" index="3"]
+offset_left = 626.0
+offset_top = 933.0
+offset_right = 666.0
+offset_bottom = 973.0
+
+[node name="BLK" type="Node2D" parent="." index="6"]
+
+[node name="H" type="RichTextLabel" parent="BLK" index="0"]
+offset_left = 782.0
+offset_top = 841.0
+offset_right = 822.0
+offset_bottom = 881.0
+
+[node name="E" type="RichTextLabel" parent="BLK" index="1"]
+offset_left = 1019.0
+offset_top = 841.0
+offset_right = 1059.0
+offset_bottom = 881.0
+
+[node name="L" type="RichTextLabel" parent="BLK" index="2"]
+offset_left = 790.0
+offset_top = 932.0
+offset_right = 830.0
+offset_bottom = 972.0
+
+[node name="C" type="RichTextLabel" parent="BLK" index="3"]
+offset_left = 1017.0
+offset_top = 933.0
+offset_right = 1057.0
+offset_bottom = 973.0
+
+[node name="WEP" type="Node2D" parent="." index="7"]
+
+[node name="H" type="RichTextLabel" parent="WEP" index="0"]
+offset_left = 1171.0
+offset_top = 841.0
+offset_right = 1211.0
+offset_bottom = 881.0
+
+[node name="E" type="RichTextLabel" parent="WEP" index="1"]
+offset_left = 1408.0
+offset_top = 841.0
+offset_right = 1448.0
+offset_bottom = 881.0
+
+[node name="L" type="RichTextLabel" parent="WEP" index="2"]
+offset_left = 1179.0
+offset_top = 932.0
+offset_right = 1219.0
+offset_bottom = 972.0
+
+[node name="C" type="RichTextLabel" parent="WEP" index="3"]
+offset_left = 1406.0
+offset_top = 933.0
+offset_right = 1446.0
+offset_bottom = 973.0
+
+[node name="LDR" type="Node2D" parent="." index="8"]
+
+[node name="H" type="RichTextLabel" parent="LDR" index="0"]
+offset_left = 1553.0
+offset_top = 841.0
+offset_right = 1593.0
+offset_bottom = 881.0
+
+[node name="E" type="RichTextLabel" parent="LDR" index="1"]
+offset_left = 1790.0
+offset_top = 841.0
+offset_right = 1830.0
+offset_bottom = 881.0
+
+[node name="L" type="RichTextLabel" parent="LDR" index="2"]
+offset_left = 1561.0
+offset_top = 932.0
+offset_right = 1601.0
+offset_bottom = 972.0
+
+[node name="C" type="RichTextLabel" parent="LDR" index="3"]
+offset_left = 1788.0
+offset_top = 933.0
+offset_right = 1828.0
+offset_bottom = 973.0

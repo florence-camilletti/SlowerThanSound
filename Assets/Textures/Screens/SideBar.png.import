@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dt8s1keq38e8c"
-path="res://.godot/imported/OxyScreen.png-991798422377d7ce3dd0996dfc64d379.ctex"
+uid="uid://cb3crbnpt5v1o"
+path="res://.godot/imported/SideBar.png-0f4119f6414d14e41bc80fc9054d9da1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/OxyScreen.png"
-dest_files=["res://.godot/imported/OxyScreen.png-991798422377d7ce3dd0996dfc64d379.ctex"]
+source_file="res://Assets/Textures/Screens/SideBar.png"
+dest_files=["res://.godot/imported/SideBar.png-0f4119f6414d14e41bc80fc9054d9da1.ctex"]
 
 [params]
 

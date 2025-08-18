@@ -29,19 +29,22 @@ func _input(event: InputEvent) -> void:
                 #Set auto-update rate
                 self.inputBox.clear()
                 self.inputBox.grab_focus()
+                self.global_viewport.set_input_as_handled()
                 self.request_command_focus.emit()
         if(event.is_action_pressed("Enter")):
             if(self.inputBox.has_focus()):
                 var new_select = self.inputBox.get_text()
-                self.selected_entity_ID = new_select
-                wait_flag = true
-                check_ID.emit(new_select)
-                while(wait_flag): pass
-                self.selectedLight.set_visible(self.selected_flag)
-                if(self.selected_flag):
-                    self.selectedEntity.set_text(new_select)
-                else:
-                    self.selectedEntity.set_text("====")
+                var good_input = len(new_select)>0
+                if(good_input):
+                    self.selected_entity_ID = new_select
+                    wait_flag = true
+                    check_ID.emit(new_select)
+                    while(wait_flag): pass
+                    self.selectedLight.set_visible(self.selected_flag)
+                    if(self.selected_flag):
+                        self.selectedEntity.set_text(new_select)
+                    else:
+                        self.selectedEntity.set_text("====")
             
                 self.inputBox.clear()
                 self.inputBox.release_focus()

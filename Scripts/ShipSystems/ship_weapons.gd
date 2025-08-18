@@ -14,6 +14,7 @@ var next_torp_id := 1
                                 $TorpNumbers/LoiterNumber,
                                 $TorpNumbers/WireNumber]
 var torpedo_objects = [DumbTorp, HomingTorp, LoiterTorp, WireTorp]
+@onready var type_lights = [$TypeLights/DumbLight, $TypeLights/HomingLight, $TypeLights/LoiterLight, $TypeLights/WireLight]
 
 # === TUBE VARS ===
 @onready var tube_light = $TubeLight
@@ -21,9 +22,9 @@ var torpedo_objects = [DumbTorp, HomingTorp, LoiterTorp, WireTorp]
 @onready var current_tube_text = $CurrentTube
 @onready var current_type_text = $CurrentType
 var num_tubes := 4
-var curr_tube := 1
-var tube_open := [false, false, false, true]
-var loaded_torps := [0, 1, 2, -1]
+var curr_tube := 0
+var tube_open := [true, true, true, true]
+var loaded_torps := [-1, -1, -1, -1]
 
 func _init() -> void:
     super._init(false, Global.WEAP)
@@ -88,6 +89,8 @@ func update_both_text() -> void:
 func update_tube_text() -> void:
     self.current_tube_text.set_text(str(self.curr_tube+1))
     self.current_type_text.set_text(self.torp_names[self.loaded_torps[self.curr_tube]])
+    for n in range(4):
+        self.type_lights[n].set_visible(n==self.curr_torp_type)
 func update_torp_text() -> void:
     for t in range(4):
         self.torp_number_text[t].set_text(str(self.torps_left[t]))

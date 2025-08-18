@@ -32,14 +32,14 @@ var x_spacing := 350
 var y_offset := 156
 var y_spacing := 432
 
-# === POWER VARS ===
-var power_reserves = 1.0
-var power_regen = 1.0
-var power_cap = 1.0
+# === ELECTRICITY VARS ===
+var elec_reserves = 1.0
+var elec_regen = 1.0
+var elec_cap = 1.0
 
 #"MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"
-var power_levels := [0, 6, 6, 6, 6, 6, 6, 6, 6]
-var power_levels_max := [0, 6, 6, 6, 6, 6, 6, 6, 6]
+var elec_levels := [0, 6, 6, 6, 6, 6, 6, 6, 6]
+var elec_levels_max := [0, 6, 6, 6, 6, 6, 6, 6, 6]
 
 func _init() -> void:
     super._init(false, Global.POWER)
@@ -58,22 +58,23 @@ func _input(event: InputEvent) -> void:
                 self.selected_indx = action_indx
                 self.selection_sprite.set_position(calc_dot_spot(self.selected_indx))
         if(event.is_action_pressed("Action_U")):
-            #Add power
-            self.power_levels[self.selected_indx] = min(self.power_levels[self.selected_indx]+1, self.power_levels_max[self.selected_indx])
+            #Add electricity
+            self.elec_levels[self.selected_indx] = min(self.elec_levels[self.selected_indx]+1, self.elec_levels_max[self.selected_indx])
             update_all_sprites()
         if(event.is_action_pressed("Action_J")):
-            #Remove power
-            self.power_levels[self.selected_indx] = max(self.power_levels[self.selected_indx]-1, 0)
+            #Remove electricity
+            self.elec_levels[self.selected_indx] = max(self.elec_levels[self.selected_indx]-1, 0)
             update_all_sprites()
 
-func get_indx_power(curr_indx: int) -> float:
-    return((self.power_levels[curr_indx]+1.0)/(self.power_levels_max[curr_indx]+1.0))
+func get_indx_electricity(curr_indx: int) -> float:
+    return((self.elec_levels[curr_indx]+1.0)/(self.elec_levels_max[curr_indx]+1.0))
 
 func calc_dot_spot(curr_indx: int) -> Vector2:
     if(curr_indx==-1):
         return(Vector2(-10,10))
         
     var x_val = int((curr_indx-1)%4)
+    @warning_ignore("integer_division")
     var y_val = int((curr_indx-1)/4)
     x_val = x_offset + (x_val*x_spacing)
     y_val = y_offset + (y_val*y_spacing)
@@ -84,7 +85,7 @@ func update_all_sprites() -> void:
         update_power_sprites(n)
     
 func update_power_sprites(curr_indx: int) -> void:
-    var new_level = self.power_levels[curr_indx]
+    var new_level = self.elec_levels[curr_indx]
     var sprites = self.all_power_sprites[curr_indx]
     for level in range(len(sprites)):
         sprites[level].set_visible(new_level==level+1)
