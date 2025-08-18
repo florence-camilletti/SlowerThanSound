@@ -5,12 +5,13 @@ var torp_range := 300#Range in desec
 var kill_bubble := 10#Radius in desec
 var kill_bubble_square := kill_bubble*kill_bubble # Used for calculating distances
 var damage_points := 200
-
-var target: EntityBase
 var speedup := 0.1 #additional speed it gets
 
-func _init(i:int) -> void:
-    super._init(i,"TB",Vector2(0,0),Vector2(0,0))
+var target_id: String
+var target: EntityBase
+
+func _init(i:int, n:String) -> void:
+    super._init(i,n,Vector2(0,0),Vector2(0,0))
     self.texture = load("res://Assets/Textures/torpedo.png")
     self.health=20
 
@@ -33,8 +34,12 @@ func BOOM() -> void:
     print("BOOM BOOM BOOM BOOM BOOM")
     set_health(0)
 
+func set_target_id(ent_id: String) -> void:
+    self.target_id = ent_id
 func set_target(ent: EntityBase) -> void:
     self.target = ent
+func get_target_id() -> String:
+    return(self.target_id)
 func get_target_pos() -> Vector2:
     return(target.get_pos())
 func get_torp_range() -> float:

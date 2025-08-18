@@ -3,8 +3,8 @@ extends ShipSystemBase
 # === Map Vars ===
 @onready var player_sprite := $PlayerSprite
 var rng := RandomNumberGenerator.new()
-var map_pixel_radius := 488
-var map_pixel_center := Vector2(896,536)
+var map_pixel_radius := 435
+var map_pixel_center := Vector2(846,476)
 var map_deg_radius := 0.01#+/- 0.01 degrees (0.6 nm) in each direction
 var map_desec_radius := map_deg_radius*36000 #1 degree = 36,000 desecsec
 #Final map is [-360,360] desecsec
@@ -12,9 +12,11 @@ var map_desec_radius := map_deg_radius*36000 #1 degree = 36,000 desecsec
 # === Input Vars ===
 @onready var inputBox := $AutoInput
 @onready var autoLightG := $AutoLight/AutoLightG
+@onready var autoBox := $AutoBox
 @onready var timer := $SweepTimer
 var autoFlag := false
 var autoRate: float
+signal signal_update
 
 # === Entity Vars ===
 @onready var selected_sprite := $SelectionBox
@@ -23,7 +25,9 @@ var request_flag := false
 var num_entities := 0
 var entity_list := {} #Key - entity ID, Value - entity obj
 var sprite_list := {} #Key - entity ID, Value - sprite obj
+var label_list  := {}
 var selected_entity := "-1"
+var label_offset := Vector2(5,5)
 
 func _init() -> void:
     super._init(false, Global.LIDAR)
@@ -39,26 +43,33 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
     if(in_focus):
-        if(event.is_action_pressed("Action_K")):
-            #Set auto-update rate
-            self.inputBox.clear()
-            self.inputBox.grab_focus()
+        if(self.command_focus_open):
+            if(event.is_action_pressed("Action_U")):
+                #Set auto-update rate
+                self.inputBox.clear()
+                self.inputBox.grab_focus()
+                self.request_command_focus.emit()
         if(event.is_action_pressed("Enter")):
-            self.autoRate = float(self.inputBox.get_text())
-            self.autoFlag = (autoRate!=0)
-            self.autoLightG.set_visible(self.autoFlag)
-            if(self.autoFlag):
-                #Start timer
-                self.timer.start(self.autoRate)
-            else:
-                #Stop timer
-                self.timer.stop()
-                
-            self.inputBox.clear()
-            self.inputBox.release_focus()
-            
-        if(event.is_action_pressed("Action_L")):
-            refresh_map()
+            if(self.inputBox.has_focus()):
+                var txt_input = self.inputBox.get_text()
+                var good_input = len(txt_input)>0
+                if(good_input):
+                    self.autoRate = float(txt_input)
+                    self.autoFlag = (autoRate!=0)
+                    self.autoLightG.set_visible(self.autoFlag)
+                    if(self.autoFlag):
+                        #Start timer
+                        self.timer.start(self.autoRate)
+                        self.autoBox.set_text(str(self.autoRate))
+                        self.signal_update.emit(true)
+                    else:
+                        #Stop timer
+                        self.timer.stop()
+                        self.autoBox.set_text("====")
+                        self.signal_update.emit(false)
+                    
+                self.inputBox.clear()
+                self.inputBox.release_focus()
         
 func update_sub_rotation(deg) -> void:
     #Update player
@@ -69,8 +80,10 @@ func update_display(new_entity_list: Array) -> void:
     #Update entities
     var sub_pos = self.manager_node.sub_position
     for curr_entity in new_entity_list:
-        self.sprite_list[curr_entity.get_id()].position = self.desec_to_map(curr_entity.get_desec_pos(), sub_pos)
+        var new_pos = self.desec_to_map(curr_entity.get_desec_pos(), sub_pos)
+        self.sprite_list[curr_entity.get_id()].position = new_pos
         self.sprite_list[curr_entity.get_id()].set_rotation_degrees(curr_entity.get_heading())
+        self.label_list[curr_entity.get_id()].position = new_pos + self.label_offset
         
     #Update selection box
     var show_select = self.selected_entity != "-1"
@@ -82,15 +95,26 @@ func add_new_entity(ent: EntityBase) -> void:
     self.num_entities+=1
     var new_sprite = Sprite2D.new()
     new_sprite.set_texture(ent.get_texture())
-    new_sprite.position = Vector2(-100,-100)
+    new_sprite.set_position(Vector2(-100,-100))
     self.sprite_list[ent.get_id()] = new_sprite
-    self.entity_list[ent.get_id()] = ent
     add_child(new_sprite)
+    
+    var new_label = RichTextLabel.new()
+    new_label.set_text(ent.get_ID())
+    new_label.set_position(new_sprite.get_position()+self.label_offset)
+    new_label.set_size(Vector2(300,300))
+    self.label_list[ent.get_id()] = new_label
+    add_child(new_label)
+    
+    self.entity_list[ent.get_id()] = ent
 
 func destroy_entity(ent: EntityBase) -> void:
     entity_list.erase(ent.get_id())
     var obj_tmp = sprite_list[ent.get_id()]
     sprite_list.erase(ent.get_id())
+    obj_tmp.queue_free()
+    obj_tmp = label_list[ent.get_id()]
+    label_list.erase(ent.get_id())
     obj_tmp.queue_free()
     selected_entity = "-1"
 
@@ -115,8 +139,6 @@ func desec_to_map(entity_pos: Vector2, sub_pos: Vector2) -> Vector2:
 
 func refresh_map() -> void:
     #Update the entity list
-    #print(self.entity_list)
-    #print(self.sprite_list)
     self.request_flag = true
     entity_request.emit()
     while(self.request_flag):#Wait for entity list

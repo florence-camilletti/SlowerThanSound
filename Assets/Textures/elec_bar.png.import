@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://blae3ao21y1xc"
-path="res://.godot/imported/Xia_class_SSBN.svg.png-029b5100681fa40f9efade5b9d70867b.ctex"
+uid="uid://c3qm0j3gdojik"
+path="res://.godot/imported/elec_bar.png-fa60cf78eba824d7fdbf0ec18f99344f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Misc/Xia_class_SSBN.svg.png"
-dest_files=["res://.godot/imported/Xia_class_SSBN.svg.png-029b5100681fa40f9efade5b9d70867b.ctex"]
+source_file="res://Assets/Textures/elec_bar.png"
+dest_files=["res://.godot/imported/elec_bar.png-fa60cf78eba824d7fdbf0ec18f99344f.ctex"]
 
 [params]
 

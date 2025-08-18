@@ -2,79 +2,37 @@
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_ynqdo"]
 [ext_resource type="Script" uid="uid://bphx60wjugmxg" path="res://Scripts/ShipSystems/ship_target.gd" id="2_ln1ya"]
-[ext_resource type="Texture2D" uid="uid://didgotwsoajlu" path="res://Assets/Textures/split.png" id="3_urawi"]
-[ext_resource type="Texture2D" uid="uid://cv2j4rp3n6ksd" path="res://Assets/Textures/red_circle.png" id="3_vrtcm"]
-[ext_resource type="Texture2D" uid="uid://cnao21055w77d" path="res://Assets/Textures/green_circle.png" id="4_wqkqm"]
+[ext_resource type="Texture2D" uid="uid://b1avj7kkqlgs7" path="res://Assets/Textures/Screens/WeaponsScreen.png" id="3_wa7cl"]
+[ext_resource type="Texture2D" uid="uid://cv2j4rp3n6ksd" path="res://Assets/Textures/red_circle.png" id="4_urawi"]
+[ext_resource type="Texture2D" uid="uid://cnao21055w77d" path="res://Assets/Textures/green_circle.png" id="5_85lif"]
 
 [node name="ShipTarget" instance=ExtResource("1_ynqdo")]
 script = ExtResource("2_ln1ya")
 
-[node name="Background" type="Sprite2D" parent="." index="0"]
-position = Vector2(951.5, 538)
-scale = Vector2(1.00794, 1.0037)
-texture = ExtResource("3_urawi")
-
-[node name="Torpedo" type="Node2D" parent="." index="1"]
-
-[node name="IDInput" type="LineEdit" parent="Torpedo" index="0"]
-offset_left = 48.0
-offset_top = 576.0
-offset_right = 200.0
-offset_bottom = 624.0
-
-[node name="AutoLight" type="Node2D" parent="Torpedo" index="1"]
-position = Vector2(248, 624)
-
-[node name="AutoLightR" type="Sprite2D" parent="Torpedo/AutoLight" index="0"]
-texture = ExtResource("3_vrtcm")
-
-[node name="AutoLightG" type="Sprite2D" parent="Torpedo/AutoLight" index="1"]
+[node name="Background" parent="." index="0"]
 visible = false
-texture = ExtResource("4_wqkqm")
+texture = ExtResource("3_wa7cl")
 
-[node name="SelectionID" type="RichTextLabel" parent="Torpedo" index="2"]
-offset_left = 272.0
-offset_top = 608.0
-offset_right = 312.0
-offset_bottom = 648.0
+[node name="EntityInput" type="LineEdit" parent="." index="1"]
+offset_left = 1557.0
+offset_top = 283.0
+offset_right = 1650.0
+offset_bottom = 319.0
 
-[node name="TorpsLeft" type="RichTextLabel" parent="Torpedo" index="3"]
-offset_left = 48.0
-offset_top = 736.0
-offset_right = 728.0
-offset_bottom = 864.0
-text = "TORPS LEFT:"
+[node name="TargetedEntity" type="RichTextLabel" parent="." index="2"]
+offset_left = 1423.0
+offset_top = 327.0
+offset_right = 1501.0
+offset_bottom = 355.0
+text = "===="
 
-[node name="Targeting" type="Node2D" parent="." index="2"]
+[node name="TargetLight" type="Node2D" parent="." index="3"]
 
-[node name="IDInput" type="LineEdit" parent="Targeting" index="0"]
-offset_left = 48.0
-offset_top = 24.0
-offset_right = 193.0
-offset_bottom = 64.0
+[node name="TargetLightR" type="Sprite2D" parent="TargetLight" index="0"]
+position = Vector2(1395, 341)
+texture = ExtResource("4_urawi")
 
-[node name="AutoLight" type="Node2D" parent="Targeting" index="1"]
-position = Vector2(248, 72)
-
-[node name="AutoLightR" type="Sprite2D" parent="Targeting/AutoLight" index="0"]
-texture = ExtResource("3_vrtcm")
-
-[node name="AutoLightG" type="Sprite2D" parent="Targeting/AutoLight" index="1"]
+[node name="TargetLightG" type="Sprite2D" parent="TargetLight" index="1"]
 visible = false
-texture = ExtResource("4_wqkqm")
-
-[node name="SelectionID" type="RichTextLabel" parent="Targeting" index="2"]
-offset_left = 272.0
-offset_top = 64.0
-offset_right = 312.0
-offset_bottom = 104.0
-
-[node name="EntityList" type="RichTextLabel" parent="Targeting" index="3"]
-offset_left = 52.0
-offset_top = 159.0
-offset_right = 1698.0
-offset_bottom = 512.0
-text = "TARGET"
-
-[connection signal="text_changed" from="Torpedo/IDInput" to="." method="_on_torpedo_input_text_changed"]
-[connection signal="text_changed" from="Targeting/IDInput" to="." method="_on_target_input_text_changed"]
+position = Vector2(1395, 341)
+texture = ExtResource("5_85lif")

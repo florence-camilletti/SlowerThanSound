@@ -1,26 +1,33 @@
 extends Node2D#THIS MAY NEED TO BE CHANGED BACK TO NODE2D IF IT GETS MESSY
 class_name ShipManager
 
-# === MENU VARS ===
-@onready var system_nodes := [$VC/V/ShipMenu,#Child nodes belonging to each one
-                    $VC/V/ShipEngine,
-                    $VC/V/ShipPower,
-                    $VC/V/ShipOxy,
-                    $VC/V/ShipAI,
-                    $VC/V/ShipBulk,
-                    $VC/V/ShipTarget,
-                    $VC/V/ShipWeapons,
-                    $VC/V/ShipLIDAR]
-var menu_choice := 0
-var focuses := [true, false, false, false, false, false, false, false, false]#Which one is currently being focused on
-
 # === NODE VARS ===
 @onready var global_view := $VC/V
-@onready var LIDAR_child := $VC/V/ShipLIDAR
-@onready var oxy_child   := $VC/V/ShipOxy
-@onready var power_child := $VC/V/ShipPower
-@onready var target_child := $VC/V/ShipTarget
 @onready var entity_manager := $VC/V/EntityManager
+
+@onready var menu_child   := $VC/V/SysChunkM/ShipMenu
+
+@onready var engine_child := $VC/V/SysChunk1/ShipEngine
+@onready var bulk_child   := $VC/V/SysChunk1/ShipBulk
+@onready var AI_child     := $VC/V/SysChunk1/ShipAI
+@onready var power_child  := $VC/V/SysChunk2/ShipPower
+@onready var oxy_child    := $VC/V/SysChunk2/ShipOxy
+@onready var LIDAR_child  := $VC/V/SysChunk3/ShipLIDAR
+@onready var weap_child   := $VC/V/SysChunk3/ShipWeapons
+@onready var target_child := $VC/V/SysChunk3/ShipTarget
+var active_chunk := -1
+var command_focus := true
+
+# === MENU VARS ===
+var menu_choice := 0
+var chunk_names := ["SysChunkM","SysChunk1","SysChunk2","SysChunk3"]
+@onready var chunk_nodes := [[self.menu_child],#Chunk M
+                              [self.engine_child, self.bulk_child, self.AI_child],#Chunk 1
+                              [self.power_child, self.oxy_child],#Chunk 2
+                              [self.target_child, self.weap_child, self.LIDAR_child]]#Chunk 3
+@onready var all_system_nodes := [self.menu_child, self.engine_child, self.AI_child, self.bulk_child, 
+                                  self.power_child, self.oxy_child, self.target_child, self.weap_child, self.LIDAR_child]
+var num_chunks := len(chunk_names)
 
 # === MOVEMENT VARS ===
 #Location details in long,lat
@@ -47,12 +54,38 @@ var max_accel := 0.1
 var engine_power := 0.0# 0 - 100
 var velocity := Vector2(0,0)#Speed and direction
 
+# === SIDEBAR VARS ===
+@onready var sidebar_engine := $VC/V/Sidebar/EngineStats
+@onready var signal_text  := $VC/V/Sidebar/Signal
+
+@onready var LLF_text := [$VC/V/Sidebar/Lock, $VC/V/Sidebar/Load, $VC/V/Sidebar/Flood]
+
+
 func _ready() -> void:
+    #Connecting signals
+    self.target_child.check_ID.connect(on_entity_check)
     self.LIDAR_child.entity_request.connect(on_LIDAR_request)
-    self.target_child.new_selection.connect(on_new_selection)
-    self.target_child.torpedo_launched.connect(on_torpedo_launch)
+    self.LIDAR_child.signal_update.connect(on_signal_update)
     self.entity_manager.entity_created.connect(on_entity_created)
     self.entity_manager.entity_destroyed.connect(on_entity_destroyed)
+    self.weap_child.torpedo_launched.connect(on_torpedo_launch)
+    
+    for node in self.all_system_nodes:
+        node.request_command_focus.connect(request_command_focus)
+        node.return_command_focus.connect(return_command_focus)
+            
+    #Connecting systems to each other
+    for node in self.all_system_nodes:
+        node.set_siblings(self.all_system_nodes)
+
+func request_command_focus() -> void:
+    update_command_focus(false)
+func return_command_focus() -> void:
+    update_command_focus(true)
+func update_command_focus(t: bool) -> void:
+    self.command_focus = t
+    for node in self.all_system_nodes:
+        node.set_command_focus(t)
 
 func _process(delta: float):
     #Update rotation
@@ -88,17 +121,24 @@ func _process(delta: float):
     update_vel()
     self.sub_position+=self.velocity
     
+    #Update sidebar
+    update_sidebar()
+    
 func _input(event):
-    for possible_action in range(Global.num_systems):#Check for menu change
-        if(event.is_action_pressed(Global.systems[possible_action])):
-            self.menu_choice = possible_action#Set the menu choice
-            for n in range(Global.num_systems):#Set the focuses
-                if(possible_action==n):
-                    self.system_nodes[n].set_focus(true)
-                    self.focuses[n]=true
-                else:
-                    self.system_nodes[n].set_focus(false)        
-                    self.focuses[n]=false
+    if(event.is_action_pressed("Enter")):
+        update_command_focus(true)
+    for action_indx in range(self.num_chunks):
+        if(event.is_action_pressed(chunk_names[action_indx])):#Check if a SysChunk event
+            for chunk_indx in range(self.num_chunks):#Set the chunk focuses
+                if(action_indx==chunk_indx):#Activate this chunk
+                    self.command_focus = (self.active_chunk != chunk_indx) or self.command_focus
+                    update_command_focus(self.command_focus)
+                    self.active_chunk = chunk_indx
+                    for system in self.chunk_nodes[chunk_indx]:
+                        system.set_focus(true)
+                else:#Deactivate these chunks
+                    for system in self.chunk_nodes[chunk_indx]:
+                        system.set_focus(false)
     
 func _unhandled_input(event):#Quit on ESC
     if event is InputEventKey:
@@ -160,24 +200,44 @@ func emergency_depth() -> void:
     else:
         self.set_desire_depth(0)
         
-    
-    
-#Returns a string about the sub's position and movement info
-func get_sub_info() -> String:
-    var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"
-    rtn += ("%.2f \n%.2f\n" % [self.speed*Global.desectic_knot_ratio, self.engine_power/self.max_accel])
-    rtn += ("%.2f \n%.2f" % [self.heading, self.depth])
+#Returns an arr about the sub's position and movement info    
+func get_engine_info() -> Array:
+    #[Speed, Power%, Heading, Depth]
+    var rtn = [self.speed*Global.desectic_knot_ratio,
+               self.engine_power/self.max_accel,
+               self.heading,
+               self.depth]
     return(rtn)
     
-func get_viewport_object():
+func get_viewport_object() -> Viewport:
     return(self.global_view)
     
-func get_fuel(indx: int) -> float:
-    return(self.oxy_child.get_indx_fuel(indx))
+func get_electricity(indx: int) -> float:
+    return(self.power_child.get_indx_electricity(indx))
 func get_lube(indx: int) -> float:
     return(self.oxy_child.get_indx_lube(indx))
-func get_power(indx: int) -> float:
-    return(self.power_child.get_indx_power(indx))
+func get_coolant(indx: int) -> float:
+    return(self.oxy_child.get_indx_coolant(indx))
+    
+#TODO
+func update_sidebar() -> void:
+    #Update engine stats
+    #POS, SPEED, ENGINE %, HEADING, DEPTH
+    var output = ""
+    var tmp_pos = self.sub_position*Global.desec_deg_ratio
+    output += "%.4f, %.4f \n" % [tmp_pos[0], tmp_pos[1]]
+    var tmp = self.get_engine_info()
+    for i in tmp:
+        output += "%.2f \n" % [i]
+    self.sidebar_engine.set_text(output)
+    
+    #Update system stats
+    
+    #Update ELC
+    
+    #Update Signal
+    
+    #Update torp stats
     
 #Update LIDAR's entity list from the entity manager
 func on_LIDAR_request() -> void:
@@ -185,27 +245,40 @@ func on_LIDAR_request() -> void:
     self.LIDAR_child.update_display(entity_list)
     self.LIDAR_child.request_flag = false
 
-#When a new entity is selected, update LIDAR
-#Signaled by Target
-func on_new_selection(id: String) -> void:
-    self.LIDAR_child.update_selection(id)
-
-#When torpedo is launched, update Entity Manager
-#Signaled by Target
-func on_torpedo_launch(torpedo: BasicTorp) -> void:
-    self.entity_manager.add_torpedo(torpedo)
+#Signaled by LIDAR when lidar timing is changed
+func on_signal_update(s: bool) -> void:
+    self.signal_text.set_visible(s)
 
 #When ent has been created, update LIDAR and target
 #Signaled by Entity Manager
 func on_entity_created(ent: EntityBase) -> void:
     self.LIDAR_child.add_new_entity(ent)
-    self.target_child.add_new_entity(ent)
 
 #When ent had been destroyed, update LIDAR and target
 #Signaled by Entity Manager
 func on_entity_destroyed(ent: EntityBase) -> void:
     self.LIDAR_child.destroy_entity(ent)
-    self.target_child.destroy_entity(ent)
+
+#When new entity is selected
+#Signaled by Target
+func on_entity_check(curr_ent: String) -> void:
+    if(self.entity_manager.check_ent_id(curr_ent)):
+        self.target_child.update_selection(true)
+        self.LIDAR_child.update_selection(curr_ent)
+    else:
+        self.target_child.update_selection(false)
+        self.LIDAR_child.update_selection("-1")
+        
+#When weapons launches a torp obj
+#Signaled by Weapons
+func on_torpedo_launch(torp_obj: BasicTorp) -> void:
+    self.entity_manager.add_torpedo(torp_obj)
 
 func _to_string() -> String:
-    return(get_sub_info())
+    var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"
+    rtn += ("%.2f \n%.2f\n" % [self.speed*Global.desectic_knot_ratio, self.engine_power/self.max_accel])
+    rtn += ("%.2f \n%.2f" % [self.heading, self.depth])
+    return(rtn)
+
+func _on_signal_timer_timeout() -> void:
+   self.signal_text.set_visible(false)

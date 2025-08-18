@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cm2rcdex268dp"
-path="res://.godot/imported/Jin_class_SSBN.svg.png-2ae96a7bd8417c5ba06a973b0f0638a8.ctex"
+uid="uid://b1avj7kkqlgs7"
+path="res://.godot/imported/WeaponsScreen.png-65e75e069a10f938f51a7a06805204f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Misc/Jin_class_SSBN.svg.png"
-dest_files=["res://.godot/imported/Jin_class_SSBN.svg.png-2ae96a7bd8417c5ba06a973b0f0638a8.ctex"]
+source_file="res://Assets/Textures/Screens/WeaponsScreen.png"
+dest_files=["res://.godot/imported/WeaponsScreen.png-65e75e069a10f938f51a7a06805204f4.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0w3b6bgpcypr"
-path="res://.godot/imported/PowerScreen.png-cc432148ca9bca686e696f72fcac1273.ctex"
+uid="uid://d37od52nam32l"
+path="res://.godot/imported/EngineScreen.png-c3390bba1e9fcc07d05a522d267d4a4c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/PowerScreen.png"
-dest_files=["res://.godot/imported/PowerScreen.png-cc432148ca9bca686e696f72fcac1273.ctex"]
+source_file="res://Assets/Textures/Screens/EngineScreen.png"
+dest_files=["res://.godot/imported/EngineScreen.png-c3390bba1e9fcc07d05a522d267d4a4c.ctex"]
 
 [params]
 

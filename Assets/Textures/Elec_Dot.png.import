@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c77rcla4j4nad"
-path="res://.godot/imported/fuel_bar.png-a6e289724cf2190b563b05a4714d3314.ctex"
+uid="uid://bl3ic2lrsol26"
+path="res://.godot/imported/Elec_Dot.png-12fabb6436bb0f96219a12b9237e78ed.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/fuel_bar.png"
-dest_files=["res://.godot/imported/fuel_bar.png-a6e289724cf2190b563b05a4714d3314.ctex"]
+source_file="res://Assets/Textures/Elec_Dot.png"
+dest_files=["res://.godot/imported/Elec_Dot.png-12fabb6436bb0f96219a12b9237e78ed.ctex"]
 
 [params]
 

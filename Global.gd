@@ -3,13 +3,12 @@ extends Node
 
 # === SHIP SYSTEMS ===
 enum {MENU,ENGINE,POWER,OXY,AI,BULK,TARGET,WEAP,LIDAR}
-var systems := ["MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"]#Names of possible menu actions
-var num_systems := len(systems)
+var systems := ["MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"]#Names of systems
 
 # === DISTANCES ===
 #1 degree = 60 nautical miles (nmile) = 36000 deciseconds
 #1 nmile = 1 minute = 60 seconds = 600 desec
-#1 decisecond = 3.09 meters
+#1 decisecond ~= 3.09 meters
 
 #1 degree = 60 nmiles
 var deg_nmile_ratio := 60

@@ -1,47 +1,88 @@
-[gd_scene load_steps=3 format=3 uid="uid://bchrej7d20kxs"]
+[gd_scene load_steps=6 format=3 uid="uid://bchrej7d20kxs"]
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_2kqdq"]
 [ext_resource type="Script" uid="uid://chh6nsfu83vap" path="res://Scripts/ShipSystems/ship_engine.gd" id="2_cqdlt"]
+[ext_resource type="Texture2D" uid="uid://d37od52nam32l" path="res://Assets/Textures/Screens/EngineScreen.png" id="3_63dwo"]
+[ext_resource type="Texture2D" uid="uid://c17lx88hldsxa" path="res://Assets/Textures/curr_bar.png" id="4_ar7c7"]
+[ext_resource type="Texture2D" uid="uid://cq8s2vnjbxx4s" path="res://Assets/Textures/request_bar.png" id="5_8q4rx"]
 
 [node name="ShipEngine" instance=ExtResource("1_2kqdq")]
 script = ExtResource("2_cqdlt")
 
-[node name="StatusLabels" type="RichTextLabel" parent="." index="0"]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 175.0
-offset_bottom = 198.0
-text = "POSITION:
-SPEED:  
-ENGINE:
-HEADING:
-DEPTH:  "
+[node name="Background" parent="." index="0"]
+texture = ExtResource("3_63dwo")
 
-[node name="StatusNums" type="RichTextLabel" parent="." index="1"]
-offset_left = 192.0
-offset_top = 16.0
-offset_right = 378.0
-offset_bottom = 194.0
-text = "FOX
-123
-456
-789
-123
-456
-789"
+[node name="Power" type="Node2D" parent="." index="1"]
 
-[node name="InputText" type="RichTextLabel" parent="." index="2"]
-offset_left = 64.0
-offset_top = 205.0
-offset_right = 168.0
-offset_bottom = 248.0
-text = "INPUT"
-
-[node name="InputBox" type="LineEdit" parent="." index="3"]
-offset_left = 64.0
-offset_top = 256.0
-offset_right = 168.0
-offset_bottom = 304.0
+[node name="PowerInput" type="LineEdit" parent="Power" index="0"]
+offset_left = 416.0
+offset_top = 784.0
+offset_right = 616.0
+offset_bottom = 872.0
 virtual_keyboard_enabled = false
 
-[connection signal="text_changed" from="InputBox" to="." method="_on_input_box_text_changed"]
+[node name="PowerStatus" type="RichTextLabel" parent="Power" index="1"]
+offset_left = 464.0
+offset_top = 88.0
+offset_right = 720.0
+offset_bottom = 120.0
+
+[node name="CurrBar" type="Sprite2D" parent="Power" index="2"]
+position = Vector2(557, 727)
+texture = ExtResource("4_ar7c7")
+
+[node name="Heading" type="Node2D" parent="." index="2"]
+
+[node name="HeadingInput" type="LineEdit" parent="Heading" index="0"]
+offset_left = 1016.0
+offset_top = 784.0
+offset_right = 1216.0
+offset_bottom = 872.0
+virtual_keyboard_enabled = false
+
+[node name="HeadingStatus" type="RichTextLabel" parent="Heading" index="1"]
+offset_left = 1024.0
+offset_top = 80.0
+offset_right = 1216.0
+offset_bottom = 120.0
+
+[node name="CurrBar" type="Sprite2D" parent="Heading" index="2"]
+position = Vector2(1118.61, 394.211)
+rotation = 1.57079
+scale = Vector2(1.1296, 0.360004)
+texture = ExtResource("4_ar7c7")
+offset = Vector2(-102.417, 2.20117)
+
+[node name="RequestBar" type="Sprite2D" parent="Heading" index="3"]
+position = Vector2(1118.61, 394.287)
+rotation = 1.57079
+scale = Vector2(1.1296, 0.360004)
+texture = ExtResource("5_8q4rx")
+offset = Vector2(-102.484, 2.20117)
+
+[node name="Depth" type="Node2D" parent="." index="3"]
+
+[node name="DepthInput" type="LineEdit" parent="Depth" index="0"]
+offset_left = 1604.0
+offset_top = 782.0
+offset_right = 1804.0
+offset_bottom = 870.0
+virtual_keyboard_enabled = false
+
+[node name="DepthStatus" type="RichTextLabel" parent="Depth" index="1"]
+offset_left = 1624.0
+offset_top = 88.0
+offset_right = 1792.0
+offset_bottom = 128.0
+
+[node name="CurrBar" type="Sprite2D" parent="Depth" index="2"]
+position = Vector2(1755, 130)
+texture = ExtResource("4_ar7c7")
+
+[node name="RequestBar" type="Sprite2D" parent="Depth" index="3"]
+position = Vector2(1755, 130)
+texture = ExtResource("5_8q4rx")
+
+[connection signal="text_changed" from="Power/PowerInput" to="." method="_on_power_input_text_changed"]
+[connection signal="text_changed" from="Heading/HeadingInput" to="." method="_on_heading_input_text_changed"]
+[connection signal="text_changed" from="Depth/DepthInput" to="." method="_on_depth_input_text_changed"]
