@@ -49,28 +49,8 @@ func _input(event: InputEvent) -> void:
                 self.inputBox.clear()
                 self.inputBox.grab_focus()
                 self.request_command_focus.emit()
-        if(event.is_action_pressed("Enter")):
-            if(self.inputBox.has_focus()):
-                var txt_input = self.inputBox.get_text()
-                var good_input = len(txt_input)>0
-                if(good_input):
-                    self.autoRate = float(txt_input)
-                    self.autoFlag = (autoRate!=0)
-                    self.autoLightG.set_visible(self.autoFlag)
-                    if(self.autoFlag):
-                        #Start timer
-                        self.timer.start(self.autoRate)
-                        self.autoBox.set_text(str(self.autoRate))
-                        self.signal_update.emit(true)
-                    else:
-                        #Stop timer
-                        self.timer.stop()
-                        self.autoBox.set_text("====")
-                        self.signal_update.emit(false)
-                    
-                self.inputBox.clear()
-                self.inputBox.release_focus()
-        
+    
+#Update the rotation of the player sprite    
 func update_sub_rotation(deg) -> void:
     #Update player
     self.player_sprite.set_rotation_degrees(deg)
@@ -118,7 +98,7 @@ func destroy_entity(ent: EntityBase) -> void:
     obj_tmp.queue_free()
     selected_entity = "-1"
 
-#TODO: document
+#Updates the selection info when a new entity is selected
 func update_selection(id: String) -> void:
     self.selected_sprite.set_visible(id != "-1")
     self.selected_entity = id
@@ -152,3 +132,22 @@ func _on_auto_input_text_changed(_new_text: String) -> void:
     #Check for only nums
     if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_float()):
         self.inputBox.clear()
+
+func _on_auto_input_text_submitted(new_text: String) -> void:
+    if(len(new_text)>0):
+        self.autoRate = float(new_text)
+        self.autoFlag = (autoRate!=0)
+        self.autoLightG.set_visible(self.autoFlag)
+        if(self.autoFlag):
+            #Start timer
+            self.timer.start(self.autoRate)
+            self.autoBox.set_text(str(self.autoRate))
+            self.signal_update.emit(true)
+        else:
+            #Stop timer
+            self.timer.stop()
+            self.autoBox.set_text("====")
+            self.signal_update.emit(false)
+                
+    self.inputBox.clear()
+    self.inputBox.release_focus()

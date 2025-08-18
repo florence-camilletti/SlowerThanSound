@@ -54,3 +54,4 @@ texture = ExtResource("7_bne4i")
 
 [connection signal="timeout" from="SweepTimer" to="." method="_on_timer_timeout"]
 [connection signal="text_changed" from="AutoInput" to="." method="_on_auto_input_text_changed"]
+[connection signal="text_submitted" from="AutoInput" to="." method="_on_auto_input_text_submitted"]

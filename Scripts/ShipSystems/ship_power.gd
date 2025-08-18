@@ -69,6 +69,7 @@ func _input(event: InputEvent) -> void:
 func get_indx_electricity(curr_indx: int) -> float:
     return((self.elec_levels[curr_indx]+1.0)/(self.elec_levels_max[curr_indx]+1.0))
 
+#Calculates where the system selection dot should be on screen based on selected system
 func calc_dot_spot(curr_indx: int) -> Vector2:
     if(curr_indx==-1):
         return(Vector2(-10,10))
@@ -80,10 +81,12 @@ func calc_dot_spot(curr_indx: int) -> Vector2:
     y_val = y_offset + (y_val*y_spacing)
     return(Vector2(x_val,y_val))
 
+#Updates the sprites for all systems
 func update_all_sprites() -> void:
     for n in range(1, len(self.all_power_sprites)):
         update_power_sprites(n)
-    
+   
+#Updates the sprites for a single system 
 func update_power_sprites(curr_indx: int) -> void:
     var new_level = self.elec_levels[curr_indx]
     var sprites = self.all_power_sprites[curr_indx]

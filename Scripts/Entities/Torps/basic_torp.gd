@@ -38,6 +38,7 @@ func set_target_id(ent_id: String) -> void:
     self.target_id = ent_id
 func set_target(ent: EntityBase) -> void:
     self.target = ent
+    
 func get_target_id() -> String:
     return(self.target_id)
 func get_target_pos() -> Vector2:

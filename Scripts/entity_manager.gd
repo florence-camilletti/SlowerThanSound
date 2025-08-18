@@ -42,7 +42,7 @@ func add_enemy(enemy: BasicEnemy) -> void:
     add_entity(enemy)
 func add_torpedo(torp: BasicTorp) -> void:
     var target_id = torp.get_target_id()
-    for ent in self.entity_list:
+    for ent in self.entity_list:#Set torpedo target
         if(ent.get_id() == target_id):
             torp.set_target(ent)
     add_entity(torp)
@@ -65,12 +65,6 @@ func _make_new_enemy() -> void:#TESTING FUNCTION
     var new_enemy = BasicEnemy.new(num_enemies, tmp_pos, tmp_vel)#TODO: CHANGE THIS
     #Add enemy to parent objects
     add_entity(new_enemy)
-    
-func check_ent_id(curr_ent: String) -> bool:
-    for e in entity_list:
-        if(e.get_id()==curr_ent):
-            return(true)
-    return(false)
     
 #Uses a spacial cell hash to determin if any torpedoes have collided with something
 func check_collisions():
@@ -97,13 +91,21 @@ func check_collisions():
                                 if(hit):
                                     torp.set_health(0)
                                     target.damage(torp.get_damage_points())
+                                    
+#Returns if an entity exists with ID ent_id
+func check_ent_id(ent_id: String) -> bool:
+    for e in self.entity_list:
+        if(e.get_id()==ent_id):
+            return(true)
+    return(false)
 
+#Returns the entity object with ID ent_id
 func get_ent_obj(ent_id: String) -> EntityBase:
     for e in self.entity_list:
         if(e.get_ID()==ent_id):
             return(e)
     return(null)
-
+    
 func get_num_entities() -> int:
     return(self.num_entities)
     

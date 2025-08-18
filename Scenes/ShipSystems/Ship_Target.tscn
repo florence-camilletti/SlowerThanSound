@@ -36,3 +36,5 @@ texture = ExtResource("4_urawi")
 visible = false
 position = Vector2(1395, 341)
 texture = ExtResource("5_85lif")
+
+[connection signal="text_submitted" from="EntityInput" to="." method="_on_entity_input_text_submitted"]

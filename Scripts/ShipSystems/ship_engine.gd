@@ -9,7 +9,7 @@ extends ShipSystemBase
 @onready var HeadingInput := $Heading/HeadingInput
 @onready var DepthInput := $Depth/DepthInput
 
-@onready var inputBoxes := [null, PowerInput, HeadingInput, DepthInput]
+@onready var inputBoxes := [PowerInput, HeadingInput, DepthInput]
 
 # === DISPLAY VARS ===
 var max_display_speed := 80
@@ -23,10 +23,6 @@ var depth_full := Vector2(1755, 727)
 @onready var currHeading = $Heading/CurrBar
 @onready var requestDepth = $Depth/RequestBar
 @onready var currDepth = $Depth/CurrBar
-
-# === SETTING VARS ===
-enum {NONE, POWER, HEADING, DEPTH}
-var selected_setting := NONE
 
 func _init() -> void:
     super._init(false, Global.ENGINE)
@@ -55,43 +51,22 @@ func _input(event):
     if(in_focus):
         if(self.command_focus_open):
             if(event.is_action_pressed("Action_U")):#Engine power
-                self.selected_setting = POWER
                 self.PowerInput.grab_focus()
                 request_command_focus.emit()
             elif(event.is_action_pressed("Action_J")):
                 manager_node.emergency_speed()
                 
             elif(event.is_action_pressed("Action_I")):#Heading
-                self.selected_setting = HEADING
                 self.HeadingInput.grab_focus()
                 request_command_focus.emit()
             elif(event.is_action_pressed("Action_K")):
                 manager_node.emergency_heading()
                 
             elif(event.is_action_pressed("Action_O")):#Depth
-                self.selected_setting = DEPTH
                 self.DepthInput.grab_focus()
                 request_command_focus.emit()
             elif(event.is_action_pressed("Action_L")):
-                manager_node.emergency_depth()            
-            
-        if(event.is_action_pressed("Enter")):
-            var text_input = self.inputBoxes[self.selected_setting].get_text()
-            var good_input = len(text_input)>0
-            var inputNum = float(text_input)
-            for b in range(1, len(self.inputBoxes)):
-                self.inputBoxes[b].clear()
-                self.inputBoxes[b].release_focus()
-            
-            if(good_input):#Check to make sure something has been submitted
-                if(selected_setting==HEADING):
-                    manager_node.set_desire_heading(inputNum)
-                    self.requestHeading.set_rotation_degrees(inputNum+90)
-                elif(selected_setting==DEPTH):
-                    manager_node.set_desire_depth(inputNum)
-                    self.requestDepth.set_position(calc_depth_pos(inputNum))
-                elif(selected_setting==POWER):
-                    manager_node.set_engine_power(inputNum)
+                manager_node.emergency_depth()
 
 func calc_speed_pos(speed: float) -> Vector2:
     return(self.speed_zero.lerp(self.speed_full, speed/self.max_display_speed))
@@ -112,3 +87,26 @@ func _on_depth_input_text_changed(_new_text: String) -> void:
     #Check for only nums
     if(not self.DepthInput.text.is_empty() and not self.DepthInput.text.is_valid_float()):
         self.DepthInput.clear()
+
+func _on_power_input_text_submitted(new_text: String) -> void:
+    if(len(new_text)>0):
+        var inputNum = float(new_text)
+        manager_node.set_engine_power(inputNum)
+    self.inputBoxes[0].clear()
+    self.inputBoxes[0].release_focus()
+
+func _on_heading_input_text_submitted(new_text: String) -> void:
+    if(len(new_text)>0):
+        var inputNum = float(new_text)
+        manager_node.set_desire_heading(inputNum)
+        self.requestHeading.set_rotation_degrees(inputNum+90)
+    self.inputBoxes[1].clear()
+    self.inputBoxes[1].release_focus()
+
+func _on_depth_input_text_submitted(new_text: String) -> void:
+    if(len(new_text)>0):
+        var inputNum = float(new_text)
+        manager_node.set_desire_depth(inputNum)
+        self.requestDepth.set_position(calc_depth_pos(inputNum))
+    self.inputBoxes[2].clear()
+    self.inputBoxes[2].release_focus()

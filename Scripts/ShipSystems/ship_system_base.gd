@@ -6,7 +6,7 @@ class_name ShipSystemBase
 var manager_node: ShipManager
 var global_viewport: SubViewport
 var in_focus: bool
-var indx: int
+var system_indx: int
 
 # === THE TALKING STICK ===
 @warning_ignore("unused_signal")
@@ -34,7 +34,7 @@ var total_status := 1.0
 
 func _init(f:bool, i:int) -> void:
     self.in_focus=f
-    self.indx=i
+    self.system_indx=i
 
 func _ready() -> void:
     self.manager_node = get_parent().get_parent().get_parent().get_parent()#ew
@@ -44,7 +44,7 @@ func _ready() -> void:
     self.visible = false
     
 func _process(_delta: float) -> void:
-    update_vars()
+    update_ELC()
 
 func set_siblings(siblings: Array) -> void:
     self.engine_system = siblings[Global.ENGINE]
@@ -76,10 +76,10 @@ func get_electricity() -> float:
 func get_total_status() -> float:
     return(self.total_status)
 
-func update_vars() -> void:
-    self.coolant = self.manager_node.get_coolant(self.indx)
-    self.lube = self.manager_node.get_lube(self.indx)
-    self.electricity = self.manager_node.get_electricity(self.indx)
+func update_ELC() -> void:
+    self.coolant = self.manager_node.get_coolant(self.system_indx)
+    self.lube = self.manager_node.get_lube(self.system_indx)
+    self.electricity = self.manager_node.get_electricity(self.system_indx)
     self.total_status = self.health*self.lube*self.electricity
     update_UI_text()
 

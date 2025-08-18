@@ -15,11 +15,11 @@ class_name ShipManager
 @onready var LIDAR_child  := $VC/V/SysChunk3/ShipLIDAR
 @onready var weap_child   := $VC/V/SysChunk3/ShipWeapons
 @onready var target_child := $VC/V/SysChunk3/ShipTarget
-var active_chunk := -1
-var command_focus := true
+var command_focus := true#If a text box is being focused
 
 # === MENU VARS ===
 var menu_choice := 0
+var active_chunk := -1
 var chunk_names := ["SysChunkM","SysChunk1","SysChunk2","SysChunk3"]
 @onready var chunk_nodes := [[self.menu_child],#Chunk M
                               [self.engine_child, self.bulk_child, self.AI_child],#Chunk 1

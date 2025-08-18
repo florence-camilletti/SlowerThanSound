@@ -96,16 +96,19 @@ func _input(event: InputEvent) -> void:
             self.coolant_levels[self.selected_indx] = max(self.coolant_levels[self.selected_indx]-1, 0)
             update_all_sprites()
 
+#Returns how much coolan/lube a system has
 func get_indx_coolant(curr_indx: int) -> float:
     return((self.coolant_levels[curr_indx]+1.0)/(self.coolant_levels_max[curr_indx]+1.0))
 func get_indx_lube(curr_indx: int) -> float:
     return((self.lube_levels[curr_indx]+1.0)/(self.lube_levels_max[curr_indx]+1.0))
 
+#Update the sprites of all systems
 func update_all_sprites() -> void:
     for n in range(1,len(self.all_lube_sprites)):
         update_lube_sprite(n)
         update_coolant_sprite(n)
 
+#Update the sprites of a single system
 func update_lube_sprite(curr_indx: int) -> void:
     var new_level = self.lube_levels[curr_indx]
     var sprites = self.all_lube_sprites[curr_indx]

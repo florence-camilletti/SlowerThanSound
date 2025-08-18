@@ -3,15 +3,15 @@ class_name EntityBase
 
 # === ID vars ===
 signal death
-var num: int
-var type: String
+var num: int#ID of the entity
+var type: String#String abreviation of the entity
 var texture: Texture2D
 
 # === Status Vars ===
 var health: int
 
 # === Position vars ===
-var desec_pos: Vector2#Decisecond
+var desec_pos: Vector2#Decisecond position
 var map_cell: Vector2
 
 # === Movement Vars ===
@@ -51,11 +51,6 @@ func get_health() -> int:
 func is_alive() -> bool:
     return(self.health>0)
 
-func is_torp() -> bool:
-    return(false)
-func is_torpedoe() -> bool:
-    return(is_torp())
-
 func set_texture(t: Texture2D) -> void:
     self.texture = t
 func set_desec_pos(p: Vector2) -> void:
@@ -85,5 +80,10 @@ func get_id() -> String:
 func get_ID() -> String:
     return(get_id())
 
+func is_torp() -> bool:
+    return(false)
+func is_torpedoe() -> bool:
+    return(is_torp())
+    
 func _to_string() -> String:
     return("ID: "+get_id()+", POS: "+str(self.desec_pos)+", VEL: "+str(self.desec_vel))
