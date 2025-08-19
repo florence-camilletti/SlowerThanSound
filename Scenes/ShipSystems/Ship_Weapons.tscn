@@ -88,13 +88,100 @@ offset_right = 2205.0
 offset_bottom = 677.0
 text = "why are you looking over here?"
 
-[node name="CurrentTube" type="RichTextLabel" parent="." index="7"]
+[node name="TubeTargetNames" type="Node2D" parent="." index="7"]
+
+[node name="Tube1" type="RichTextLabel" parent="TubeTargetNames" index="0"]
+offset_left = 1381.0
+offset_top = 415.0
+offset_right = 1505.0
+offset_bottom = 455.0
+text = "======"
+
+[node name="Tube2" type="RichTextLabel" parent="TubeTargetNames" index="1"]
+offset_left = 1508.0
+offset_top = 415.0
+offset_right = 1632.0
+offset_bottom = 455.0
+text = "======"
+
+[node name="Tube3" type="RichTextLabel" parent="TubeTargetNames" index="2"]
+offset_left = 1635.0
+offset_top = 415.0
+offset_right = 1759.0
+offset_bottom = 455.0
+text = "======"
+
+[node name="Tube4" type="RichTextLabel" parent="TubeTargetNames" index="3"]
+offset_left = 1762.0
+offset_top = 415.0
+offset_right = 1886.0
+offset_bottom = 455.0
+text = "======"
+
+[node name="TubeLoadTimers" type="Node2D" parent="." index="8"]
+position = Vector2(1708, 891)
+
+[node name="Tube1" type="Timer" parent="TubeLoadTimers" index="0"]
+wait_time = 5.0
+one_shot = true
+
+[node name="Tube2" type="Timer" parent="TubeLoadTimers" index="1"]
+one_shot = true
+
+[node name="Tube3" type="Timer" parent="TubeLoadTimers" index="2"]
+one_shot = true
+
+[node name="Tube4" type="Timer" parent="TubeLoadTimers" index="3"]
+one_shot = true
+
+[node name="TubeFloodTimers" type="Node2D" parent="." index="9"]
+
+[node name="Tube1" type="Timer" parent="TubeFloodTimers" index="0"]
+wait_time = 5.0
+one_shot = true
+
+[node name="Tube2" type="Timer" parent="TubeFloodTimers" index="1"]
+one_shot = true
+
+[node name="Tube3" type="Timer" parent="TubeFloodTimers" index="2"]
+one_shot = true
+
+[node name="Tube4" type="Timer" parent="TubeFloodTimers" index="3"]
+one_shot = true
+
+[node name="LLFText" type="Node2D" parent="." index="10"]
+
+[node name="Lock" type="RichTextLabel" parent="LLFText" index="0"]
+visible = false
+offset_left = 1403.0
+offset_top = 890.0
+offset_right = 1531.0
+offset_bottom = 930.0
+text = "LOCK"
+
+[node name="Load" type="RichTextLabel" parent="LLFText" index="1"]
+visible = false
+offset_left = 1578.0
+offset_top = 891.0
+offset_right = 1672.0
+offset_bottom = 931.0
+text = "LOAD"
+
+[node name="Flood" type="RichTextLabel" parent="LLFText" index="2"]
+visible = false
+offset_left = 1708.0
+offset_top = 891.0
+offset_right = 1787.0
+offset_bottom = 931.0
+text = "FLOOD"
+
+[node name="CurrentTube" type="RichTextLabel" parent="." index="11"]
 offset_left = 1496.0
 offset_top = 529.0
 offset_right = 1570.0
 offset_bottom = 587.0
 
-[node name="CurrentType" type="RichTextLabel" parent="." index="8"]
+[node name="CurrentType" type="RichTextLabel" parent="." index="12"]
 offset_left = 1662.0
 offset_top = 529.0
 offset_right = 1864.0
@@ -102,3 +189,11 @@ offset_bottom = 586.0
 
 [connection signal="text_changed" from="TorpInput" to="." method="_on_torp_input_text_changed"]
 [connection signal="text_changed" from="TubeInput" to="." method="_on_tube_input_text_changed"]
+[connection signal="timeout" from="TubeLoadTimers/Tube1" to="." method="load_tube" binds= [0]]
+[connection signal="timeout" from="TubeLoadTimers/Tube2" to="." method="load_tube" binds= [1]]
+[connection signal="timeout" from="TubeLoadTimers/Tube3" to="." method="load_tube" binds= [2]]
+[connection signal="timeout" from="TubeLoadTimers/Tube4" to="." method="load_tube" binds= [3]]
+[connection signal="timeout" from="TubeFloodTimers/Tube1" to="." method="flood_tube" binds= [0]]
+[connection signal="timeout" from="TubeFloodTimers/Tube2" to="." method="flood_tube" binds= [1]]
+[connection signal="timeout" from="TubeFloodTimers/Tube3" to="." method="flood_tube" binds= [2]]
+[connection signal="timeout" from="TubeFloodTimers/Tube4" to="." method="flood_tube" binds= [3]]

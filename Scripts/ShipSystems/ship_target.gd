@@ -2,6 +2,7 @@ extends ShipSystemBase
 
 # === SIGNAL VARS ===
 signal check_ID
+signal target_locked
 
 # === SELECTION VARS ===
 @onready var inputBox = $EntityInput
@@ -31,14 +32,20 @@ func _input(event: InputEvent) -> void:
                 self.inputBox.grab_focus()
                 self.global_viewport.set_input_as_handled()
                 self.request_command_focus.emit()
+            if(event.is_action_pressed("Action_O")):
+                if(self.selected_flag):
+                    check_ID.emit("-1")
+                    self.weapons_system.give_tube_selection(self.selected_entity_ID)
+                    self.selectedLight.set_visible(self.selected_flag)
+                    self.selectedEntity.set_text("====")
     
 func get_selected_entity_ID() -> String:
     return(self.selected_entity_ID)
     
+#Called by ship manager after ent_id has been checked
 func update_selection(is_valid: bool) -> void:
     self.selected_flag = is_valid
     self.wait_flag = false
-
 
 func _on_entity_input_text_submitted(new_text: String) -> void:
     if(len(new_text)>0):

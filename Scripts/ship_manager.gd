@@ -58,8 +58,10 @@ var velocity := Vector2(0,0)#Speed and direction
 @onready var sidebar_engine := $VC/V/Sidebar/EngineStats
 @onready var signal_text  := $VC/V/Sidebar/Signal
 
-@onready var LLF_text := [$VC/V/Sidebar/Lock, $VC/V/Sidebar/Load, $VC/V/Sidebar/Flood]
-
+@onready var LLF_T1_text := [$VC/V/Sidebar/Tube1/Lock, $VC/V/Sidebar/Tube1/Load, $VC/V/Sidebar/Tube1/Flood]
+@onready var LLF_T2_text := [$VC/V/Sidebar/Tube2/Lock, $VC/V/Sidebar/Tube2/Load, $VC/V/Sidebar/Tube2/Flood]
+@onready var LLF_T3_text := [$VC/V/Sidebar/Tube3/Lock, $VC/V/Sidebar/Tube3/Load, $VC/V/Sidebar/Tube3/Flood]
+@onready var LLF_T4_text := [$VC/V/Sidebar/Tube4/Lock, $VC/V/Sidebar/Tube4/Load, $VC/V/Sidebar/Tube4/Flood]
 
 func _ready() -> void:
     #Connecting signals
