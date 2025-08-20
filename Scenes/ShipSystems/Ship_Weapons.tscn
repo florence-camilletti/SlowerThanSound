@@ -175,6 +175,20 @@ offset_right = 1787.0
 offset_bottom = 931.0
 text = "FLOOD"
 
+[node name="Loading" type="RichTextLabel" parent="LLFText" index="3"]
+offset_left = 1394.0
+offset_top = 820.0
+offset_right = 1585.0
+offset_bottom = 860.0
+text = "LOADING"
+
+[node name="Flooding" type="RichTextLabel" parent="LLFText" index="4"]
+offset_left = 1624.0
+offset_top = 822.0
+offset_right = 1849.0
+offset_bottom = 862.0
+text = "FLOODING"
+
 [node name="CurrentTube" type="RichTextLabel" parent="." index="11"]
 offset_left = 1496.0
 offset_top = 529.0

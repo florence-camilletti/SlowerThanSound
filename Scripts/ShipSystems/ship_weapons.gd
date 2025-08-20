@@ -1,7 +1,6 @@
 extends ShipSystemBase
 
 # === TORP VARS ===
-signal torpedo_launched
 enum {DUMB, HOMING, LOITER, WIRE}
 var torp_names := ["DUMB", "HOMING", "LOITER", "WIRE", "EMPTY"]
 var torps_left = [5, 5, 5, 5]
@@ -18,9 +17,9 @@ var torpedo_objects = [DumbTorp, HomingTorp, LoiterTorp, WireTorp]
 
 # === TARGET VARS ===
 @onready var LLF_text = [$LLFText/Lock,$LLFText/Load,$LLFText/Flood]
+@onready var loading_text = $LLFText/Loading
+@onready var flooding_text = $LLFText/Flooding
 @onready var tube_target_text = [$TubeTargetNames/Tube1, $TubeTargetNames/Tube2, $TubeTargetNames/Tube3, $TubeTargetNames/Tube4]
-var tube_lock_flag := [false, false, false, false]
-var tube_targets := ["","","",""]
 
 # === TUBE VARS ===
 @onready var tube_light = $TubeLight
@@ -29,14 +28,22 @@ var tube_targets := ["","","",""]
 @onready var current_type_text = $CurrentType
 var num_tubes := 4
 var curr_tube := 0
+var tube_lock_flag := [false, false, false, false]
 var tube_open_flag := [true, true, true, true]
 var tube_load_flag := [false, false, false, false]
 var tube_flood_flag := [false, false, false, false]
+var tube_targets := ["","","",""]
 var loaded_torps := [-1, -1, -1, -1]
 
 @onready var tube_load_timers := [$TubeLoadTimers/Tube1, $TubeLoadTimers/Tube2, $TubeLoadTimers/Tube3, $TubeLoadTimers/Tube4]
 @onready var tube_flood_timers := [$TubeFloodTimers/Tube1, $TubeFloodTimers/Tube2, $TubeFloodTimers/Tube3, $TubeFloodTimers/Tube4]
 var flood_time := 5
+
+# === HUD SIGNALS ===
+signal tube_locked
+signal tube_loaded
+signal tube_flooded
+signal torpedo_launched
 
 func _init() -> void:
     super._init(false, Global.WEAP)
@@ -93,7 +100,7 @@ func launch_torpedo() -> void:
     torp_object.launch(self.manager_node.sub_position,
                         self.manager_node.heading,
                         self.manager_node.speed)
-    torpedo_launched.emit(torp_object)
+    torpedo_launched.emit(self.curr_tube, torp_object)
     #print(torp_object)
     
     #Clear tube
@@ -113,6 +120,8 @@ func update_tube_text() -> void:
     self.LLF_text[0].set_visible(self.tube_lock_flag[self.curr_tube])
     self.LLF_text[1].set_visible(self.tube_load_flag[self.curr_tube])
     self.LLF_text[2].set_visible(self.tube_flood_flag[self.curr_tube])
+    self.loading_text.set_visible(not self.tube_open_flag[self.curr_tube] and not self.tube_load_flag[self.curr_tube])
+    self.flooding_text.set_visible(self.tube_load_flag[self.curr_tube] and not self.tube_flood_flag[self.curr_tube])
 func update_torp_text() -> void:
     for t in range(4):
         self.torp_number_text[t].set_text(str(self.torps_left[t]))
@@ -125,6 +134,7 @@ func give_tube_selection(ent_id: String) -> void:
     self.tube_lock_flag[self.curr_tube] = true
     self.tube_targets[self.curr_tube] = ent_id
     update_both_text()
+    tube_locked.emit(self.curr_tube)
 
 func _on_tube_input_text_changed(new_text: String) -> void:
     if(new_text.is_valid_int()):
@@ -148,6 +158,7 @@ func load_tube(tube_num: int) -> void:
     self.loaded_torps[tube_num] = self.curr_torp_type
     self.current_type_text.set_text(self.torp_names[self.curr_torp_type])
     update_both_text()
+    tube_loaded.emit(tube_num)
     
     #Start flooding the tube
     self.tube_flood_timers[tube_num].start()
@@ -156,3 +167,4 @@ func load_tube(tube_num: int) -> void:
 func flood_tube(tube_num: int) -> void:
     self.tube_flood_flag[tube_num] = true
     update_both_text()
+    tube_flooded.emit(tube_num)
