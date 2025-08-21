@@ -32,12 +32,12 @@ var tube_lock_flag := [false, false, false, false]
 var tube_open_flag := [true, true, true, true]
 var tube_load_flag := [false, false, false, false]
 var tube_flood_flag := [false, false, false, false]
-var tube_targets := ["","","",""]
+var tube_targets := ["====","====","====","===="]
 var loaded_torps := [-1, -1, -1, -1]
 
 @onready var tube_load_timers := [$TubeLoadTimers/Tube1, $TubeLoadTimers/Tube2, $TubeLoadTimers/Tube3, $TubeLoadTimers/Tube4]
 @onready var tube_flood_timers := [$TubeFloodTimers/Tube1, $TubeFloodTimers/Tube2, $TubeFloodTimers/Tube3, $TubeFloodTimers/Tube4]
-var flood_time := 5
+var flood_time := 1.0#TODO: CHANGE THIS BACK
 
 # === HUD SIGNALS ===
 signal tube_locked
@@ -50,8 +50,8 @@ func _init() -> void:
 
 func _ready() -> void:
     super._ready()
-    for t in self.tube_load_timers:
-        t.set_wait_time(self.flood_time)
+    for t in range(len(self.tube_load_timers)):
+        self.tube_flood_timers[t].set_wait_time(self.flood_time)
     update_both_text()
     
 func _input(event: InputEvent) -> void:
@@ -92,22 +92,24 @@ func _input(event: InputEvent) -> void:
     
 func launch_torpedo() -> void:
     #Set up torpedo object
-    var torp_object = self.torpedo_objects[self.loaded_torps[self.curr_tube]].new(self.next_torp_id)
-    torp_object.set_target_id(self.target_system.get_selected_entity_ID())
+    var torpedo_type = self.loaded_torps[self.curr_tube]
+    var torp_object = self.torpedo_objects[torpedo_type].new(self.next_torp_id)#TODO: DEBUG SOMEWHERE OVER HERE FOR TARGETING
+    torp_object.set_target_id(self.tube_targets[self.curr_tube])
     self.next_torp_id+=1
     
     #Launch the torp object
-    torp_object.launch(self.manager_node.sub_position,
-                        self.manager_node.heading,
-                        self.manager_node.speed)
     torpedo_launched.emit(self.curr_tube, torp_object)
     #print(torp_object)
     
     #Clear tube
     self.tube_open_flag[self.curr_tube] = true
+    self.tube_lock_flag[self.curr_tube] = false
     self.tube_load_flag[self.curr_tube] = false
     self.tube_flood_flag[self.curr_tube] = false
+    self.tube_targets[self.curr_tube] = "===="
     self.loaded_torps[self.curr_tube] = -1
+    
+    update_both_text()
     
 func update_both_text() -> void:
     update_tube_text()
@@ -117,11 +119,13 @@ func update_tube_text() -> void:
     self.current_type_text.set_text(self.torp_names[self.loaded_torps[self.curr_tube]])
     for n in range(4):
         self.type_lights[n].set_visible(n==self.curr_torp_type)
+        self.tube_target_text[n].set_text(self.tube_targets[n])
     self.LLF_text[0].set_visible(self.tube_lock_flag[self.curr_tube])
     self.LLF_text[1].set_visible(self.tube_load_flag[self.curr_tube])
     self.LLF_text[2].set_visible(self.tube_flood_flag[self.curr_tube])
     self.loading_text.set_visible(not self.tube_open_flag[self.curr_tube] and not self.tube_load_flag[self.curr_tube])
     self.flooding_text.set_visible(self.tube_load_flag[self.curr_tube] and not self.tube_flood_flag[self.curr_tube])
+    
 func update_torp_text() -> void:
     for t in range(4):
         self.torp_number_text[t].set_text(str(self.torps_left[t]))
@@ -129,7 +133,6 @@ func update_torp_text() -> void:
 #Tarteging has created a firing solution to the current tube, 
 #Method called by ship_target
 func give_tube_selection(ent_id: String) -> void:
-    self.tube_target_text[self.curr_tube].set_text(ent_id)
     #Start load process
     self.tube_lock_flag[self.curr_tube] = true
     self.tube_targets[self.curr_tube] = ent_id

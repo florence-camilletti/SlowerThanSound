@@ -45,7 +45,13 @@ func add_torpedo(torp: BasicTorp) -> void:
     for ent in self.entity_list:#Set torpedo target
         if(ent.get_id() == target_id):
             torp.set_target(ent)
-    add_entity(torp)
+    #add_entity(torp)
+    self.entity_list.append(torp)
+    torp.death.connect(on_entity_death)
+    add_child(torp)
+    entity_created.emit(torp)
+    
+    torp.launch(self.manager_node.sub_position, self.manager_node.heading, self.manager_node.speed)
     
 #When an entity signals their destruction, update and emit a signals
 #and destroy the ent object
@@ -78,7 +84,7 @@ func check_collisions():
         
     #Check for collisions
     for torp in entity_list:
-        if(torp.is_torp()):#Only check for torpedoe collision
+        if(torp.is_torp() and torp.is_armed()):#Only check for armed torpedoe collision
             var curr_pos = torp.get_desec_pos()
             var curr_cell_key = torp.get_map_cell()
             for x_range in range(-1, 2):#Check all neighboring cells
