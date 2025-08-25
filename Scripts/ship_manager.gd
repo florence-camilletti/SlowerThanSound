@@ -58,8 +58,11 @@ var velocity := Vector2(0,0)#Speed and direction
 @onready var sidebar_engine := $VC/V/Sidebar/EngineStats
 @onready var signal_text  := $VC/V/Sidebar/Signal
 
-@onready var LLF_text := [$VC/V/Sidebar/Lock, $VC/V/Sidebar/Load, $VC/V/Sidebar/Flood]
-
+@onready var LLF_T1_text := [$VC/V/Sidebar/Tube1/Lock, $VC/V/Sidebar/Tube1/Load, $VC/V/Sidebar/Tube1/Flood]
+@onready var LLF_T2_text := [$VC/V/Sidebar/Tube2/Lock, $VC/V/Sidebar/Tube2/Load, $VC/V/Sidebar/Tube2/Flood]
+@onready var LLF_T3_text := [$VC/V/Sidebar/Tube3/Lock, $VC/V/Sidebar/Tube3/Load, $VC/V/Sidebar/Tube3/Flood]
+@onready var LLF_T4_text := [$VC/V/Sidebar/Tube4/Lock, $VC/V/Sidebar/Tube4/Load, $VC/V/Sidebar/Tube4/Flood]
+@onready var LLF_array := [LLF_T1_text, LLF_T2_text, LLF_T3_text, LLF_T4_text]
 
 func _ready() -> void:
     #Connecting signals
@@ -68,6 +71,10 @@ func _ready() -> void:
     self.LIDAR_child.signal_update.connect(on_signal_update)
     self.entity_manager.entity_created.connect(on_entity_created)
     self.entity_manager.entity_destroyed.connect(on_entity_destroyed)
+    
+    self.weap_child.tube_locked.connect(on_tube_lock)
+    self.weap_child.tube_loaded.connect(on_tube_load)
+    self.weap_child.tube_flooded.connect(on_tube_flood)
     self.weap_child.torpedo_launched.connect(on_torpedo_launch)
     
     for node in self.all_system_nodes:
@@ -269,10 +276,21 @@ func on_entity_check(curr_ent: String) -> void:
         self.target_child.update_selection(false)
         self.LIDAR_child.update_selection("-1")
         
+func on_tube_lock(tube_num: int) -> void:
+    self.LLF_array[tube_num][0].set_visible(true)
+    
+func on_tube_load(tube_num: int) -> void:
+    self.LLF_array[tube_num][1].set_visible(true)
+    
+func on_tube_flood(tube_num: int) -> void:
+    self.LLF_array[tube_num][2].set_visible(true)
+        
 #When weapons launches a torp obj
 #Signaled by Weapons
-func on_torpedo_launch(torp_obj: BasicTorp) -> void:
+func on_torpedo_launch(tube_num: int, torp_obj: BasicTorp) -> void:
     self.entity_manager.add_torpedo(torp_obj)
+    for n in range(3):
+        self.LLF_array[tube_num][n].set_visible(false)
 
 func _to_string() -> String:
     var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"

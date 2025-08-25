@@ -3,8 +3,8 @@ class_name HomingTorp
 
 func _init(i:int) -> void:
     super._init(i,"TH")
+    
     self.texture = load("res://Assets/Textures/torpedo.png")
-    self.health=20
 
 func _ready() -> void:
     super._ready()

@@ -67,56 +67,139 @@ texture = ExtResource("11_tio8k")
 
 [node name="EngineStats" type="RichTextLabel" parent="VC/V/Sidebar"]
 offset_left = 62.0
-offset_top = 130.0
+offset_top = 33.0
 offset_right = 256.0
-offset_bottom = 440.0
+offset_bottom = 343.0
 text = "Engine"
 
 [node name="Elec" type="RichTextLabel" parent="VC/V/Sidebar"]
 offset_left = 19.0
-offset_top = 857.0
+offset_top = 748.0
 offset_right = 104.0
-offset_bottom = 897.0
+offset_bottom = 788.0
 
 [node name="Lube" type="RichTextLabel" parent="VC/V/Sidebar"]
 offset_left = 113.0
-offset_top = 857.0
+offset_top = 748.0
 offset_right = 198.0
-offset_bottom = 897.0
+offset_bottom = 788.0
 
 [node name="Cool" type="RichTextLabel" parent="VC/V/Sidebar"]
 offset_left = 211.0
-offset_top = 857.0
+offset_top = 748.0
 offset_right = 296.0
-offset_bottom = 897.0
+offset_bottom = 788.0
 
 [node name="Signal" type="RichTextLabel" parent="VC/V/Sidebar"]
 visible = false
 offset_left = 92.0
-offset_top = 923.0
+offset_top = 814.0
 offset_right = 224.0
-offset_bottom = 953.0
+offset_bottom = 844.0
 text = "SIGNAL"
 
-[node name="Lock" type="RichTextLabel" parent="VC/V/Sidebar"]
+[node name="Tube1" type="Node2D" parent="VC/V/Sidebar"]
+
+[node name="Lock" type="RichTextLabel" parent="VC/V/Sidebar/Tube1"]
+visible = false
 offset_left = 16.0
-offset_top = 983.0
+offset_top = 874.0
 offset_right = 106.0
-offset_bottom = 1023.0
+offset_bottom = 914.0
 text = "LOCK"
 
-[node name="Load" type="RichTextLabel" parent="VC/V/Sidebar"]
+[node name="Load" type="RichTextLabel" parent="VC/V/Sidebar/Tube1"]
+visible = false
 offset_left = 112.0
-offset_top = 983.0
+offset_top = 874.0
 offset_right = 202.0
-offset_bottom = 1023.0
+offset_bottom = 914.0
 text = "LOAD"
 
-[node name="Flood" type="RichTextLabel" parent="VC/V/Sidebar"]
+[node name="Flood" type="RichTextLabel" parent="VC/V/Sidebar/Tube1"]
+visible = false
 offset_left = 209.0
-offset_top = 983.0
+offset_top = 874.0
 offset_right = 299.0
-offset_bottom = 1023.0
+offset_bottom = 914.0
+text = "FLOOD"
+
+[node name="Tube2" type="Node2D" parent="VC/V/Sidebar"]
+
+[node name="Lock" type="RichTextLabel" parent="VC/V/Sidebar/Tube2"]
+visible = false
+offset_left = 16.0
+offset_top = 929.0
+offset_right = 106.0
+offset_bottom = 969.0
+text = "LOCK"
+
+[node name="Load" type="RichTextLabel" parent="VC/V/Sidebar/Tube2"]
+visible = false
+offset_left = 112.0
+offset_top = 929.0
+offset_right = 202.0
+offset_bottom = 969.0
+text = "LOAD"
+
+[node name="Flood" type="RichTextLabel" parent="VC/V/Sidebar/Tube2"]
+visible = false
+offset_left = 209.0
+offset_top = 929.0
+offset_right = 299.0
+offset_bottom = 969.0
+text = "FLOOD"
+
+[node name="Tube3" type="Node2D" parent="VC/V/Sidebar"]
+
+[node name="Lock" type="RichTextLabel" parent="VC/V/Sidebar/Tube3"]
+visible = false
+offset_left = 16.0
+offset_top = 978.0
+offset_right = 106.0
+offset_bottom = 1018.0
+text = "LOCK"
+
+[node name="Load" type="RichTextLabel" parent="VC/V/Sidebar/Tube3"]
+visible = false
+offset_left = 112.0
+offset_top = 978.0
+offset_right = 202.0
+offset_bottom = 1018.0
+text = "LOAD"
+
+[node name="Flood" type="RichTextLabel" parent="VC/V/Sidebar/Tube3"]
+visible = false
+offset_left = 209.0
+offset_top = 978.0
+offset_right = 299.0
+offset_bottom = 1018.0
+text = "FLOOD"
+
+[node name="Tube4" type="Node2D" parent="VC/V/Sidebar"]
+
+[node name="Lock" type="RichTextLabel" parent="VC/V/Sidebar/Tube4"]
+visible = false
+offset_left = 16.0
+offset_top = 1033.0
+offset_right = 106.0
+offset_bottom = 1073.0
+text = "LOCK"
+
+[node name="Load" type="RichTextLabel" parent="VC/V/Sidebar/Tube4"]
+visible = false
+offset_left = 112.0
+offset_top = 1033.0
+offset_right = 202.0
+offset_bottom = 1073.0
+text = "LOAD"
+
+[node name="Flood" type="RichTextLabel" parent="VC/V/Sidebar/Tube4"]
+visible = false
+offset_left = 209.0
+offset_top = 1033.0
+offset_right = 299.0
+offset_bottom = 1073.0
 text = "FLOOD"
 
 [node name="EntityManager" parent="VC/V" instance=ExtResource("12_tio8k")]

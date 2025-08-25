@@ -1,12 +1,14 @@
 extends EntityBase
 class_name BasicTorp
 
+# === PERFORMANCE VARS ===
 var torp_range := 300#Range in desec
 var kill_bubble := 10#Radius in desec
 var kill_bubble_square := kill_bubble*kill_bubble # Used for calculating distances
 var damage_points := 200
 var speedup := 0.1 #additional speed it gets
 
+# === META VARS ===
 var target_id: String
 var target: EntityBase
 

@@ -3,8 +3,9 @@ class_name WireTorp
 
 func _init(i:int) -> void:
     super._init(i,"TW")
+    
     self.texture = load("res://Assets/Textures/torpedo.png")
-    self.health=20
+    self.load_time = 10
 
 func _ready() -> void:
     super._ready()
