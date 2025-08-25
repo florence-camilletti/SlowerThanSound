@@ -42,7 +42,8 @@ var friction_coef := 0.5
 
 # === TORPEDO ===
 enum {DUMB, HOMING, LOITER, WIRE}
-var load_times := [5, 6, 6, 10]
+#var load_times := [1, 6, 6, 10]#TODO: CHANGE THIS BACK
+var load_times := [1,1,1,1]
 
 #Changes heading and speed into a velocity vector of how much the sub has moved in 1 tick
 func calc_desectic_vel(curr_heading: float, speed: float) -> Vector2:

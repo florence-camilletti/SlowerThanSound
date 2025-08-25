@@ -61,6 +61,24 @@ func set_desec_vel(v: Vector2) -> void:
     var tmp = Global.calc_desectic_speed(v)
     self.heading = tmp[0]
     self.desec_speed = tmp[1]
+func set_desec_speed(s: float) -> void:
+    self.desec_speed = s
+    var tmp = Global.calc_desectic_vel(self.heading, self.desec_speed)
+    self.desec_vel = tmp
+func set_desec_heading(h: float) -> void:
+    self.heading = h
+    var tmp = Global.calc_desectic_vel(self.heading, self.desec_speed)
+    self.desec_vel = tmp
+func turn_left(d: float) -> void:
+    var tmp = self.heading-d
+    while(tmp<0):
+        tmp+=360
+    set_desec_heading(tmp)
+func turn_right(d: float) -> void:
+    var tmp = self.heading+d
+    while(tmp>360):
+        tmp-=360
+    set_desec_heading(tmp)
 
 func get_texture() -> Texture2D:
     return(self.texture)

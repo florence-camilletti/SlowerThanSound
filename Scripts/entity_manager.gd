@@ -29,7 +29,9 @@ func _on_timer_timeout() -> void:
     #Chance for a new enemy
     if(self.num_enemies < self.max_enemies):
         if(rng.randf() < self.enemy_chance):
-            _make_new_enemy()
+            #_make_new_still_enemy()
+            _make_new_moving_enemy()
+            #_make_new_turning_enemy()
 
 #Add ent to the manager's lists and connects it to the trees
 func add_entity(ent: EntityBase) -> void:
@@ -45,7 +47,13 @@ func add_torpedo(torp: BasicTorp) -> void:
     for ent in self.entity_list:#Set torpedo target
         if(ent.get_id() == target_id):
             torp.set_target(ent)
-    add_entity(torp)
+    #add_entity(torp)
+    self.entity_list.append(torp)
+    torp.death.connect(on_entity_death)
+    add_child(torp)
+    entity_created.emit(torp)
+    
+    torp.launch(self.manager_node.sub_position, self.manager_node.heading, self.manager_node.speed)
     
 #When an entity signals their destruction, update and emit a signals
 #and destroy the ent object
@@ -55,14 +63,31 @@ func on_entity_death(ent: EntityBase) -> void:
     entity_destroyed.emit(ent)
     ent.queue_free()
     
-#Create a new enemy and update the manager
-func _make_new_enemy() -> void:#TESTING FUNCTION
+func _make_new_still_enemy() -> void:
     var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
     tmp_pos += Global.map_middle
-    #var tmp_vel = Vector2(rng.randf_range(-0.1,0.1),rng.randf_range(-0.1,0.1))
-    var tmp_vel = Vector2(0,0)
+    var tmp_vel = Vector2.ZERO
     self.num_enemies += 1
-    var new_enemy = BasicEnemy.new(num_enemies, tmp_pos, tmp_vel)#TODO: CHANGE THIS
+    var new_enemy = DumbEnemy.new(num_enemies, tmp_pos, tmp_vel)
+    #Add enemy to parent objects
+    add_entity(new_enemy)
+
+#Create a new enemy and update the manager
+func _make_new_moving_enemy() -> void:#TESTING FUNCTION
+    var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
+    tmp_pos += Global.map_middle
+    var tmp_vel = Vector2(rng.randf_range(-0.2,0.2),rng.randf_range(-0.2,0.2))
+    self.num_enemies += 1
+    var new_enemy = DumbEnemy.new(num_enemies, tmp_pos, tmp_vel)
+    #Add enemy to parent objects
+    add_entity(new_enemy)
+    
+func _make_new_turning_enemy() -> void:#TESTING FUNCTION
+    var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
+    tmp_pos += Global.map_middle
+    var tmp_vel = Vector2(rng.randf_range(0.1,0.3)*(2*(randi()%2)-1),rng.randf_range(0.1,0.3)*(2*(randi()%2)-1))
+    self.num_enemies += 1
+    var new_enemy = TurnEnemy.new(num_enemies, tmp_pos, tmp_vel)
     #Add enemy to parent objects
     add_entity(new_enemy)
     
@@ -78,7 +103,7 @@ func check_collisions():
         
     #Check for collisions
     for torp in entity_list:
-        if(torp.is_torp()):#Only check for torpedoe collision
+        if(torp.is_torp() and torp.is_armed()):#Only check for armed torpedoe collision
             var curr_pos = torp.get_desec_pos()
             var curr_cell_key = torp.get_map_cell()
             for x_range in range(-1, 2):#Check all neighboring cells
