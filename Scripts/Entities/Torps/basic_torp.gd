@@ -11,7 +11,7 @@ var damage_points := 200
 var arming_timer: Timer
 var arming_time := 4
 var armed := false
-var speedup := 0.2 #additional speed it gets
+var speedup := 0.3 #additional speed it gets
 
 # === META VARS ===
 var target_id: String
@@ -76,14 +76,40 @@ func is_armed() -> bool:
 
 func _on_arming_timer_timeout() -> void:
     self.armed = true
-    if(calculate_firing_plan()):
-        execute_firing_plan()
+    if(self.target_id!="===="):
+        if(calculate_firing_plan(self.desec_pos, self.desec_speed,
+                                self.target.desec_pos, self.target.desec_speed, self.target.desec_vel)):
+            execute_firing_plan()
 
 #To be written by child torps
-func calculate_firing_plan() -> bool:
-    return(false)
+#Generates the position to fire at if possible
+func calculate_firing_plan(torp_pos: Vector2, torp_speed: float, ship_pos: Vector2, ship_speed: float, ship_vel: Vector2) -> bool:
+    var relative_pos = ship_pos - torp_pos
+    #Doing quadratic intercept formula to determine what launch angle should be given
+    var a = (ship_speed*ship_speed) - (torp_speed*torp_speed)
+    if(abs(a)<0.001):
+        return(false)
+    var b = 2*relative_pos.dot(ship_vel)
+    var c = relative_pos.length_squared()
+    var discrim = (b*b) - (4*a*c)
+    if(discrim < 0):
+        return(false)
+        
+    var sqrt_discrim = sqrt(discrim)
+    var solution = [(-b + sqrt_discrim)/(2*a), (-b - sqrt_discrim)/(2*a)]#Calculate times for torpedo to intercept
+    var time_solution = min(solution[0],solution[1])
+    if(time_solution<0):#Bad solution, go to other one
+        time_solution = max(solution[0],solution[1])
+        if(time_solution<0):#Both solutions bad
+            return(false)
+    self.target_pos = (ship_pos + (ship_vel*time_solution))
+    #print("Ship curr pos: %.2f, %.2f" % [ship_pos[0], ship_pos[1]])
+    #print("Torp curr pos: %.2f, %.2f" % [self.desec_pos[0], self.desec_pos[1]])
+    #print("Intersect pos: %.2f, %.2f" % [self.target_pos[0], self.target_pos[1]])
+    return(true)
 
 #Find the firing angle from torp to target and point torp that way
+#Actually signals the torp to swim to the position
 func execute_firing_plan() -> void:
     var direction_vec = self.desec_pos.direction_to(self.target_pos)
     var new_heading = rad_to_deg(atan2(direction_vec[0], direction_vec[1]))

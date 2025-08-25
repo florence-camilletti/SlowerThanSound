@@ -284,7 +284,7 @@ func on_tube_load(tube_num: int) -> void:
     
 func on_tube_flood(tube_num: int) -> void:
     self.LLF_array[tube_num][2].set_visible(true)
-        
+
 #When weapons launches a torp obj
 #Signaled by Weapons
 func on_torpedo_launch(tube_num: int, torp_obj: BasicTorp) -> void:

@@ -29,7 +29,9 @@ func _on_timer_timeout() -> void:
     #Chance for a new enemy
     if(self.num_enemies < self.max_enemies):
         if(rng.randf() < self.enemy_chance):
-            _make_new_enemy()
+            #_make_new_still_enemy()
+            _make_new_moving_enemy()
+            #_make_new_turning_enemy()
 
 #Add ent to the manager's lists and connects it to the trees
 func add_entity(ent: EntityBase) -> void:
@@ -61,14 +63,31 @@ func on_entity_death(ent: EntityBase) -> void:
     entity_destroyed.emit(ent)
     ent.queue_free()
     
-#Create a new enemy and update the manager
-func _make_new_enemy() -> void:#TESTING FUNCTION
+func _make_new_still_enemy() -> void:
     var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
     tmp_pos += Global.map_middle
-    #var tmp_vel = Vector2(rng.randf_range(-0.1,0.1),rng.randf_range(-0.1,0.1))
-    var tmp_vel = Vector2(0,0)
+    var tmp_vel = Vector2.ZERO
     self.num_enemies += 1
-    var new_enemy = BasicEnemy.new(num_enemies, tmp_pos, tmp_vel)#TODO: CHANGE THIS
+    var new_enemy = DumbEnemy.new(num_enemies, tmp_pos, tmp_vel)
+    #Add enemy to parent objects
+    add_entity(new_enemy)
+
+#Create a new enemy and update the manager
+func _make_new_moving_enemy() -> void:#TESTING FUNCTION
+    var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
+    tmp_pos += Global.map_middle
+    var tmp_vel = Vector2(rng.randf_range(-0.2,0.2),rng.randf_range(-0.2,0.2))
+    self.num_enemies += 1
+    var new_enemy = DumbEnemy.new(num_enemies, tmp_pos, tmp_vel)
+    #Add enemy to parent objects
+    add_entity(new_enemy)
+    
+func _make_new_turning_enemy() -> void:#TESTING FUNCTION
+    var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
+    tmp_pos += Global.map_middle
+    var tmp_vel = Vector2(rng.randf_range(0.1,0.3)*(2*(randi()%2)-1),rng.randf_range(0.1,0.3)*(2*(randi()%2)-1))
+    self.num_enemies += 1
+    var new_enemy = TurnEnemy.new(num_enemies, tmp_pos, tmp_vel)
     #Add enemy to parent objects
     add_entity(new_enemy)
     
