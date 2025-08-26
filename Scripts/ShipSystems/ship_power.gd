@@ -33,12 +33,15 @@ var y_offset := 156
 var y_spacing := 432
 
 # === ELECTRICITY VARS ===
-var elec_reserves = 1.0
-var elec_regen = 1.0
-var elec_cap = 1.0
+@onready var elec_reserve_text = $ElecReserve
+@onready var elec_usage_text = $ElecUsage
+var elec_regen := 26
+var elec_usage := 0.0
+var elec_cap := 10000.0
+var elec_reserves := self.elec_cap/2.0
 
 #"MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"
-var elec_levels := [0, 6, 6, 6, 6, 6, 6, 6, 6]
+var elec_levels := [0, 3, 3, 3, 3, 3, 3, 3, 3]
 var elec_levels_max := [0, 6, 6, 6, 6, 6, 6, 6, 6]
 
 func _init() -> void:
@@ -47,9 +50,16 @@ func _init() -> void:
 func _ready() -> void:
     super._ready()
     update_all_sprites()
+    update_usage()
     
 func _process(delta: float) -> void:
     super._process(delta)
+    self.elec_reserves-=self.elec_usage
+    self.elec_reserves+=self.elec_regen
+    self.elec_reserves = min(self.elec_reserves, self.elec_cap)
+    self.elec_reserve_text.set_text("%.2f" % (self.elec_reserves/self.elec_cap))
+    if(self.elec_reserves<=0):
+        black_out()
 
 func _input(event: InputEvent) -> void:
     if(self.in_focus):
@@ -61,10 +71,12 @@ func _input(event: InputEvent) -> void:
             #Add electricity
             self.elec_levels[self.selected_indx] = min(self.elec_levels[self.selected_indx]+1, self.elec_levels_max[self.selected_indx])
             update_all_sprites()
+            update_usage()
         if(event.is_action_pressed("Action_J")):
             #Remove electricity
             self.elec_levels[self.selected_indx] = max(self.elec_levels[self.selected_indx]-1, 0)
             update_all_sprites()
+            update_usage()
 
 func get_indx_electricity(curr_indx: int) -> float:
     return((self.elec_levels[curr_indx]+1.0)/(self.elec_levels_max[curr_indx]+1.0))
@@ -92,3 +104,18 @@ func update_power_sprites(curr_indx: int) -> void:
     var sprites = self.all_power_sprites[curr_indx]
     for level in range(len(sprites)):
         sprites[level].set_visible(new_level==level+1)
+
+#Called when power distribution is changed, calculates how much electricity is being used0
+func update_usage() -> void:
+    var total = 0
+    for e in self.elec_levels:
+        total+=e
+    self.elec_usage = total
+    self.elec_usage_text.set_text(str(self.elec_usage) + "/" + str(self.elec_regen))
+
+#Called when the sub runs out of power, all systems are set to 1
+func black_out() -> void:
+    self.elec_levels.fill(1)
+    self.elec_levels[0] = 0
+    update_all_sprites()
+    update_usage()

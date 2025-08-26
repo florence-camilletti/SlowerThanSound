@@ -231,3 +231,16 @@ texture = ExtResource("4_xqrfh")
 [node name="SelectedSystem" type="Sprite2D" parent="." index="9"]
 position = Vector2(-26, 21)
 texture = ExtResource("5_k0rem")
+
+[node name="ElecReserve" type="RichTextLabel" parent="." index="10"]
+offset_left = 435.0
+offset_top = 84.0
+offset_right = 587.0
+offset_bottom = 188.0
+
+[node name="ElecUsage" type="RichTextLabel" parent="." index="11"]
+offset_left = 668.0
+offset_top = 84.0
+offset_right = 817.0
+offset_bottom = 171.0
+text = "def"
