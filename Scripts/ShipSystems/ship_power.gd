@@ -42,7 +42,7 @@ var elec_cap := 40000.0
 var elec_reserves := self.elec_cap/2.0
 
 #"MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"
-var elec_levels     := [0, 3, 0, 0, 2, 0, 1, 0, 2]
+var elec_levels     := [0, 3, 0, 0, 4, 0, 1, 0, 2]
 var elec_levels_max := [0, 5, 0, 0, 4, 0, 2, 0, 4]
 
 func _init() -> void:
