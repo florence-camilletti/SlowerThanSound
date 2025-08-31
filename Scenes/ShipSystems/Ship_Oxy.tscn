@@ -354,3 +354,27 @@ position = Vector2(950, 540)
 
 [node name="CoolSelect" type="Sprite2D" parent="." index="10"]
 position = Vector2(950, 540)
+
+[node name="LubeUsage" type="RichTextLabel" parent="." index="11"]
+offset_left = 1216.0
+offset_top = 91.0
+offset_right = 1351.0
+offset_bottom = 131.0
+
+[node name="LubeReserve" type="RichTextLabel" parent="." index="12"]
+offset_left = 1064.0
+offset_top = 90.0
+offset_right = 1152.0
+offset_bottom = 130.0
+
+[node name="CoolantUsage" type="RichTextLabel" parent="." index="13"]
+offset_left = 1681.0
+offset_top = 82.0
+offset_right = 1819.0
+offset_bottom = 122.0
+
+[node name="CoolantReserve" type="RichTextLabel" parent="." index="14"]
+offset_left = 1523.0
+offset_top = 82.0
+offset_right = 1623.0
+offset_bottom = 122.0

@@ -83,6 +83,12 @@ texture = ExtResource("4_ar7c7")
 position = Vector2(1755, 130)
 texture = ExtResource("5_8q4rx")
 
+[node name="ElecLubeHeat" parent="." index="4"]
+offset_left = 505.0
+offset_top = 961.0
+offset_right = 1897.0
+offset_bottom = 1017.0
+
 [connection signal="text_changed" from="Power/PowerInput" to="." method="_on_power_input_text_changed"]
 [connection signal="text_submitted" from="Power/PowerInput" to="." method="_on_power_input_text_submitted"]
 [connection signal="text_changed" from="Heading/HeadingInput" to="." method="_on_heading_input_text_changed"]

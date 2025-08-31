@@ -233,10 +233,11 @@ position = Vector2(-26, 21)
 texture = ExtResource("5_k0rem")
 
 [node name="ElecReserve" type="RichTextLabel" parent="." index="10"]
-offset_left = 435.0
+offset_left = 522.0
 offset_top = 84.0
-offset_right = 587.0
-offset_bottom = 188.0
+offset_right = 671.0
+offset_bottom = 171.0
+text = "def"
 
 [node name="ElecUsage" type="RichTextLabel" parent="." index="11"]
 offset_left = 668.0

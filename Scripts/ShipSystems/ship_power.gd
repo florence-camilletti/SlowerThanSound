@@ -33,16 +33,17 @@ var y_offset := 156
 var y_spacing := 432
 
 # === ELECTRICITY VARS ===
+signal update_elec_amount
 @onready var elec_reserve_text = $ElecReserve
 @onready var elec_usage_text = $ElecUsage
-var elec_regen := 26
+var elec_regen := 8
 var elec_usage := 0.0
-var elec_cap := 10000.0
+var elec_cap := 40000.0
 var elec_reserves := self.elec_cap/2.0
 
 #"MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"
-var elec_levels := [0, 3, 3, 3, 3, 3, 3, 3, 3]
-var elec_levels_max := [0, 6, 6, 6, 6, 6, 6, 6, 6]
+var elec_levels     := [0, 3, 0, 0, 2, 0, 1, 0, 2]
+var elec_levels_max := [0, 5, 0, 0, 4, 0, 2, 0, 4]
 
 func _init() -> void:
     super._init(false, Global.POWER)
@@ -50,15 +51,17 @@ func _init() -> void:
 func _ready() -> void:
     super._ready()
     update_all_sprites()
-    update_usage()
     
 func _process(delta: float) -> void:
     super._process(delta)
     self.elec_reserves-=self.elec_usage
     self.elec_reserves+=self.elec_regen
     self.elec_reserves = min(self.elec_reserves, self.elec_cap)
-    self.elec_reserve_text.set_text("%.2f" % (self.elec_reserves/self.elec_cap))
-    if(self.elec_reserves<=0):
+    
+    var new_elec_amount = self.elec_reserves/self.elec_cap
+    self.elec_reserve_text.set_text("%.2f" % new_elec_amount)
+    self.update_elec_amount.emit(new_elec_amount)
+    if(new_elec_amount<=0):
         black_out()
 
 func _input(event: InputEvent) -> void:
@@ -71,12 +74,10 @@ func _input(event: InputEvent) -> void:
             #Add electricity
             self.elec_levels[self.selected_indx] = min(self.elec_levels[self.selected_indx]+1, self.elec_levels_max[self.selected_indx])
             update_all_sprites()
-            update_usage()
         if(event.is_action_pressed("Action_J")):
             #Remove electricity
             self.elec_levels[self.selected_indx] = max(self.elec_levels[self.selected_indx]-1, 0)
             update_all_sprites()
-            update_usage()
 
 func get_indx_electricity(curr_indx: int) -> float:
     return((self.elec_levels[curr_indx]+1.0)/(self.elec_levels_max[curr_indx]+1.0))
@@ -97,6 +98,7 @@ func calc_dot_spot(curr_indx: int) -> Vector2:
 func update_all_sprites() -> void:
     for n in range(1, len(self.all_power_sprites)):
         update_power_sprites(n)
+    update_usage()
    
 #Updates the sprites for a single system 
 func update_power_sprites(curr_indx: int) -> void:

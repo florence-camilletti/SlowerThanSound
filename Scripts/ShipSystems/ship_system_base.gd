@@ -7,6 +7,7 @@ var manager_node: ShipManager
 var global_viewport: SubViewport
 var in_focus: bool
 var system_indx: int
+var sibling_flag := false
 
 # === THE TALKING STICK ===
 @warning_ignore("unused_signal")
@@ -16,6 +17,7 @@ signal return_command_focus
 var command_focus_open: bool
 
 # === SIBLING VARS ===
+var menu_system: ShipSystemBase#M
 var engine_system: ShipSystemBase#C1
 var AI_system: ShipSystemBase
 var bulk_system: ShipSystemBase
@@ -24,6 +26,7 @@ var oxy_system: ShipSystemBase
 var target_system: ShipSystemBase#C3
 var weapons_system: ShipSystemBase
 var LIDAR_system: ShipSystemBase
+var all_systems: Array
 
 # === STATUS VARS ===
 var health := 1.0
@@ -57,6 +60,9 @@ func set_siblings(siblings: Array) -> void:
     self.target_system = siblings[Global.TARGET]
     self.weapons_system = siblings[Global.WEAP]
     self.LIDAR_system = siblings[Global.LIDAR]
+    self.sibling_flag=true
+    all_systems = [self.menu_system, self.engine_system, self.AI_system, self.bulk_system, self.power_system,
+                    self.oxy_system, self.target_system, self.weapons_system, self.LIDAR_system]
 
 func set_focus(f) -> void:
     in_focus = f
@@ -67,14 +73,16 @@ func set_command_focus(t: bool) -> void:
 
 func get_health() -> float:
     return(self.health)
-func get_coolant() -> float:
-    return(self.coolant)
-func get_lube() -> float:
-    return(self.lube)
 func get_electricity() -> float:
     return(self.electricity)
+func get_lube() -> float:
+    return(self.lube)
+func get_coolant() -> float:
+    return(self.coolant)
 func get_total_status() -> float:
     return(self.total_status)
+func get_HELC() -> Array:
+    return([self.health, self.electricity, self.lube, self.coolant])
 
 func update_ELC() -> void:
     self.coolant = self.manager_node.get_coolant(self.system_indx)

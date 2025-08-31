@@ -56,6 +56,9 @@ var velocity := Vector2(0,0)#Speed and direction
 
 # === SIDEBAR VARS ===
 @onready var sidebar_engine := $VC/V/Sidebar/EngineStats
+@onready var elec_reserve_text := $VC/V/Sidebar/Elec
+@onready var lube_reserve_text := $VC/V/Sidebar/Lube
+@onready var cool_reserve_text := $VC/V/Sidebar/Cool
 @onready var signal_text  := $VC/V/Sidebar/Signal
 
 @onready var LLF_T1_text := [$VC/V/Sidebar/Tube1/Lock, $VC/V/Sidebar/Tube1/Load, $VC/V/Sidebar/Tube1/Flood]
@@ -77,6 +80,10 @@ func _ready() -> void:
     self.weap_child.tube_flooded.connect(on_tube_flood)
     self.weap_child.torpedo_launched.connect(on_torpedo_launch)
     
+    self.power_child.update_elec_amount.connect(on_elec_amount_update)
+    self.oxy_child.update_lube_amount.connect(on_lube_amount_update)
+    self.oxy_child.update_coolant_amount.connect(on_coolant_amount_update)
+    
     for node in self.all_system_nodes:
         node.request_command_focus.connect(request_command_focus)
         node.return_command_focus.connect(return_command_focus)
@@ -97,7 +104,7 @@ func update_command_focus(t: bool) -> void:
 func _process(delta: float):
     #Update rotation
     if(self.turning_flag):
-        self.turn_speed += self.turn_speed_gain*self.turn_direction*delta
+        self.turn_speed += self.turn_speed_gain*self.turn_direction*delta * self.engine_child.get_total_status()
         self.turn_speed = clamp(self.turn_speed, -self.max_turn_speed, self.max_turn_speed)#Update turning velocity
         self.heading+=turn_speed
         while(self.heading>360):#Make sure heading stays within 0-360
@@ -114,7 +121,7 @@ func _process(delta: float):
     
     #Update depth
     if(self.diving_flag):
-        self.dive_speed += self.dive_speed_gain*self.dive_direction*delta
+        self.dive_speed += self.dive_speed_gain*self.dive_direction*delta * self.engine_child.get_total_status()
         self.dive_speed = clamp(self.dive_speed, -self.max_dive_speed, self.dive_speed)#Update diving speed
         self.depth+=self.dive_speed
         
@@ -124,7 +131,7 @@ func _process(delta: float):
             self.diving_flag = false
     
     #Update ship speed
-    self.speed = self.speed + ((self.engine_power - (self.speed*Global.friction_coef))*delta)
+    self.speed = self.speed + (((self.engine_power*self.engine_child.get_total_status()) - (self.speed*Global.friction_coef)) * delta)
     update_vel()
     self.sub_position+=self.velocity
     
@@ -240,12 +247,6 @@ func update_sidebar() -> void:
     
     #Update system stats
     
-    #Update ELC
-    
-    #Update Signal
-    
-    #Update torp stats
-    
 #Update LIDAR's entity list from the entity manager
 func on_LIDAR_request() -> void:
     var entity_list = self.entity_manager.get_entity_list()
@@ -292,6 +293,15 @@ func on_torpedo_launch(tube_num: int, torp_obj: BasicTorp) -> void:
     for n in range(3):
         self.LLF_array[tube_num][n].set_visible(false)
 
+#Signaled by Power
+func on_elec_amount_update(amnt: float) -> void:
+    self.elec_reserve_text.set_text("%.2f" % amnt)
+#Signaled by Oxy
+func on_lube_amount_update(amnt: float) -> void:
+    self.lube_reserve_text.set_text("%.2f" % amnt)
+func on_coolant_amount_update(amnt: float) -> void:
+    self.cool_reserve_text.set_text("%.2f" % amnt)
+    
 func _to_string() -> String:
     var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"
     rtn += ("%.2f \n%.2f\n" % [self.speed*Global.desectic_knot_ratio, self.engine_power/self.max_accel])
