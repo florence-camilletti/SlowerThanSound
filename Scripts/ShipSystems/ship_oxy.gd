@@ -49,19 +49,28 @@ var system_list = [null, "Action_Q","Action_W","Action_E","Action_R",
 var selected_indx := 0
 
 # === FLUID VARS ===
-var lube_reserves := 200.0
-var lube_regen := 0.1
-var lube_cap := 100.0
+signal update_lube_amount
+signal update_coolant_amount
+@onready var lube_reserve_text = $LubeReserve
+@onready var lube_usage_text = $LubeUsage
+@onready var coolant_reserve_text = $CoolantReserve
+@onready var coolant_usage_text = $CoolantUsage
 
-var coolant_reserves := 100.0
-var coolant_regen := 0.1
-var coolant_cap := 100.0
+var lube_regen := 5
+var lube_usage := 0.0
+var lube_cap := 30000.0
+var lube_reserves := self.lube_cap/2.0
+
+var coolant_regen := 20
+var coolant_usage := 0.0
+var coolant_cap := 30000.0
+var coolant_reserves := self.coolant_cap/2.0
 
 #"MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"
-var lube_levels := [0, 5, 5, 5, 5, 5, 5, 5, 5]
-var lube_levels_max := [0, 5, 5, 5, 5, 5, 5, 5, 5]
+var lube_levels     := [0, 1, 0, 0, 0, 1, 0, 2, 0]
+var lube_levels_max := [0, 3, 0, 0, 0, 3, 0, 4, 0]
 
-var coolant_levels := [0, 5, 5, 5, 5, 5, 5, 5, 5]
+var coolant_levels     := [0, 2, 2, 2, 2, 2, 2, 2, 2]
 var coolant_levels_max := [0, 5, 5, 5, 5, 5, 5, 5, 5]
 
 func _init() -> void:
@@ -73,6 +82,21 @@ func _ready() -> void:
     
 func _process(delta: float) -> void:
     super._process(delta)
+    self.lube_reserves-=self.lube_usage
+    self.lube_reserves+=self.lube_regen
+    self.lube_reserves = min(self.lube_reserves, self.lube_cap)
+    
+    self.coolant_reserves-=self.coolant_usage
+    self.coolant_reserves+=self.coolant_regen
+    self.coolant_reserves = min(self.coolant_reserves, self.coolant_cap)
+    
+    var new_lube_amount = self.lube_reserves/self.lube_cap
+    self.lube_reserve_text.set_text("%.2f" % new_lube_amount)
+    self.update_lube_amount.emit(new_lube_amount)
+    
+    var new_coolant_amount = self.coolant_reserves/self.coolant_cap
+    self.coolant_reserve_text.set_text("%.2f" % new_coolant_amount)
+    self.update_coolant_amount.emit(new_coolant_amount)
 
 func _input(event: InputEvent) -> void:
     if(self.in_focus):
@@ -107,6 +131,7 @@ func update_all_sprites() -> void:
     for n in range(1,len(self.all_lube_sprites)):
         update_lube_sprite(n)
         update_coolant_sprite(n)
+    update_usage()
 
 #Update the sprites of a single system
 func update_lube_sprite(curr_indx: int) -> void:
@@ -119,3 +144,20 @@ func update_coolant_sprite(curr_indx: int) -> void:
     var sprites = self.all_coolant_sprites[curr_indx]
     for level in range(len(sprites)):
         sprites[level].set_visible(new_level==level+1)
+        
+func update_usage() -> void:
+    update_lube_usage()
+    update_coolant_usage()
+
+func update_lube_usage() -> void:
+    var total = 0
+    for e in self.lube_levels:
+        total+=e
+    self.lube_usage = total
+    self.lube_usage_text.set_text(str(self.lube_usage) + "/" + str(self.lube_regen))
+func update_coolant_usage() -> void:
+    var total = 0
+    for e in self.coolant_levels:
+        total+=e
+    self.coolant_usage = total
+    self.coolant_usage_text.set_text(str(self.coolant_usage) + "/" + str(self.coolant_regen))

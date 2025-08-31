@@ -29,6 +29,12 @@ var chunk_names := ["SysChunkM","SysChunk1","SysChunk2","SysChunk3"]
                                   self.power_child, self.oxy_child, self.target_child, self.weap_child, self.LIDAR_child]
 var num_chunks := len(chunk_names)
 
+@onready var load_screen := $VC/V/LoadScreen
+var loading_flag := false
+var load_curr_val := 0.0
+var load_max_val := 100.0
+var load_change_amnt := 0.01
+
 # === MOVEMENT VARS ===
 #Location details in long,lat
 var sub_position := Global.map_middle#Deciseconds; [0 - 720,000| 0 - 720,000]
@@ -56,6 +62,9 @@ var velocity := Vector2(0,0)#Speed and direction
 
 # === SIDEBAR VARS ===
 @onready var sidebar_engine := $VC/V/Sidebar/EngineStats
+@onready var elec_reserve_text := $VC/V/Sidebar/Elec
+@onready var lube_reserve_text := $VC/V/Sidebar/Lube
+@onready var cool_reserve_text := $VC/V/Sidebar/Cool
 @onready var signal_text  := $VC/V/Sidebar/Signal
 
 @onready var LLF_T1_text := [$VC/V/Sidebar/Tube1/Lock, $VC/V/Sidebar/Tube1/Load, $VC/V/Sidebar/Tube1/Flood]
@@ -77,6 +86,10 @@ func _ready() -> void:
     self.weap_child.tube_flooded.connect(on_tube_flood)
     self.weap_child.torpedo_launched.connect(on_torpedo_launch)
     
+    self.power_child.update_elec_amount.connect(on_elec_amount_update)
+    self.oxy_child.update_lube_amount.connect(on_lube_amount_update)
+    self.oxy_child.update_coolant_amount.connect(on_coolant_amount_update)
+    
     for node in self.all_system_nodes:
         node.request_command_focus.connect(request_command_focus)
         node.return_command_focus.connect(return_command_focus)
@@ -84,6 +97,8 @@ func _ready() -> void:
     #Connecting systems to each other
     for node in self.all_system_nodes:
         node.set_siblings(self.all_system_nodes)
+        
+    self.load_screen.self_modulate.a=0
 
 func request_command_focus() -> void:
     update_command_focus(false)
@@ -95,9 +110,17 @@ func update_command_focus(t: bool) -> void:
         node.set_command_focus(t)
 
 func _process(delta: float):
+    #Load screen if needed
+    if(self.loading_flag):
+        self.load_curr_val -= (self.load_change_amnt * self.AI_child.get_total_status())
+        if(self.load_curr_val<=0):
+            self.loading_flag = false
+            self.load_curr_val = 0
+        self.load_screen.self_modulate.a = 1.0-(self.load_max_val-self.load_curr_val)
+            
     #Update rotation
     if(self.turning_flag):
-        self.turn_speed += self.turn_speed_gain*self.turn_direction*delta
+        self.turn_speed += self.turn_speed_gain*self.turn_direction*delta * self.engine_child.get_total_status()
         self.turn_speed = clamp(self.turn_speed, -self.max_turn_speed, self.max_turn_speed)#Update turning velocity
         self.heading+=turn_speed
         while(self.heading>360):#Make sure heading stays within 0-360
@@ -114,7 +137,7 @@ func _process(delta: float):
     
     #Update depth
     if(self.diving_flag):
-        self.dive_speed += self.dive_speed_gain*self.dive_direction*delta
+        self.dive_speed += self.dive_speed_gain*self.dive_direction*delta * self.engine_child.get_total_status()
         self.dive_speed = clamp(self.dive_speed, -self.max_dive_speed, self.dive_speed)#Update diving speed
         self.depth+=self.dive_speed
         
@@ -124,7 +147,7 @@ func _process(delta: float):
             self.diving_flag = false
     
     #Update ship speed
-    self.speed = self.speed + ((self.engine_power - (self.speed*Global.friction_coef))*delta)
+    self.speed = self.speed + (((self.engine_power*self.engine_child.get_total_status()) - (self.speed*Global.friction_coef)) * delta)
     update_vel()
     self.sub_position+=self.velocity
     
@@ -138,6 +161,8 @@ func _input(event):
         if(event.is_action_pressed(chunk_names[action_indx])):#Check if a SysChunk event
             for chunk_indx in range(self.num_chunks):#Set the chunk focuses
                 if(action_indx==chunk_indx):#Activate this chunk
+                    self.loading_flag = true
+                    self.load_curr_val = self.load_max_val
                     self.command_focus = (self.active_chunk != chunk_indx) or self.command_focus
                     update_command_focus(self.command_focus)
                     self.active_chunk = chunk_indx
@@ -240,12 +265,6 @@ func update_sidebar() -> void:
     
     #Update system stats
     
-    #Update ELC
-    
-    #Update Signal
-    
-    #Update torp stats
-    
 #Update LIDAR's entity list from the entity manager
 func on_LIDAR_request() -> void:
     var entity_list = self.entity_manager.get_entity_list()
@@ -292,6 +311,15 @@ func on_torpedo_launch(tube_num: int, torp_obj: BasicTorp) -> void:
     for n in range(3):
         self.LLF_array[tube_num][n].set_visible(false)
 
+#Signaled by Power
+func on_elec_amount_update(amnt: float) -> void:
+    self.elec_reserve_text.set_text("%.2f" % amnt)
+#Signaled by Oxy
+func on_lube_amount_update(amnt: float) -> void:
+    self.lube_reserve_text.set_text("%.2f" % amnt)
+func on_coolant_amount_update(amnt: float) -> void:
+    self.cool_reserve_text.set_text("%.2f" % amnt)
+    
 func _to_string() -> String:
     var rtn = str(self.sub_position*Global.desec_deg_ratio) + "\n"
     rtn += ("%.2f \n%.2f\n" % [self.speed*Global.desectic_knot_ratio, self.engine_power/self.max_accel])

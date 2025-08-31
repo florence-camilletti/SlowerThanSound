@@ -52,6 +52,10 @@ visible = false
 position = Vector2(16, 16)
 texture = ExtResource("7_bne4i")
 
+[node name="ElecLubeHeat" parent="." index="7"]
+offset_top = 962.0
+offset_bottom = 1018.0
+
 [connection signal="timeout" from="SweepTimer" to="." method="_on_timer_timeout"]
 [connection signal="text_changed" from="AutoInput" to="." method="_on_auto_input_text_changed"]
 [connection signal="text_submitted" from="AutoInput" to="." method="_on_auto_input_text_submitted"]

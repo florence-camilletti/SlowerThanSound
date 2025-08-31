@@ -201,6 +201,10 @@ offset_top = 529.0
 offset_right = 1864.0
 offset_bottom = 586.0
 
+[node name="ElecLubeHeat" parent="." index="13"]
+offset_top = 997.0
+offset_bottom = 1053.0
+
 [connection signal="text_changed" from="TorpInput" to="." method="_on_torp_input_text_changed"]
 [connection signal="text_changed" from="TubeInput" to="." method="_on_tube_input_text_changed"]
 [connection signal="timeout" from="TubeLoadTimers/Tube1" to="." method="load_tube" binds= [0]]
