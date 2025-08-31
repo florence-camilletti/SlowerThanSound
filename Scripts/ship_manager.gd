@@ -29,6 +29,12 @@ var chunk_names := ["SysChunkM","SysChunk1","SysChunk2","SysChunk3"]
                                   self.power_child, self.oxy_child, self.target_child, self.weap_child, self.LIDAR_child]
 var num_chunks := len(chunk_names)
 
+@onready var load_screen := $VC/V/LoadScreen
+var loading_flag := false
+var load_curr_val := 0.0
+var load_max_val := 100.0
+var load_change_amnt := 0.01
+
 # === MOVEMENT VARS ===
 #Location details in long,lat
 var sub_position := Global.map_middle#Deciseconds; [0 - 720,000| 0 - 720,000]
@@ -91,6 +97,8 @@ func _ready() -> void:
     #Connecting systems to each other
     for node in self.all_system_nodes:
         node.set_siblings(self.all_system_nodes)
+        
+    self.load_screen.self_modulate.a=0
 
 func request_command_focus() -> void:
     update_command_focus(false)
@@ -102,6 +110,14 @@ func update_command_focus(t: bool) -> void:
         node.set_command_focus(t)
 
 func _process(delta: float):
+    #Load screen if needed
+    if(self.loading_flag):
+        self.load_curr_val -= (self.load_change_amnt * self.AI_child.get_total_status())
+        if(self.load_curr_val<=0):
+            self.loading_flag = false
+            self.load_curr_val = 0
+        self.load_screen.self_modulate.a = 1.0-(self.load_max_val-self.load_curr_val)
+            
     #Update rotation
     if(self.turning_flag):
         self.turn_speed += self.turn_speed_gain*self.turn_direction*delta * self.engine_child.get_total_status()
@@ -145,6 +161,8 @@ func _input(event):
         if(event.is_action_pressed(chunk_names[action_indx])):#Check if a SysChunk event
             for chunk_indx in range(self.num_chunks):#Set the chunk focuses
                 if(action_indx==chunk_indx):#Activate this chunk
+                    self.loading_flag = true
+                    self.load_curr_val = self.load_max_val
                     self.command_focus = (self.active_chunk != chunk_indx) or self.command_focus
                     update_command_focus(self.command_focus)
                     self.active_chunk = chunk_indx

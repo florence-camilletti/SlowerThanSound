@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://by6ibt8eqsgjk"]
+[gd_scene load_steps=14 format=3 uid="uid://by6ibt8eqsgjk"]
 
 [ext_resource type="Script" uid="uid://jojeowbnx382" path="res://Scripts/ship_manager.gd" id="1_tio8k"]
 [ext_resource type="PackedScene" uid="uid://d7h8318elmx6" path="res://Scenes/ShipSystems/Ship_Menu.tscn" id="4_fwxua"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cc5hivvk8lrs3" path="res://Scenes/ShipSystems/Ship_Weapons.tscn" id="9_hkh0f"]
 [ext_resource type="PackedScene" uid="uid://cnnchfc25huf5" path="res://Scenes/ShipSystems/Ship_Target.tscn" id="10_hkh0f"]
 [ext_resource type="Texture2D" uid="uid://cb3crbnpt5v1o" path="res://Assets/Textures/Screens/SideBar.png" id="11_tio8k"]
+[ext_resource type="Texture2D" uid="uid://d0ara2tk00xts" path="res://Assets/Textures/back.png" id="12_a01pk"]
 [ext_resource type="PackedScene" uid="uid://d1vfu7ka822wr" path="res://Scenes/Entity_Manager.tscn" id="12_tio8k"]
 
 [node name="ShipManager" type="Node2D"]
@@ -201,6 +202,11 @@ offset_top = 1033.0
 offset_right = 299.0
 offset_bottom = 1073.0
 text = "FLOOD"
+
+[node name="LoadScreen" type="Sprite2D" parent="VC/V"]
+position = Vector2(959.553, 542.01)
+scale = Vector2(-96.0247, 54.2673)
+texture = ExtResource("12_a01pk")
 
 [node name="EntityManager" parent="VC/V" instance=ExtResource("12_tio8k")]
 visible = false
