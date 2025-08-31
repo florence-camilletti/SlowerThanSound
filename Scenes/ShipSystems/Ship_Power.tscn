@@ -245,3 +245,7 @@ offset_top = 84.0
 offset_right = 817.0
 offset_bottom = 171.0
 text = "def"
+
+[node name="ElecLubeHeat" parent="." index="12"]
+offset_top = 977.0
+offset_bottom = 1033.0

@@ -249,3 +249,6 @@ offset_top = 62.0
 offset_right = 147.0
 offset_bottom = 102.0
 text = "H"
+
+[node name="ElecLubeHeat" parent="." index="9"]
+visible = false

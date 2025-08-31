@@ -75,7 +75,7 @@ func _input(event: InputEvent) -> void:
                         #start load timer
                         self.torps_left[self.curr_torp_type] -= 1
                         self.tube_open_flag[self.curr_tube] = false
-                        var load_time = Global.load_times[self.curr_torp_type]
+                        var load_time = Global.load_times[self.curr_torp_type] * (1.0/self.get_total_status())
                         self.tube_load_timers[self.curr_tube].set_wait_time(load_time)
                         self.tube_load_timers[self.curr_tube].start()
                         
@@ -164,6 +164,7 @@ func load_tube(tube_num: int) -> void:
     tube_loaded.emit(tube_num)
     
     #Start flooding the tube
+    self.tube_flood_timers[tube_num].set_wait_time(self.flood_time * (1.0/self.get_total_status()))
     self.tube_flood_timers[tube_num].start()
 
 #Called when the tube flooding timer finishes
