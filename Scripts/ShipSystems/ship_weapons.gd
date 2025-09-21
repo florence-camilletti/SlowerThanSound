@@ -37,13 +37,20 @@ var loaded_torps := [-1, -1, -1, -1]
 
 @onready var tube_load_timers := [$TubeLoadTimers/Tube1, $TubeLoadTimers/Tube2, $TubeLoadTimers/Tube3, $TubeLoadTimers/Tube4]
 @onready var tube_flood_timers := [$TubeFloodTimers/Tube1, $TubeFloodTimers/Tube2, $TubeFloodTimers/Tube3, $TubeFloodTimers/Tube4]
-var flood_time := 1.0#TODO: CHANGE THIS BACK
+var flood_time := 5.0#TODO: CHANGE THIS BACK
 
 # === HUD SIGNALS ===
 signal tube_locked
 signal tube_loaded
 signal tube_flooded
 signal torpedo_launched
+
+# === NOISE VARS ===
+@onready var torp_fire_noise := $Torp_Fire
+@onready var torp_load_noise := $Torp_Loading
+@onready var tube_flood_noise := $Tube_Flooding
+@onready var tube_hatch_open_noise := $Tube_Hatch_O
+@onready var tube_hatch_close_noise := $Tube_Hatch_C
 
 func _init() -> void:
     super._init(false, Global.WEAP)
@@ -79,6 +86,8 @@ func _input(event: InputEvent) -> void:
                         self.tube_load_timers[self.curr_tube].set_wait_time(load_time)
                         self.tube_load_timers[self.curr_tube].start()
                         
+                        torp_load_noise.play()
+                        
                 elif(self.tube_load_flag[self.curr_tube] and self.tube_flood_flag[self.curr_tube]):
                     #Fire torp
                     launch_torpedo()
@@ -96,11 +105,13 @@ func launch_torpedo() -> void:
     var torp_object = self.torpedo_objects[torpedo_type].new(self.next_torp_id)#TODO: DEBUG SOMEWHERE OVER HERE FOR TARGETING
     torp_object.set_target_id(self.tube_targets[self.curr_tube])
     self.next_torp_id+=1
-    
-    #Launch the torp object
+
+    # Play fire, hatch, then load noises (fire and hatch are one-shots, load is looping)
+    torp_fire_noise.play()
+
+    # Launch the torp object
     torpedo_launched.emit(self.curr_tube, torp_object)
-    #print(torp_object)
-    
+
     #Clear tube
     self.tube_open_flag[self.curr_tube] = true
     self.tube_lock_flag[self.curr_tube] = false
@@ -162,7 +173,10 @@ func load_tube(tube_num: int) -> void:
     self.current_type_text.set_text(self.torp_names[self.curr_torp_type])
     update_both_text()
     tube_loaded.emit(tube_num)
-    
+    # Stop loading sound
+    torp_load_noise.stop()
+    tube_hatch_close_noise.play()
+
     #Start flooding the tube
     self.tube_flood_timers[tube_num].set_wait_time(self.flood_time * (1.0/self.get_total_status()))
     self.tube_flood_timers[tube_num].start()
@@ -172,3 +186,10 @@ func flood_tube(tube_num: int) -> void:
     self.tube_flood_flag[tube_num] = true
     update_both_text()
     tube_flooded.emit(tube_num)
+    # Stop flooding sound
+    tube_flood_noise.stop()
+
+func _on_torp_fire_finished() -> void:
+    tube_hatch_open_noise.play()
+func _on_tube_hatch_c_finished() -> void:
+    tube_flood_noise.play()

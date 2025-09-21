@@ -24,6 +24,9 @@ var depth_full := Vector2(1755, 727)
 @onready var requestDepth = $Depth/RequestBar
 @onready var currDepth = $Depth/CurrBar
 
+# === NOISE VARS ===
+@onready var engine_noise = $EngineNoise
+
 func _init() -> void:
     super._init(false, Global.ENGINE)
 
@@ -32,6 +35,7 @@ func _ready() -> void:
     
 func _process(delta: float) -> void:
     super._process(delta)
+    print(self.engine_noise.get_volume_linear())
     if(self.in_focus):
         #Update text
         var engine_status = self.manager_node.get_engine_info()
@@ -67,6 +71,14 @@ func _input(event):
                 request_command_focus.emit()
             elif(event.is_action_pressed("Action_L")):
                 manager_node.emergency_depth()
+
+func set_focus(f) -> void:
+    self.engine_noise.set_pitch_scale(self.get_total_status())
+    if(f):
+        self.engine_noise.play()
+    else:
+        self.engine_noise.stop()
+    super.set_focus(f)
 
 func calc_speed_pos(speed: float) -> Vector2:
     return(self.speed_zero.lerp(self.speed_full, speed/self.max_display_speed))

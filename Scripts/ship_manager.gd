@@ -73,6 +73,9 @@ var velocity := Vector2(0,0)#Speed and direction
 @onready var LLF_T4_text := [$VC/V/Sidebar/Tube4/Lock, $VC/V/Sidebar/Tube4/Load, $VC/V/Sidebar/Tube4/Flood]
 @onready var LLF_array := [LLF_T1_text, LLF_T2_text, LLF_T3_text, LLF_T4_text]
 
+# === SOUND VARS ===
+@onready var swap_noise := $ScreenSwap
+
 func _ready() -> void:
     #Connecting signals
     self.target_child.check_ID.connect(on_entity_check)
@@ -159,6 +162,7 @@ func _input(event):
         update_command_focus(true)
     for action_indx in range(self.num_chunks):
         if(event.is_action_pressed(chunk_names[action_indx])):#Check if a SysChunk event
+            swap_noise.play()
             for chunk_indx in range(self.num_chunks):#Set the chunk focuses
                 if(action_indx==chunk_indx):#Activate this chunk
                     self.loading_flag = true

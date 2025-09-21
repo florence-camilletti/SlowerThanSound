@@ -31,6 +31,9 @@ extends ShipSystemBase
 @onready var Weap_coolant_sprites   := [$WEP/C1, $WEP/C2, $WEP/C3, $WEP/C4, $WEP/C5]
 @onready var LIDAR_coolant_sprites  := [$LDR/C1, $LDR/C2, $LDR/C3, $LDR/C4, $LDR/C5]
 
+# === NOISE VARS ===
+@onready var ELC_noise := $ELC_Noise
+
 @onready var all_coolant_sprites := [
     null,
     Engine_coolant_sprites,
@@ -128,6 +131,7 @@ func get_indx_lube(curr_indx: int) -> float:
 
 #Update the sprites of all systems
 func update_all_sprites() -> void:
+    ELC_noise.play()
     for n in range(1,len(self.all_lube_sprites)):
         update_lube_sprite(n)
         update_coolant_sprite(n)

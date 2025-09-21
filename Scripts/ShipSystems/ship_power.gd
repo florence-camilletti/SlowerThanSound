@@ -10,6 +10,9 @@ extends ShipSystemBase
 @onready var Weap_sprites   := [$WEP/E1, $WEP/E2, $WEP/E3, $WEP/E4, $WEP/E5, $WEP/E6]
 @onready var LIDAR_sprites  := [$LDR/E1, $LDR/E2, $LDR/E3, $LDR/E4, $LDR/E5, $LDR/E6]
 
+# === NOISE VARS ===
+@onready var ELC_noise := $ELC_Noise
+
 @onready var all_power_sprites := [
     null,
     Eng_sprites,
@@ -96,6 +99,7 @@ func calc_dot_spot(curr_indx: int) -> Vector2:
 
 #Updates the sprites for all systems
 func update_all_sprites() -> void:
+    ELC_noise.play()
     for n in range(1, len(self.all_power_sprites)):
         update_power_sprites(n)
     update_usage()
