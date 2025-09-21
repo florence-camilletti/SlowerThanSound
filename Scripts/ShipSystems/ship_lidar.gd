@@ -29,6 +29,9 @@ var label_list  := {}
 var selected_entity := "-1"
 var label_offset := Vector2(5,5)
 
+# === NOISE VARS ===
+@onready var ping_noise := $LIDAR_Ping
+
 func _init() -> void:
     super._init(false, Global.LIDAR)
 
@@ -121,6 +124,7 @@ func refresh_map() -> void:
     #Update the entity list
     self.request_flag = true
     entity_request.emit()
+    ping_noise.play()
     while(self.request_flag):#Wait for entity list
         pass
 

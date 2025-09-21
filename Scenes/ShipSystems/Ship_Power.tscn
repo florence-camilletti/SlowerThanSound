@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bbmqp6ic5jct8"]
+[gd_scene load_steps=7 format=3 uid="uid://bbmqp6ic5jct8"]
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_hkqgm"]
 [ext_resource type="Script" uid="uid://cbmyl68867y5i" path="res://Scripts/ShipSystems/ship_power.gd" id="2_pvwxx"]
 [ext_resource type="Texture2D" uid="uid://c7o4pbcj6dkma" path="res://Assets/Textures/Screens/PowerScreen.png" id="4_k0rem"]
 [ext_resource type="Texture2D" uid="uid://c3qm0j3gdojik" path="res://Assets/Textures/elec_bar.png" id="4_xqrfh"]
 [ext_resource type="Texture2D" uid="uid://bl3ic2lrsol26" path="res://Assets/Textures/Elec_Dot.png" id="5_k0rem"]
+[ext_resource type="AudioStream" uid="uid://bfsexaxno04mk" path="res://Assets/SFX/ELC.mp3" id="6_yqxob"]
 
 [node name="ShipPower" instance=ExtResource("1_hkqgm")]
 script = ExtResource("2_pvwxx")
@@ -249,3 +250,7 @@ text = "def"
 [node name="ElecLubeHeat" parent="." index="12"]
 offset_top = 977.0
 offset_bottom = 1033.0
+
+[node name="ELC_Noise" type="AudioStreamPlayer" parent="." index="13"]
+stream = ExtResource("6_yqxob")
+volume_db = -6.0
