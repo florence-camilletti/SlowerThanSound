@@ -44,9 +44,11 @@ visible = false
 
 [node name="ShipWeapons" parent="VC/V/SysChunk3" instance=ExtResource("9_hkh0f")]
 visible = false
+top_level = true
 
 [node name="ShipTarget" parent="VC/V/SysChunk3" instance=ExtResource("10_hkh0f")]
 visible = false
+top_level = true
 
 [node name="SysChunk2" type="Node2D" parent="VC/V"]
 

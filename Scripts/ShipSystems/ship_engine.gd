@@ -35,7 +35,7 @@ func _ready() -> void:
     
 func _process(delta: float) -> void:
     super._process(delta)
-    print(self.engine_noise.get_volume_linear())
+    
     if(self.in_focus):
         #Update text
         var engine_status = self.manager_node.get_engine_info()

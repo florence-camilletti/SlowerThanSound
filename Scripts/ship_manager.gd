@@ -37,7 +37,7 @@ var load_change_amnt := 0.01
 
 # === MOVEMENT VARS ===
 #Location details in long,lat
-var sub_position := Global.map_middle#Deciseconds; [0 - 720,000| 0 - 720,000]
+var sub_position := Global.map_middle#Deciseconds
 
 var heading := 0.0#Degrees; 0 - 360
 var desire_heading := 0.0
@@ -272,7 +272,7 @@ func update_sidebar() -> void:
 #Update LIDAR's entity list from the entity manager
 func on_LIDAR_request() -> void:
     var entity_list = self.entity_manager.get_entity_list()
-    self.LIDAR_child.update_display(entity_list)
+    self.LIDAR_child.update_entity_list(entity_list)
     self.LIDAR_child.request_flag = false
 
 #Signaled by LIDAR when lidar timing is changed

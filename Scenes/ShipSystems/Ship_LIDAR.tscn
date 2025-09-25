@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcbq55wkga8tk"]
+[gd_scene load_steps=10 format=3 uid="uid://dcbq55wkga8tk"]
 
 [ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_ctw80"]
 [ext_resource type="Script" uid="uid://bol1r4odc751j" path="res://Scripts/ShipSystems/ship_lidar.gd" id="2_yj4yk"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bm85byyvxyveb" path="res://Assets/Textures/ship_tmp.png" id="4_vgnkx"]
 [ext_resource type="Texture2D" uid="uid://cv2j4rp3n6ksd" path="res://Assets/Textures/red_circle.png" id="5_3s6dt"]
 [ext_resource type="Texture2D" uid="uid://cnao21055w77d" path="res://Assets/Textures/green_circle.png" id="5_m1kkf"]
+[ext_resource type="Texture2D" uid="uid://tkiac61uwsih" path="res://Assets/Textures/Screens/MapMask.png" id="6_cyt3n"]
 [ext_resource type="Texture2D" uid="uid://dsdssl8iyjw5a" path="res://Assets/Textures/selection_square.png" id="7_bne4i"]
 [ext_resource type="AudioStream" uid="uid://dh0nnvim8sth6" path="res://Assets/SFX/LIDAR.mp3" id="8_6pme1"]
 
@@ -20,15 +21,33 @@ position = Vector2(846, 476)
 scale = Vector2(2.00605, 1.87272)
 texture = ExtResource("4_vgnkx")
 
-[node name="SweepTimer" type="Timer" parent="." index="2"]
+[node name="SelectionBox" type="Sprite2D" parent="." index="2"]
+visible = false
+position = Vector2(16, 16)
+texture = ExtResource("7_bne4i")
 
-[node name="AutoInput" type="LineEdit" parent="." index="3"]
-offset_left = 1536.0
-offset_top = 28.0
-offset_right = 1629.0
-offset_bottom = 64.0
+[node name="SweepTimer" type="Timer" parent="." index="3"]
 
-[node name="AutoBox" type="RichTextLabel" parent="." index="4"]
+[node name="TopMask" type="Node2D" parent="." index="4"]
+top_level = true
+
+[node name="MapMask" type="Sprite2D" parent="TopMask" index="0"]
+position = Vector2(950, 540)
+texture = ExtResource("6_cyt3n")
+
+[node name="AutoLight" type="Node2D" parent="TopMask" index="1"]
+position = Vector2(128, 208)
+
+[node name="AutoLightR" type="Sprite2D" parent="TopMask/AutoLight" index="0"]
+position = Vector2(1268, -121)
+texture = ExtResource("5_3s6dt")
+
+[node name="AutoLightG" type="Sprite2D" parent="TopMask/AutoLight" index="1"]
+visible = false
+position = Vector2(1268, -121)
+texture = ExtResource("5_m1kkf")
+
+[node name="AutoBox" type="RichTextLabel" parent="TopMask" index="2"]
 offset_left = 1423.0
 offset_top = 73.0
 offset_right = 1502.0
@@ -36,30 +55,27 @@ offset_bottom = 100.0
 text = "===="
 scroll_active = false
 
-[node name="AutoLight" type="Node2D" parent="." index="5"]
-position = Vector2(128, 208)
+[node name="AutoInput" type="LineEdit" parent="TopMask" index="3"]
+offset_left = 1536.0
+offset_top = 28.0
+offset_right = 1629.0
+offset_bottom = 64.0
 
-[node name="AutoLightR" type="Sprite2D" parent="AutoLight" index="0"]
-position = Vector2(1268, -121)
-texture = ExtResource("5_3s6dt")
-
-[node name="AutoLightG" type="Sprite2D" parent="AutoLight" index="1"]
-visible = false
-position = Vector2(1268, -121)
-texture = ExtResource("5_m1kkf")
-
-[node name="SelectionBox" type="Sprite2D" parent="." index="6"]
-visible = false
-position = Vector2(16, 16)
-texture = ExtResource("7_bne4i")
-
-[node name="ElecLubeHeat" parent="." index="7"]
+[node name="ElecLubeHeat" parent="." index="5"]
 offset_top = 962.0
 offset_bottom = 1018.0
 
-[node name="LIDAR_Ping" type="AudioStreamPlayer" parent="." index="8"]
+[node name="LIDAR_Ping" type="AudioStreamPlayer" parent="." index="6"]
 stream = ExtResource("8_6pme1")
 
+[node name="Map" type="Node2D" parent="." index="7"]
+top_level = true
+
+[node name="Polygon2D" type="Polygon2D" parent="Map" index="0"]
+color = Color(0, 0.415686, 0.572549, 1)
+texture_rotation = 0.0610865
+polygon = PackedVector2Array(116, 0, 116, 82, -1, 81, 0, 0)
+
 [connection signal="timeout" from="SweepTimer" to="." method="_on_timer_timeout"]
-[connection signal="text_changed" from="AutoInput" to="." method="_on_auto_input_text_changed"]
-[connection signal="text_submitted" from="AutoInput" to="." method="_on_auto_input_text_submitted"]
+[connection signal="text_changed" from="TopMask/AutoInput" to="." method="_on_auto_input_text_changed"]
+[connection signal="text_submitted" from="TopMask/AutoInput" to="." method="_on_auto_input_text_submitted"]
