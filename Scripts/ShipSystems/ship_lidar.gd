@@ -74,14 +74,14 @@ func update_entity_list(new_entity_list: Array) -> void:
 func update_display() -> void:  
     #Update land
     for obst_indx in range(len(self.map_obstacles)):
-            var new_pos = self.desec_to_map(self.map_obstacle_pos[obst_indx], self.manager_node.sub_position)
+            var new_pos = Global.desec_to_map(self.map_obstacle_pos[obst_indx], self.manager_node.sub_position)
             self.map_obstacles[obst_indx].position = new_pos
               
     #Update entities
     var sub_pos = self.manager_node.sub_position
     for curr_entity in self.entity_list.values():
         var ent_id = curr_entity.get_id()
-        var new_pos = self.desec_to_map(self.last_pos_list[ent_id], sub_pos)
+        var new_pos = Global.desec_to_map(self.last_pos_list[ent_id], sub_pos)
         self.sprite_list[ent_id].position = new_pos
         self.sprite_list[ent_id].set_rotation_degrees(curr_entity.get_heading())
         self.label_list[ent_id].position = new_pos + self.label_offset
@@ -93,10 +93,10 @@ func update_display() -> void:
 
 #Update the manager's state as to if the sub is going into illegal spots
 func check_collision(new_pos: Vector2) -> bool:
-    var new_new_pos = self.desec_to_map(new_pos, manager_node.sub_position)
+    var new_new_pos = Global.desec_to_map(new_pos, manager_node.sub_position)
     for land in range(len(self.map_obstacles)):
         var new_pack = self.map_obstacles[land].get_polygon()
-        var offset = self.desec_to_map(self.map_obstacle_pos[land], manager_node.sub_position)
+        var offset = Global.desec_to_map(self.map_obstacle_pos[land], manager_node.sub_position)
         for n in range(len(new_pack)):
             new_pack[n]+=offset
             
@@ -147,19 +147,7 @@ func update_selection(id: String) -> void:
     self.selected_sprite.set_visible(id != "-1")
     self.selected_entity = id
 
-#Translates a Vector2 of desecisecond position to a pixel position for sprite display
-func desec_to_map(entity_pos: Vector2, sub_pos: Vector2) -> Vector2:
-    #Get distance between sub and entity
-    var distance = entity_pos-sub_pos
-    #Divide desec pos by map size to get  ([-1, 1], [-1, 1]) range
-    var rtn = distance/self.map_desec_radius
-    #Multiply -1, 1 range by pixel radius (435) to get offset
-    rtn *= self.map_pixel_radius
-    #Flip y-coord
-    rtn *= Vector2(1,-1)
-    #Add offset to map center (846,476)
-    rtn += self.map_pixel_center
-    return(rtn)
+
 
 func refresh_map() -> void:
     #Update the entity list

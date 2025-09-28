@@ -67,3 +67,17 @@ func calc_desectic_speed(curr_velocity: Vector2) -> Vector2:
     return(Vector2(direction, speed))
 func calc_knot_speed(curr_velocity: Vector2) -> Vector2:
     return(calc_desectic_speed(curr_velocity)*Global.desectic_knot_ratio)
+
+#Translates a Vector2 of desecisecond position to a pixel position for sprite display
+func desec_to_map(entity_pos: Vector2, sub_pos: Vector2) -> Vector2:
+    #Get distance between sub and entity
+    var distance = entity_pos-sub_pos
+    #Divide desec pos by map size to get  ([-1, 1], [-1, 1]) range
+    var rtn = distance/self.map_desec_radius
+    #Multiply -1, 1 range by pixel radius (435) to get offset
+    rtn *= self.map_pixel_radius
+    #Flip y-coord
+    rtn *= Vector2(1,-1)
+    #Add offset to map center (846,476)
+    rtn += self.map_pixel_center
+    return(rtn)
