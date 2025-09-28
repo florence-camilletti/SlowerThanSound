@@ -74,7 +74,28 @@ top_level = true
 [node name="Polygon2D" type="Polygon2D" parent="Map" index="0"]
 color = Color(0, 0.415686, 0.572549, 1)
 texture_rotation = 0.0610865
-polygon = PackedVector2Array(116, 0, 116, 82, -1, 81, 0, 0)
+polygon = PackedVector2Array(116, 0, 116, 82, -1, 81, -22, 65, 0, 0, 87, 55)
+
+[node name="A" type="RichTextLabel" parent="." index="8"]
+top_level = true
+offset_left = 348.0
+offset_top = 4.0
+offset_right = 769.0
+offset_bottom = 66.0
+
+[node name="B" type="RichTextLabel" parent="." index="9"]
+top_level = true
+offset_left = 348.0
+offset_top = 64.0
+offset_right = 767.0
+offset_bottom = 116.0
+
+[node name="C" type="RichTextLabel" parent="." index="10"]
+top_level = true
+offset_left = 348.0
+offset_top = 107.0
+offset_right = 766.0
+offset_bottom = 147.0
 
 [connection signal="timeout" from="SweepTimer" to="." method="_on_timer_timeout"]
 [connection signal="text_changed" from="TopMask/AutoInput" to="." method="_on_auto_input_text_changed"]

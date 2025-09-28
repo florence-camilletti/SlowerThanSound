@@ -152,7 +152,12 @@ func _process(delta: float):
     #Update ship speed
     self.speed = self.speed + (((self.engine_power*self.engine_child.get_total_status()) - (self.speed*Global.friction_coef)) * delta)
     update_vel()
-    self.sub_position+=self.velocity
+    
+    #Update velocity after check
+    var new_sub_pos = self.sub_position+self.velocity
+    if(not self.LIDAR_child.check_collision(new_sub_pos)):
+        #self.sub_position+=self.velocity
+        self.sub_position = new_sub_pos
     
     #Update sidebar
     update_sidebar()

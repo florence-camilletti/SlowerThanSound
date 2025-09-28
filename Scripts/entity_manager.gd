@@ -29,8 +29,8 @@ func _on_timer_timeout() -> void:
     #Chance for a new enemy
     if(self.num_enemies < self.max_enemies):
         if(rng.randf() < self.enemy_chance):
-            #_make_new_still_enemy()
-            _make_new_moving_enemy()
+            _make_new_still_enemy()
+            #_make_new_moving_enemy()
             #_make_new_turning_enemy()
 
 #Add ent to the manager's lists and connects it to the trees

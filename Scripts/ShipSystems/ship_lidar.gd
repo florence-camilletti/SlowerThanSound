@@ -49,9 +49,6 @@ func _process(delta: float) -> void:
         #Update display
         self.update_display()
         
-        
-        #Check collision
-        
 func _input(event: InputEvent) -> void:
     if(in_focus):
         if(self.command_focus_open):
@@ -93,7 +90,24 @@ func update_display() -> void:
     var show_select = self.selected_entity != "-1"
     if(show_select):
         self.selected_sprite.set_position(self.sprite_list[self.selected_entity].position)
-           
+
+#Update the manager's state as to if the sub is going into illegal spots
+func check_collision(new_pos: Vector2) -> bool:
+    var new_new_pos = self.desec_to_map(new_pos, manager_node.sub_position)
+    for land in range(len(self.map_obstacles)):
+        var new_pack = self.map_obstacles[land].get_polygon()
+        var offset = self.desec_to_map(self.map_obstacle_pos[land], manager_node.sub_position)
+        for n in range(len(new_pack)):
+            new_pack[n]+=offset
+            
+        $A.set_text(str(new_new_pos))
+        $B.set_text(str(new_pack))
+        if(Geometry2D.is_point_in_polygon(new_new_pos, new_pack)):
+            $C.set_text("TRUE")
+            return(true)
+    $C.set_text("FALSE")
+    return(false)
+        
 #Increase the number of sprites
 func add_new_entity(ent: EntityBase) -> void:
     var ent_id = ent.get_id()
