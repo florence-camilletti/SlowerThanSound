@@ -37,6 +37,16 @@ var map_offset := Vector2(4392000, 144000)
 var map_limit  := Vector2(4428000, 180000)
 var cell_size := 50
 
+var radar_pixel_radius := 435.0
+var radar_pixel_center := Vector2(846,476)
+var radar_deg_radius := 0.01#+/- 0.01 degrees (0.6 nm) in each direction
+var radar_desec_radius := self.deg_desec_ratio*radar_deg_radius #1 degree = 36,000 desec 
+#Final radar screen is [-360,360] deseconds
+#1 pixel = (360/435) desec
+#1 desec = (435/360) desec
+var pixel_desec_ratio := self.radar_desec_radius/self.radar_pixel_radius
+var desec_pixel_ratio := self.radar_pixel_radius/self.radar_desec_radius
+
 # === PHYSICS ===
 var friction_coef := 0.5
 
@@ -72,12 +82,12 @@ func calc_knot_speed(curr_velocity: Vector2) -> Vector2:
 func desec_to_map(entity_pos: Vector2, sub_pos: Vector2) -> Vector2:
     #Get distance between sub and entity
     var distance = entity_pos-sub_pos
-    #Divide desec pos by map size to get  ([-1, 1], [-1, 1]) range
-    var rtn = distance/self.map_desec_radius
+    #Divide desec pos by radar size to get  ([-1, 1], [-1, 1]) range
+    var rtn = distance/self.radar_desec_radius
     #Multiply -1, 1 range by pixel radius (435) to get offset
-    rtn *= self.map_pixel_radius
+    rtn *= self.radar_pixel_radius
     #Flip y-coord
     rtn *= Vector2(1,-1)
-    #Add offset to map center (846,476)
-    rtn += self.map_pixel_center
+    #Add offset to radar center (846,476)
+    rtn += self.radar_pixel_center
     return(rtn)

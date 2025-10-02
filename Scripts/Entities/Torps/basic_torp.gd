@@ -43,11 +43,9 @@ func launch(pos: Vector2, head: float, s: float) -> void:
     self.desec_speed = s+self.speedup
     self.desec_vel = Global.calc_desectic_vel(self.heading, self.desec_speed)
     self.arming_timer.start()
-
-func BOOM() -> void:
-    print(self.get_id())
-    print("BOOM BOOM BOOM BOOM BOOM")
-    set_health(0)
+    
+func handle_collision() -> void:
+    self.kill()
 
 func set_target_id(ent_id: String) -> void:
     self.target_id = ent_id

@@ -1,7 +1,9 @@
 extends Node2D
+class_name EntityManager
 
 # === NODE VARS ===
 var manager_node: ShipManager
+var map_manager: MapManager
 var rng = RandomNumberGenerator.new()
 @onready var timer := $EnemySpawn
 
@@ -23,35 +25,40 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     #If check collisions becomes too costly, this might be done
     # every few tics instead of every tic
-    check_collisions()
+    check_ent_collisions()
+
+func set_map_manager(m: MapManager) -> void:
+    self.map_manager=m
 
 func _on_timer_timeout() -> void:
     #Chance for a new enemy
     if(self.num_enemies < self.max_enemies):
         if(rng.randf() < self.enemy_chance):
-            _make_new_still_enemy()
-            #_make_new_moving_enemy()
+            #_make_new_still_enemy()
+            _make_new_moving_enemy()
             #_make_new_turning_enemy()
 
 #Add ent to the manager's lists and connects it to the trees
 func add_entity(ent: EntityBase) -> void:
     self.entity_list.append(ent)
     ent.death.connect(on_entity_death)
+    ent.check_pos.connect(on_check_pos)
     add_child(ent)
     entity_created.emit(ent)
     
 func add_enemy(enemy: BasicEnemy) -> void:
     add_entity(enemy)
+    
 func add_torpedo(torp: BasicTorp) -> void:
     var target_id = torp.get_target_id()
     for ent in self.entity_list:#Set torpedo target
         if(ent.get_id() == target_id):
             torp.set_target(ent)
-    #add_entity(torp)
-    self.entity_list.append(torp)
+    add_entity(torp)
+    '''self.entity_list.append(torp)
     torp.death.connect(on_entity_death)
     add_child(torp)
-    entity_created.emit(torp)
+    entity_created.emit(torp)'''
     
     torp.launch(self.manager_node.sub_position, self.manager_node.heading, self.manager_node.speed)
     
@@ -62,6 +69,12 @@ func on_entity_death(ent: EntityBase) -> void:
     entity_list.remove_at(pos)
     entity_destroyed.emit(ent)
     ent.queue_free()
+    
+#When an entity is moving and needs to know if the next spot is valid
+func on_check_pos(ent: EntityBase, pos: Vector2) -> void:
+    var is_valid = not self.map_manager.check_collision(pos)
+    ent.valid_next_pos = is_valid
+    ent.pos_wait = false
     
 func _make_new_still_enemy() -> void:
     var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
@@ -75,7 +88,7 @@ func _make_new_still_enemy() -> void:
 #Create a new enemy and update the manager
 func _make_new_moving_enemy() -> void:#TESTING FUNCTION
     var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
-    tmp_pos += Global.map_middle
+    tmp_pos = Global.map_middle
     var tmp_vel = Vector2(rng.randf_range(-0.2,0.2),rng.randf_range(-0.2,0.2))
     self.num_enemies += 1
     var new_enemy = DumbEnemy.new(num_enemies, tmp_pos, tmp_vel)
@@ -92,7 +105,7 @@ func _make_new_turning_enemy() -> void:#TESTING FUNCTION
     add_entity(new_enemy)
     
 #Uses a spacial cell hash to determin if any torpedoes have collided with something
-func check_collisions():
+func check_ent_collisions():
     var grid = {}
     #Create collision map
     for ent in entity_list:
@@ -114,7 +127,7 @@ func check_collisions():
                             if(not target == torp):#Don't check itself, obviously
                                 var hit = (curr_pos.distance_squared_to(target.get_desec_pos())) <= torp.get_kill_bubble_sqr()
                                 if(hit):
-                                    torp.set_health(0)
+                                    torp.kill()
                                     target.damage(torp.get_damage_points())
                                     
 #Returns if an entity exists with ID ent_id

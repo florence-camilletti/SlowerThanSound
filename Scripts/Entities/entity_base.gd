@@ -14,6 +14,10 @@ var health: int
 var desec_pos: Vector2#Decisecond position
 var map_cell: Vector2
 
+signal check_pos
+var pos_wait := false
+var valid_next_pos := false
+
 # === Movement Vars ===
 var desec_vel: Vector2#Decisecond/tick
 var desec_speed: float
@@ -32,15 +36,20 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     #Update entity pos
     if(self.is_alive):
-        set_desec_pos(self.desec_pos+self.desec_vel)
+        var next_spot = self.desec_pos+self.desec_vel
+        if(self.is_valid_pos(next_spot)):
+            set_desec_pos(self.desec_pos+self.desec_vel)
+        else:
+            self.handle_collision()
 
 func kill() -> void:
     set_health(0)
-    death.emit(self)
 func damage(d: int) -> void:
     self.health-=d
     if(self.health<=0):
         death.emit(self)
+func handle_collision():
+    pass
     
 func set_health(h: int) -> void:
     self.health = h
@@ -50,6 +59,12 @@ func get_health() -> int:
     return(self.health)
 func is_alive() -> bool:
     return(self.health>0)
+
+func is_valid_pos(pos: Vector2) -> bool:
+    self.pos_wait = true
+    self.check_pos.emit(self, pos)
+    while(self.pos_wait):pass
+    return(self.valid_next_pos)
 
 func set_texture(t: Texture2D) -> void:
     self.texture = t

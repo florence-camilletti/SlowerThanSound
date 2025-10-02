@@ -2,15 +2,9 @@ extends ShipSystemBase
 
 # === Map Vars ===
 @onready var player_sprite := $PlayerSprite
-var rng := RandomNumberGenerator.new()
-var map_pixel_radius := 435
-var map_pixel_center := Vector2(846,476)
-var map_deg_radius := 0.01#+/- 0.01 degrees (0.6 nm) in each direction
-var map_desec_radius := Global.deg_desec_ratio*map_deg_radius #1 degree = 36,000 desec
-#Final radar screen is [-360,360] deseconds
 
-@onready var map_obstacles := [$Map/Polygon2D]
-var map_obstacle_pos := [Global.map_middle-Vector2(100,100)]
+var map_obstacles := []
+var map_obstacle_pos := []
 
 # === Input Vars ===
 @onready var inputBox := $TopMask/AutoInput
@@ -42,6 +36,9 @@ func _init() -> void:
 func _ready() -> void:
     super._ready()
     
+func set_map_manage(m: MapManager) -> void:
+    self.map_manager = m
+
 func _process(delta: float) -> void:
     super._process(delta)
     #Process player input
@@ -58,6 +55,22 @@ func _input(event: InputEvent) -> void:
                 self.inputBox.grab_focus()
                 self.request_command_focus.emit()
     
+func load_map(map_objects: Array) -> void:
+    for old_obj in map_objects:
+        var curr_polygons = old_obj.get_polygon()
+        for indx in range(len(curr_polygons)):
+            curr_polygons[indx] *= Global.desec_pixel_ratio
+        var curr_position = old_obj.get_position()
+        
+        var new_object = Polygon2D.new()
+        new_object.set_polygon(curr_polygons)
+        new_object.set_position(curr_position)
+        
+        self.map_obstacles.append(new_object)
+        self.map_obstacle_pos.append(curr_position)
+        add_child(new_object)
+        
+    
 #Update the rotation of the player sprite    
 func update_sub_rotation(deg) -> void:
     #Update player
@@ -72,13 +85,14 @@ func update_entity_list(new_entity_list: Array) -> void:
         
 #Update the position of the LIDAR sprites
 func update_display() -> void:  
+    var sub_pos = self.manager_node.sub_position
+    
     #Update land
     for obst_indx in range(len(self.map_obstacles)):
-            var new_pos = Global.desec_to_map(self.map_obstacle_pos[obst_indx], self.manager_node.sub_position)
+            var new_pos = Global.desec_to_map(self.map_obstacle_pos[obst_indx], sub_pos)#self.manager_node.sub_position - self.map_obstacle_pos[obst_indx]
             self.map_obstacles[obst_indx].position = new_pos
               
     #Update entities
-    var sub_pos = self.manager_node.sub_position
     for curr_entity in self.entity_list.values():
         var ent_id = curr_entity.get_id()
         var new_pos = Global.desec_to_map(self.last_pos_list[ent_id], sub_pos)
@@ -90,23 +104,6 @@ func update_display() -> void:
     var show_select = self.selected_entity != "-1"
     if(show_select):
         self.selected_sprite.set_position(self.sprite_list[self.selected_entity].position)
-
-#Update the manager's state as to if the sub is going into illegal spots
-func check_collision(new_pos: Vector2) -> bool:
-    var new_new_pos = Global.desec_to_map(new_pos, manager_node.sub_position)
-    for land in range(len(self.map_obstacles)):
-        var new_pack = self.map_obstacles[land].get_polygon()
-        var offset = Global.desec_to_map(self.map_obstacle_pos[land], manager_node.sub_position)
-        for n in range(len(new_pack)):
-            new_pack[n]+=offset
-            
-        $A.set_text(str(new_new_pos))
-        $B.set_text(str(new_pack))
-        if(Geometry2D.is_point_in_polygon(new_new_pos, new_pack)):
-            $C.set_text("TRUE")
-            return(true)
-    $C.set_text("FALSE")
-    return(false)
         
 #Increase the number of sprites
 func add_new_entity(ent: EntityBase) -> void:
@@ -134,10 +131,10 @@ func destroy_entity(ent: EntityBase) -> void:
     
     self.entity_list.erase(ent_id)
     self.last_pos_list.erase(ent_id)
-    var obj_tmp = sprite_list[ent_id]
+    var obj_tmp = self.sprite_list[ent_id]
     self.sprite_list.erase(ent_id)
     obj_tmp.queue_free()
-    obj_tmp = label_list[ent_id]
+    obj_tmp = self.label_list[ent_id]
     self.label_list.erase(ent_id)
     obj_tmp.queue_free()
     selected_entity = "-1"
@@ -146,8 +143,6 @@ func destroy_entity(ent: EntityBase) -> void:
 func update_selection(id: String) -> void:
     self.selected_sprite.set_visible(id != "-1")
     self.selected_entity = id
-
-
 
 func refresh_map() -> void:
     #Update the entity list

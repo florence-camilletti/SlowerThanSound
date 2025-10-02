@@ -4,6 +4,7 @@ class_name ShipManager
 # === NODE VARS ===
 @onready var global_view := $VC/V
 @onready var entity_manager := $VC/V/EntityManager
+@onready var map_manager := $VC/V/MapManager
 
 @onready var menu_child   := $VC/V/SysChunkM/ShipMenu
 
@@ -101,6 +102,10 @@ func _ready() -> void:
     for node in self.all_system_nodes:
         node.set_siblings(self.all_system_nodes)
         
+    #Connecting admin nodes to each other
+    self.map_manager.load_map_polygons(self.LIDAR_child)
+    self.entity_manager.set_map_manager(self.map_manager)
+        
     self.load_screen.self_modulate.a=0
 
 func request_command_focus() -> void:
@@ -155,7 +160,7 @@ func _process(delta: float):
     
     #Update velocity after check
     var new_sub_pos = self.sub_position+self.velocity
-    if(not self.LIDAR_child.check_collision(new_sub_pos)):
+    if(not self.map_manager.check_collision(new_sub_pos)):
         #self.sub_position+=self.velocity
         self.sub_position = new_sub_pos
     
