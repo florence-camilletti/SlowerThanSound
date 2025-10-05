@@ -233,6 +233,8 @@ func set_engine_power(a: float) -> void:
 func update_vel() -> void:
     self.velocity = Global.calc_desectic_vel(self.heading, self.speed)
     
+func check_surface() -> bool:
+    return(self.depth <= 5)
 func emergency_speed() -> void:
     if(self.engine_power==0):
         self.engine_power=self.max_accel
