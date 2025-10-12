@@ -29,83 +29,75 @@ data = PackedByteArray("//vUxAAAKJ2bABWsgA2nwGLjOaAAOTDNyrMyBHAxmFBsnBvHxvnRtlRu
 [node name="ShipManager" type="Node2D"]
 script = ExtResource("1_tio8k")
 
-[node name="VC" type="SubViewportContainer" parent="."]
-offset_right = 1936.0
-offset_bottom = 1096.0
+[node name="SysChunk3" type="Node2D" parent="."]
 
-[node name="V" type="SubViewport" parent="VC"]
-handle_input_locally = false
-size = Vector2i(1980, 1200)
-render_target_update_mode = 4
-
-[node name="SysChunk3" type="Node2D" parent="VC/V"]
-
-[node name="ShipLIDAR" parent="VC/V/SysChunk3" instance=ExtResource("7_mneo4")]
+[node name="ShipLIDAR" parent="SysChunk3" instance=ExtResource("7_mneo4")]
 visible = false
 
-[node name="ShipWeapons" parent="VC/V/SysChunk3" instance=ExtResource("9_hkh0f")]
+[node name="ShipWeapons" parent="SysChunk3" instance=ExtResource("9_hkh0f")]
 visible = false
 top_level = true
 
-[node name="ShipTarget" parent="VC/V/SysChunk3" instance=ExtResource("10_hkh0f")]
+[node name="ShipTarget" parent="SysChunk3" instance=ExtResource("10_hkh0f")]
 visible = false
 top_level = true
 
-[node name="SysChunk2" type="Node2D" parent="VC/V"]
+[node name="SysChunk2" type="Node2D" parent="."]
 
-[node name="ShipPower" parent="VC/V/SysChunk2" instance=ExtResource("6_3a267")]
+[node name="ShipPower" parent="SysChunk2" instance=ExtResource("6_3a267")]
 visible = false
 
-[node name="ShipOxy" parent="VC/V/SysChunk2" instance=ExtResource("8_252ws")]
+[node name="ShipOxy" parent="SysChunk2" instance=ExtResource("8_252ws")]
 visible = false
 
-[node name="SysChunk1" type="Node2D" parent="VC/V"]
+[node name="SysChunk1" type="Node2D" parent="."]
 
-[node name="ShipEngine" parent="VC/V/SysChunk1" instance=ExtResource("5_mneo4")]
+[node name="ShipEngine" parent="SysChunk1" instance=ExtResource("5_mneo4")]
 visible = false
 
-[node name="ShipAI" parent="VC/V/SysChunk1" instance=ExtResource("5_kpqe6")]
+[node name="ShipAI" parent="SysChunk1" instance=ExtResource("5_kpqe6")]
 visible = false
 
-[node name="ShipBulk" parent="VC/V/SysChunk1" instance=ExtResource("9_252ws")]
+[node name="ShipBulk" parent="SysChunk1" instance=ExtResource("9_252ws")]
 visible = false
 
-[node name="SysChunkM" type="Node2D" parent="VC/V"]
+[node name="SysChunkM" type="Node2D" parent="."]
 
-[node name="ShipMenu" parent="VC/V/SysChunkM" instance=ExtResource("4_fwxua")]
+[node name="ShipMenu" parent="SysChunkM" instance=ExtResource("4_fwxua")]
 
-[node name="Sidebar" type="Node2D" parent="VC/V"]
+[node name="Sidebar" type="Node2D" parent="."]
+top_level = true
 
-[node name="BaseSprite" type="Sprite2D" parent="VC/V/Sidebar"]
+[node name="BaseSprite" type="Sprite2D" parent="Sidebar"]
 position = Vector2(167, 540)
 texture = ExtResource("11_tio8k")
 
-[node name="EngineStats" type="RichTextLabel" parent="VC/V/Sidebar"]
+[node name="EngineStats" type="RichTextLabel" parent="Sidebar"]
 offset_left = 62.0
 offset_top = 33.0
 offset_right = 256.0
 offset_bottom = 343.0
 text = "Engine"
 
-[node name="Elec" type="RichTextLabel" parent="VC/V/Sidebar"]
+[node name="Elec" type="RichTextLabel" parent="Sidebar"]
 offset_left = 19.0
 offset_top = 748.0
 offset_right = 104.0
 offset_bottom = 788.0
 
-[node name="Lube" type="RichTextLabel" parent="VC/V/Sidebar"]
+[node name="Lube" type="RichTextLabel" parent="Sidebar"]
 offset_left = 113.0
 offset_top = 748.0
 offset_right = 198.0
 offset_bottom = 788.0
 
-[node name="Cool" type="RichTextLabel" parent="VC/V/Sidebar"]
+[node name="Cool" type="RichTextLabel" parent="Sidebar"]
 offset_left = 211.0
 offset_top = 748.0
 offset_right = 296.0
 offset_bottom = 788.0
 
-[node name="Signal" type="RichTextLabel" parent="VC/V/Sidebar"]
+[node name="Signal" type="RichTextLabel" parent="Sidebar"]
 visible = false
 offset_left = 92.0
 offset_top = 814.0
@@ -113,9 +105,9 @@ offset_right = 224.0
 offset_bottom = 844.0
 text = "SIGNAL"
 
-[node name="Tube1" type="Node2D" parent="VC/V/Sidebar"]
+[node name="Tube1" type="Node2D" parent="Sidebar"]
 
-[node name="Lock" type="RichTextLabel" parent="VC/V/Sidebar/Tube1"]
+[node name="Lock" type="RichTextLabel" parent="Sidebar/Tube1"]
 visible = false
 offset_left = 16.0
 offset_top = 874.0
@@ -123,7 +115,7 @@ offset_right = 106.0
 offset_bottom = 914.0
 text = "LOCK"
 
-[node name="Load" type="RichTextLabel" parent="VC/V/Sidebar/Tube1"]
+[node name="Load" type="RichTextLabel" parent="Sidebar/Tube1"]
 visible = false
 offset_left = 112.0
 offset_top = 874.0
@@ -131,7 +123,7 @@ offset_right = 202.0
 offset_bottom = 914.0
 text = "LOAD"
 
-[node name="Flood" type="RichTextLabel" parent="VC/V/Sidebar/Tube1"]
+[node name="Flood" type="RichTextLabel" parent="Sidebar/Tube1"]
 visible = false
 offset_left = 209.0
 offset_top = 874.0
@@ -139,9 +131,9 @@ offset_right = 299.0
 offset_bottom = 914.0
 text = "FLOOD"
 
-[node name="Tube2" type="Node2D" parent="VC/V/Sidebar"]
+[node name="Tube2" type="Node2D" parent="Sidebar"]
 
-[node name="Lock" type="RichTextLabel" parent="VC/V/Sidebar/Tube2"]
+[node name="Lock" type="RichTextLabel" parent="Sidebar/Tube2"]
 visible = false
 offset_left = 16.0
 offset_top = 929.0
@@ -149,7 +141,7 @@ offset_right = 106.0
 offset_bottom = 969.0
 text = "LOCK"
 
-[node name="Load" type="RichTextLabel" parent="VC/V/Sidebar/Tube2"]
+[node name="Load" type="RichTextLabel" parent="Sidebar/Tube2"]
 visible = false
 offset_left = 112.0
 offset_top = 929.0
@@ -157,7 +149,7 @@ offset_right = 202.0
 offset_bottom = 969.0
 text = "LOAD"
 
-[node name="Flood" type="RichTextLabel" parent="VC/V/Sidebar/Tube2"]
+[node name="Flood" type="RichTextLabel" parent="Sidebar/Tube2"]
 visible = false
 offset_left = 209.0
 offset_top = 929.0
@@ -165,9 +157,9 @@ offset_right = 299.0
 offset_bottom = 969.0
 text = "FLOOD"
 
-[node name="Tube3" type="Node2D" parent="VC/V/Sidebar"]
+[node name="Tube3" type="Node2D" parent="Sidebar"]
 
-[node name="Lock" type="RichTextLabel" parent="VC/V/Sidebar/Tube3"]
+[node name="Lock" type="RichTextLabel" parent="Sidebar/Tube3"]
 visible = false
 offset_left = 16.0
 offset_top = 978.0
@@ -175,7 +167,7 @@ offset_right = 106.0
 offset_bottom = 1018.0
 text = "LOCK"
 
-[node name="Load" type="RichTextLabel" parent="VC/V/Sidebar/Tube3"]
+[node name="Load" type="RichTextLabel" parent="Sidebar/Tube3"]
 visible = false
 offset_left = 112.0
 offset_top = 978.0
@@ -183,7 +175,7 @@ offset_right = 202.0
 offset_bottom = 1018.0
 text = "LOAD"
 
-[node name="Flood" type="RichTextLabel" parent="VC/V/Sidebar/Tube3"]
+[node name="Flood" type="RichTextLabel" parent="Sidebar/Tube3"]
 visible = false
 offset_left = 209.0
 offset_top = 978.0
@@ -191,9 +183,9 @@ offset_right = 299.0
 offset_bottom = 1018.0
 text = "FLOOD"
 
-[node name="Tube4" type="Node2D" parent="VC/V/Sidebar"]
+[node name="Tube4" type="Node2D" parent="Sidebar"]
 
-[node name="Lock" type="RichTextLabel" parent="VC/V/Sidebar/Tube4"]
+[node name="Lock" type="RichTextLabel" parent="Sidebar/Tube4"]
 visible = false
 offset_left = 16.0
 offset_top = 1033.0
@@ -201,7 +193,7 @@ offset_right = 106.0
 offset_bottom = 1073.0
 text = "LOCK"
 
-[node name="Load" type="RichTextLabel" parent="VC/V/Sidebar/Tube4"]
+[node name="Load" type="RichTextLabel" parent="Sidebar/Tube4"]
 visible = false
 offset_left = 112.0
 offset_top = 1033.0
@@ -209,7 +201,7 @@ offset_right = 202.0
 offset_bottom = 1073.0
 text = "LOAD"
 
-[node name="Flood" type="RichTextLabel" parent="VC/V/Sidebar/Tube4"]
+[node name="Flood" type="RichTextLabel" parent="Sidebar/Tube4"]
 visible = false
 offset_left = 209.0
 offset_top = 1033.0
@@ -217,14 +209,15 @@ offset_right = 299.0
 offset_bottom = 1073.0
 text = "FLOOD"
 
-[node name="LoadScreen" type="Sprite2D" parent="VC/V"]
+[node name="LoadScreen" type="Sprite2D" parent="."]
 position = Vector2(959.553, 542.01)
-scale = Vector2(-96.0247, 54.2673)
+rotation = 3.14159
+scale = Vector2(96.0247, -54.2673)
 texture = ExtResource("12_a01pk")
 
-[node name="MapManager" parent="VC/V" instance=ExtResource("13_jnuaf")]
+[node name="MapManager" parent="." instance=ExtResource("13_jnuaf")]
 
-[node name="EntityManager" parent="VC/V" instance=ExtResource("12_tio8k")]
+[node name="EntityManager" parent="." instance=ExtResource("12_tio8k")]
 visible = false
 
 [node name="Ambiance" type="AudioStreamPlayer" parent="."]
@@ -233,3 +226,6 @@ autoplay = true
 
 [node name="ScreenSwap" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamMP3_jnuaf")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(950, 552)

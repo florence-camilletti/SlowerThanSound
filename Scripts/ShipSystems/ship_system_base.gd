@@ -40,9 +40,9 @@ func _init(f:bool, i:int) -> void:
     self.system_indx=i
 
 func _ready() -> void:
-    self.manager_node = get_parent().get_parent().get_parent().get_parent()#ew
+    self.manager_node = get_parent().get_parent()#ew
         
-    self.global_viewport = self.get_viewport()
+    #self.global_viewport = self.get_viewport()
     in_focus = false
     self.visible = false
     

@@ -73,27 +73,6 @@ stream = ExtResource("8_6pme1")
 [node name="MapNode" type="Node2D" parent="." index="7"]
 top_level = true
 
-[node name="A" type="RichTextLabel" parent="." index="8"]
-top_level = true
-offset_left = 348.0
-offset_top = 4.0
-offset_right = 769.0
-offset_bottom = 66.0
-
-[node name="B" type="RichTextLabel" parent="." index="9"]
-top_level = true
-offset_left = 348.0
-offset_top = 64.0
-offset_right = 767.0
-offset_bottom = 116.0
-
-[node name="C" type="RichTextLabel" parent="." index="10"]
-top_level = true
-offset_left = 348.0
-offset_top = 107.0
-offset_right = 766.0
-offset_bottom = 147.0
-
 [connection signal="timeout" from="SweepTimer" to="." method="_on_timer_timeout"]
 [connection signal="text_changed" from="TopMask/AutoInput" to="." method="_on_auto_input_text_changed"]
 [connection signal="text_submitted" from="TopMask/AutoInput" to="." method="_on_auto_input_text_submitted"]

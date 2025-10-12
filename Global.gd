@@ -36,7 +36,9 @@ var map_middle := map_size*0.5
 var cell_size := 50
 
 var map_pixel_radius := 435.0
-var map_pixel_center := Vector2(846,476)
+var map_offset := Vector2(846,476)
+var camera_pos := Vector2(950,552)
+var camera_map_offset := camera_pos-map_offset
 '''var active_deg_radius := 0.01#+/- 0.02 degrees (1.2 nm) in each direction
 var active_desec_radius := self.deg_desec_ratio*active_deg_radius #1 degree = 36,000 desec 
 var passive_deg_radius := 0.06#+/- 0.06 degrees (3.6 nm) in each direction
