@@ -11,7 +11,7 @@ func _init() -> void:
     pass
 
 func _ready() -> void:
-    self.manager_node = get_parent().get_parent().get_parent()
+    self.manager_node = get_parent()
     
 func _process(delta: float) -> void:
     pass
@@ -21,7 +21,7 @@ func load_map_polygons() -> void:
     var tmp_polygons = []
     tmp_polygons.append(PackedVector2Array([Vector2(0,0), Vector2(100,0), Vector2(100,100), Vector2(0,100)]))#Units are desec
     var tmp_pos = []
-    tmp_pos.append(Global.map_middle+Vector2(-40, -40))
+    tmp_pos.append(Global.map_middle+Vector2(-200, -200))
     self.build_map(tmp_polygons, tmp_pos)
  
 #Create new polygon objects from the specified Vector points   

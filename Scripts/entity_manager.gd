@@ -20,7 +20,7 @@ var max_enemies := 3
 func _ready() -> void:
     self.timer.timeout.connect(_on_timer_timeout)
     
-    self.manager_node = get_parent().get_parent().get_parent()
+    self.manager_node = get_parent()
 
 func _process(_delta: float) -> void:
     #If check collisions becomes too costly, this might be done

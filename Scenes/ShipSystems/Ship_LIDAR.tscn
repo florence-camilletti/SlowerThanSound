@@ -31,7 +31,7 @@ texture = ExtResource("7_bne4i")
 [node name="SweepTimer" type="Timer" parent="." index="3"]
 
 [node name="TopMask" type="Node2D" parent="." index="4"]
-top_level = true
+z_index = 1
 
 [node name="MapMask" type="Sprite2D" parent="TopMask" index="0"]
 position = Vector2(950, 540)

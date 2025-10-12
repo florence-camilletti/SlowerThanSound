@@ -58,9 +58,6 @@ func _input(event: InputEvent) -> void:
                 self.request_command_focus.emit()
             if(event.is_action_pressed("Action_F")):
                 self.active_flag = not self.active_flag
-    
-func update_sub_pos(new_pos: Vector2) -> void:
-    self.player_sprite.set_position(new_pos)
 
 #Update the rotation of the player sprite    
 func update_sub_rotation(deg) -> void:

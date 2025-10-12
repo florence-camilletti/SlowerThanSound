@@ -6,19 +6,19 @@ class_name ShipManager
 @onready var entity_manager := $EntityManager
 @onready var map_manager := $MapManager
 
-@onready var menu_child   := $SysChunkM/ShipMenu
+@onready var menu_child   := $HUDCamera/SysChunkM/ShipMenu
 
-@onready var engine_child := $SysChunk1/ShipEngine
-@onready var bulk_child   := $SysChunk1/ShipBulk
-@onready var AI_child     := $SysChunk1/ShipAI
-@onready var power_child  := $SysChunk2/ShipPower
-@onready var oxy_child    := $SysChunk2/ShipOxy
-@onready var LIDAR_child  := $SysChunk3/ShipLIDAR
-@onready var weap_child   := $SysChunk3/ShipWeapons
-@onready var target_child := $SysChunk3/ShipTarget
+@onready var engine_child := $HUDCamera/SysChunk1/ShipEngine
+@onready var bulk_child   := $HUDCamera/SysChunk1/ShipBulk
+@onready var AI_child     := $HUDCamera/SysChunk1/ShipAI
+@onready var power_child  := $HUDCamera/SysChunk2/ShipPower
+@onready var oxy_child    := $HUDCamera/SysChunk2/ShipOxy
+@onready var LIDAR_child  := $HUDCamera/SysChunk3/ShipLIDAR
+@onready var weap_child   := $HUDCamera/SysChunk3/ShipWeapons
+@onready var target_child := $HUDCamera/SysChunk3/ShipTarget
 var command_focus := true#If a text box is being focused
 
-@onready var camera_node := $Camera2D
+@onready var camera_node := $HUDCamera
 
 # === MENU VARS ===
 var menu_choice := 0
@@ -32,7 +32,7 @@ var chunk_names := ["SysChunkM","SysChunk1","SysChunk2","SysChunk3"]
                                   self.power_child, self.oxy_child, self.target_child, self.weap_child, self.LIDAR_child]
 var num_chunks := len(chunk_names)
 
-@onready var load_screen := $LoadScreen
+@onready var load_screen := $HUDCamera/LoadScreen
 var loading_flag := false
 var load_curr_val := 0.0
 var load_max_val := 100.0
@@ -40,7 +40,7 @@ var load_change_amnt := 0.01
 
 # === MOVEMENT VARS ===
 #Location details in long,lag
-var sub_position = Global.map_offset
+var sub_position = Global.map_middle
 
 var heading := 0.0#Degrees; 0 - 360
 var desire_heading := 0.0
@@ -64,16 +64,16 @@ var engine_power := 0.0# 0 - 100
 var velocity := Vector2(0,0)#Speed and direction
 
 # === SIDEBAR VARS ===
-@onready var sidebar_engine := $Sidebar/EngineStats
-@onready var elec_reserve_text := $Sidebar/Elec
-@onready var lube_reserve_text := $Sidebar/Lube
-@onready var cool_reserve_text := $Sidebar/Cool
-@onready var signal_text  := $Sidebar/Signal
+@onready var sidebar_engine := $HUDCamera/Sidebar/EngineStats
+@onready var elec_reserve_text := $HUDCamera/Sidebar/Elec
+@onready var lube_reserve_text := $HUDCamera/Sidebar/Lube
+@onready var cool_reserve_text := $HUDCamera/Sidebar/Cool
+@onready var signal_text  := $HUDCamera/Sidebar/Signal
 
-@onready var LLF_T1_text := [$Sidebar/Tube1/Lock, $Sidebar/Tube1/Load, $Sidebar/Tube1/Flood]
-@onready var LLF_T2_text := [$Sidebar/Tube2/Lock, $Sidebar/Tube2/Load, $Sidebar/Tube2/Flood]
-@onready var LLF_T3_text := [$Sidebar/Tube3/Lock, $Sidebar/Tube3/Load, $Sidebar/Tube3/Flood]
-@onready var LLF_T4_text := [$Sidebar/Tube4/Lock, $Sidebar/Tube4/Load, $Sidebar/Tube4/Flood]
+@onready var LLF_T1_text := [$HUDCamera/Sidebar/Tube1/Lock, $HUDCamera/Sidebar/Tube1/Load, $HUDCamera/Sidebar/Tube1/Flood]
+@onready var LLF_T2_text := [$HUDCamera/Sidebar/Tube2/Lock, $HUDCamera/Sidebar/Tube2/Load, $HUDCamera/Sidebar/Tube2/Flood]
+@onready var LLF_T3_text := [$HUDCamera/Sidebar/Tube3/Lock, $HUDCamera/Sidebar/Tube3/Load, $HUDCamera/Sidebar/Tube3/Flood]
+@onready var LLF_T4_text := [$HUDCamera/Sidebar/Tube4/Lock, $HUDCamera/Sidebar/Tube4/Load, $HUDCamera/Sidebar/Tube4/Flood]
 @onready var LLF_array := [LLF_T1_text, LLF_T2_text, LLF_T3_text, LLF_T4_text]
 
 # === SOUND VARS ===
@@ -166,7 +166,6 @@ func _process(delta: float):
     if(not self.map_manager.check_collision(new_sub_pos)):
         #self.sub_position+=self.velocity
         self.sub_position = new_sub_pos
-    self.LIDAR_child.update_sub_pos(self.sub_position)
     
     #Update camera
     self.camera_node.set_position(self.sub_position+Global.camera_map_offset)
