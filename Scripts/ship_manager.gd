@@ -82,10 +82,7 @@ var velocity := Vector2(0,0)#Speed and direction
 func _ready() -> void:
     #Connecting signals
     self.target_child.check_ID.connect(on_entity_check)
-    self.LIDAR_child.entity_request.connect(on_LIDAR_request)
     self.LIDAR_child.signal_update.connect(on_signal_update)
-    self.entity_manager.entity_created.connect(on_entity_created)
-    self.entity_manager.entity_destroyed.connect(on_entity_destroyed)
     
     self.weap_child.tube_locked.connect(on_tube_lock)
     self.weap_child.tube_loaded.connect(on_tube_load)
@@ -107,6 +104,7 @@ func _ready() -> void:
     #Connecting admin nodes to each other
     self.map_manager.load_map_polygons()
     self.entity_manager.set_map_manager(self.map_manager)
+    self.entity_manager.set_LIDAR_manager(self.LIDAR_child)
         
     self.load_screen.self_modulate.a=0
 
@@ -284,28 +282,11 @@ func update_sidebar() -> void:
     for i in tmp:
         output += "%.2f \n" % [i]
     self.sidebar_engine.set_text(output)
-    
     #Update system stats
-    
-#Update LIDAR's entity list from the entity manager
-func on_LIDAR_request() -> void:
-    var entity_list = self.entity_manager.get_entity_list()
-    self.LIDAR_child.update_entity_list(entity_list)
-    self.LIDAR_child.request_flag = false
 
 #Signaled by LIDAR when lidar timing is changed
 func on_signal_update(s: bool) -> void:
     self.signal_text.set_visible(s)
-
-#When ent has been created, update LIDAR and target
-#Signaled by Entity Manager
-func on_entity_created(ent: EntityBase) -> void:
-    self.LIDAR_child.add_new_entity(ent)
-
-#When ent had been destroyed, update LIDAR and target
-#Signaled by Entity Manager
-func on_entity_destroyed(ent: EntityBase) -> void:
-    self.LIDAR_child.destroy_entity(ent)
 
 #When new entity is selected
 #Signaled by Target

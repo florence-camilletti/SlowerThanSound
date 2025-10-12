@@ -71,6 +71,7 @@ func is_valid_pos(pos: Vector2) -> bool:
 
 func set_texture(t: Texture2D) -> void:
     self.texture = t
+    $Sprite2D.set_texture(t)
 func set_desec_pos(p: Vector2) -> void:
     self.set_position(p)
     self.map_cell = Vector2(floor(p[0]/Global.cell_size), floor(p[1]/Global.cell_size))

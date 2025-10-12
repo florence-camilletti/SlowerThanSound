@@ -4,12 +4,11 @@ class_name EntityManager
 # === NODE VARS ===
 var manager_node: ShipManager
 var map_manager: MapManager
+var LIDAR_node: ShipSystemBase
 var rng = RandomNumberGenerator.new()
 @onready var timer := $EnemySpawn
 
 # === ENTITY VARS ===
-signal entity_created
-signal entity_destroyed
 var entity_list := []
 
 # === ENEMY VARS ===
@@ -29,13 +28,17 @@ func _process(_delta: float) -> void:
 
 func set_map_manager(m: MapManager) -> void:
     self.map_manager=m
+func set_LIDAR_manager(m: ShipSystemBase) -> void:
+    self.LIDAR_node=m
+    self.LIDAR_node.entity_request.connect(on_LIDAR_request)
 
 func _on_timer_timeout() -> void:
     #Chance for a new enemy
     if(self.num_enemies < self.max_enemies):
         if(rng.randf() < self.enemy_chance):
-            #_make_new_still_enemy()
-            _make_new_moving_enemy()
+            #pass
+            _make_new_still_enemy()
+            #_make_new_moving_enemy()
             #_make_new_turning_enemy()
 
 #Add ent to the manager's lists and connects it to the trees
@@ -44,7 +47,6 @@ func add_entity(ent: EntityBase) -> void:
     ent.death.connect(on_entity_death)
     ent.check_pos.connect(on_check_pos)
     add_child(ent)
-    entity_created.emit(ent)
     
 func add_enemy(enemy: BasicEnemy) -> void:
     add_entity(enemy)
@@ -67,7 +69,6 @@ func add_torpedo(torp: BasicTorp) -> void:
 func on_entity_death(ent: EntityBase) -> void:
     var pos = entity_list.find(ent)
     entity_list.remove_at(pos)
-    entity_destroyed.emit(ent)
     ent.queue_free()
     
 #When an entity is moving and needs to know if the next spot is valid
@@ -76,9 +77,14 @@ func on_check_pos(ent: EntityBase, pos: Vector2) -> void:
     ent.valid_next_pos = is_valid
     ent.pos_wait = false
     
+func on_LIDAR_request() -> void:
+    pass
+    #TODO
+    
 func _make_new_still_enemy() -> void:
-    var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
-    tmp_pos += Global.map_middle
+    '''var tmp_pos = Vector2(rng.randi_range(-200,200),rng.randi_range(-200,200))
+    tmp_pos += Global.map_middle'''
+    var tmp_pos = self.manager_node.sub_position+Vector2(30,30)
     var tmp_vel = Vector2.ZERO
     self.num_enemies += 1
     var new_enemy = DumbEnemy.new(num_enemies, tmp_pos, tmp_vel)
@@ -87,7 +93,7 @@ func _make_new_still_enemy() -> void:
 
 #Create a new enemy and update the manager
 func _make_new_moving_enemy() -> void:#TESTING FUNCTION
-    var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
+    var tmp_pos = Vector2(rng.randi_range(-200,200),rng.randi_range(-200,200))
     tmp_pos = Global.map_middle
     var tmp_vel = Vector2(rng.randf_range(-0.2,0.2),rng.randf_range(-0.2,0.2))
     self.num_enemies += 1
