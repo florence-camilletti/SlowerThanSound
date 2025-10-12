@@ -19,7 +19,7 @@ func _process(_delta: float) -> void:
     super._process(_delta)
     if(self.armed):
         if(not self.loiter_flag):
-            var dist_to_target = self.desec_pos.distance_squared_to(self.target_pos)
+            var dist_to_target = self.get_position().distance_squared_to(self.target_pos)
             self.loiter_flag = (dist_to_target>self.prev_dist)
             if(self.loiter_flag):
                 self.set_desec_speed(0)
@@ -50,8 +50,8 @@ func calculate_firing_plan(torp_pos: Vector2, torp_speed: float, ship_pos: Vecto
             return(false)
     time_solution+=500
     self.target_pos = (ship_pos + (ship_vel*time_solution))
-    self.prev_dist = self.desec_pos.distance_squared_to(self.target_pos)
+    self.prev_dist = self.get_position().distance_squared_to(self.target_pos)
     #print("Ship curr pos: %.2f, %.2f" % [ship_pos[0], ship_pos[1]])
-    #print("Torp curr pos: %.2f, %.2f" % [self.desec_pos[0], self.desec_pos[1]])
+    #print("Torp curr pos: %.2f, %.2f" % [self.get_position()[0], self.get_position()[1]])
     #print("Intersect pos: %.2f, %.2f" % [self.target_pos[0], self.target_pos[1]])
     return(true)

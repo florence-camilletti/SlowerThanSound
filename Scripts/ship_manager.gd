@@ -38,7 +38,8 @@ var load_change_amnt := 0.01
 
 # === MOVEMENT VARS ===
 #Location details in long,lat
-var sub_position := Global.map_middle#Deciseconds
+#var sub_position := Global.map_middle#Deciseconds
+var sub_position = Vector2(820,420)
 
 var heading := 0.0#Degrees; 0 - 360
 var desire_heading := 0.0
@@ -103,7 +104,7 @@ func _ready() -> void:
         node.set_siblings(self.all_system_nodes)
         
     #Connecting admin nodes to each other
-    self.map_manager.load_map_polygons(self.LIDAR_child)
+    self.map_manager.load_map_polygons()
     self.entity_manager.set_map_manager(self.map_manager)
         
     self.load_screen.self_modulate.a=0
@@ -155,14 +156,17 @@ func _process(delta: float):
             self.diving_flag = false
     
     #Update ship speed
+    #Speed it up by engine*ELC, slow it down by speed*friction
     self.speed = self.speed + (((self.engine_power*self.engine_child.get_total_status()) - (self.speed*Global.friction_coef)) * delta)
     update_vel()
     
+    print(self.velocity)
     #Update velocity after check
     var new_sub_pos = self.sub_position+self.velocity
     if(not self.map_manager.check_collision(new_sub_pos)):
         #self.sub_position+=self.velocity
         self.sub_position = new_sub_pos
+    self.LIDAR_child.update_sub_pos(self.sub_position)
     
     #Update sidebar
     update_sidebar()

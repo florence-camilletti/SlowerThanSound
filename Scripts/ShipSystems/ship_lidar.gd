@@ -1,11 +1,8 @@
 extends ShipSystemBase
 
 # === Map Vars ===
-@onready var map_node := $MapNode
 @onready var player_sprite := $PlayerSprite
 var active_flag := true
-
-var map_obstacles := []
 
 # === Input Vars ===
 @onready var inputBox := $TopMask/AutoInput
@@ -28,19 +25,13 @@ var label_offset := Vector2(5,5)
 # === NOISE VARS ===
 @onready var ping_noise := $LIDAR_Ping
 
-class MapObject:
-    var obj_polygon: Polygon2D
-    var obj_position: Vector2
-
 class LocalEntity:
-    var ent_obj: EntityBase
-    var last_pos: Vector2
+    var ent_obj: EntityBase#TODO: Does it need ent_obj in it?
     var sprite_obj: Sprite2D
     var label_obj: RichTextLabel
     
-    func _init(e, lp, s, l):
+    func _init(e, s, l):
         ent_obj=e
-        last_pos=lp
         sprite_obj=s
         label_obj=l
 
@@ -49,9 +40,6 @@ func _init() -> void:
 
 func _ready() -> void:
     super._ready()
-    
-func set_map_manage(m: MapManager) -> void:
-    self.map_manager = m
 
 func _process(delta: float) -> void:
     super._process(delta)
@@ -70,36 +58,12 @@ func _input(event: InputEvent) -> void:
                 self.request_command_focus.emit()
             if(event.is_action_pressed("Action_F")):
                 self.active_flag = not self.active_flag
-                if(self.active_flag):
-                    #Grow map land
-                    for obst in self.map_obstacles:
-                        obst.obj_polygon
-                    pass
-                else:
-                    #Shrink map land
-                    pass
     
-func load_map(map_objects: Array) -> void:
-    for old_obj in map_objects:
-        var curr_polygons = old_obj.get_polygon()
-        for indx in range(len(curr_polygons)):
-            curr_polygons[indx] *= Global.active_desec_pixel_ratio
-        var curr_position = old_obj.get_position()
-        
-        var new_poly = Polygon2D.new()
-        new_poly.set_polygon(curr_polygons)
-        new_poly.set_position(curr_position)
-        
-        var new_obj = MapObject.new()
-        new_obj.obj_polygon = new_poly
-        new_obj.obj_position = curr_position
-        
-        self.map_obstacles.append(new_obj)
-        self.map_node.add_child(new_poly)
-    
+func update_sub_pos(new_pos: Vector2) -> void:
+    self.player_sprite.set_position(new_pos)
+
 #Update the rotation of the player sprite    
 func update_sub_rotation(deg) -> void:
-    #Update player
     self.player_sprite.set_rotation_degrees(deg)
 
 #Updates the selection info when a new entity is selected
@@ -110,8 +74,11 @@ func update_selection(id: String) -> void:
 func update_entity_list(new_entity_list: Array) -> void:
     for ent in new_entity_list:
         var ent_id = ent.get_id()
+        var ent_pos = ent.get_position()
         self.entity_list[ent_id].ent_obj = ent
-        self.entity_list[ent_id].last_pos = ent.get_desec_pos()
+        self.entity_list[ent_id].sprite_obj.set_position(ent_pos)
+        self.entity_list[ent_id].sprite_obj.set_rotation_degrees(ent.get_heading())
+        self.entity_list[ent_id].label_obj.set_position(ent_pos+self.label_offset)
     update_display()
  
 func refresh_map() -> void:
@@ -124,12 +91,7 @@ func refresh_map() -> void:
                
 #Update the position of the LIDAR sprites
 func update_display() -> void:  
-    var sub_pos = self.manager_node.sub_position
-    
-    #Update land
-    for obst in self.map_obstacles:
-        var new_pos = Global.desec_to_map(obst.obj_position, sub_pos, self.active_flag)#self.manager_node.sub_position - self.map_obstacle_pos[obst_indx]
-        obst.obj_polygon.position = new_pos
+    '''var sub_pos = self.manager_node.sub_position
               
     #Update entities
     for curr_entity in self.entity_list.values():
@@ -138,42 +100,43 @@ func update_display() -> void:
         var new_pos = Global.desec_to_map(self.entity_list[ent_id].last_pos, sub_pos, self.active_flag)
         self.entity_list[ent_id].sprite_obj.position = new_pos
         self.entity_list[ent_id].sprite_obj.set_rotation_degrees(curr_ent_obj.get_heading())
-        self.entity_list[ent_id].label_obj.position = new_pos + self.label_offset
+        self.entity_list[ent_id].label_obj.position = new_pos + self.label_offset'''
         
     #Update selection box
-    var show_select = self.selected_entity != "-1"
-    if(show_select):
+    if(self.selected_entity != "-1"):
         self.selected_sprite.set_position(self.sprite_list[self.selected_entity].position)
        
 #Determines if an entity should be detected
 func check_detection(curr_local_ent: LocalEntity, is_active: bool) -> bool:
-    return(false)
-    var curr_ent = curr_local_ent.ent_obj
+    #TODO: FIll this out
+    return(true)
+    '''var curr_ent = curr_local_ent.ent_obj
     var final_detection: float
     if(is_active):
         final_detection = curr_ent.get_active_detection_level()
     else:
         final_detection = curr_ent.get_passive_detection_level()
     final_detection *= self.get_total_status()
-    final_detection /= (manager_node.sub_position.distance_to(curr_ent.desec_pos))
+    final_detection /= (manager_node.sub_position.distance_to(curr_ent.desec_pos))'''
      
 #Increase the number of sprites
 func add_new_entity(ent: EntityBase) -> void:
     var ent_id = ent.get_id()
+    var ent_pos = ent.get_position()
     
     self.num_entities+=1
     var new_sprite = Sprite2D.new()
     new_sprite.set_texture(ent.get_texture())
-    new_sprite.set_position(Vector2(-100,-100))
+    new_sprite.set_position(ent_pos)
     add_child(new_sprite)
     
     var new_label = RichTextLabel.new()
     new_label.set_text(ent.get_ID())
-    new_label.set_position(new_sprite.get_position()+self.label_offset)
+    new_label.set_position(ent_pos+self.label_offset)
     new_label.set_size(Vector2(300,300))
     add_child(new_label)
     
-    var new_ent = LocalEntity.new(ent, Vector2.ZERO, new_sprite, new_label)
+    var new_ent = LocalEntity.new(ent, new_sprite, new_label)
     self.entity_list[ent_id] = new_ent
 
 func destroy_entity(ent: EntityBase) -> void:

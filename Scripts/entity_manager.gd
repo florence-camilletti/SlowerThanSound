@@ -117,7 +117,7 @@ func check_ent_collisions():
     #Check for collisions
     for torp in entity_list:
         if(torp.is_torp() and torp.is_armed()):#Only check for armed torpedoe collision
-            var curr_pos = torp.get_desec_pos()
+            var curr_pos = torp.get_position()
             var curr_cell_key = torp.get_map_cell()
             for x_range in range(-1, 2):#Check all neighboring cells
                 for y_range in range(-1, 2):
@@ -125,7 +125,7 @@ func check_ent_collisions():
                     if(neighbor_key in grid):
                         for target in grid[neighbor_key]:#For each neighboring entity, check distance
                             if(not target == torp):#Don't check itself, obviously
-                                var hit = (curr_pos.distance_squared_to(target.get_desec_pos())) <= torp.get_kill_bubble_sqr()
+                                var hit = (curr_pos.distance_squared_to(target.get_position())) <= torp.get_kill_bubble_sqr()
                                 if(hit):
                                     torp.kill()
                                     target.damage(torp.get_damage_points())

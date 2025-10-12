@@ -14,7 +14,9 @@
 script = ExtResource("2_yj4yk")
 
 [node name="Background" parent="." index="0"]
+position = Vector2(-59, 97)
 texture = ExtResource("3_js4q0")
+offset = Vector2(1009, 443)
 
 [node name="PlayerSprite" type="Sprite2D" parent="." index="1"]
 position = Vector2(846, 476)

@@ -13,7 +13,6 @@ var active_detection_level: int#Low - sneaky, high - obvious
 var passive_detection_level: int#Low - loud, high - silent
 
 # === Position vars ===
-var desec_pos: Vector2#Decisecond position
 var map_cell: Vector2
 
 signal check_pos
@@ -40,9 +39,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     #Update entity pos
     if(self.is_alive):
-        var next_spot = self.desec_pos+self.desec_vel
+        var next_spot = self.get_position()+self.desec_vel
         if(self.is_valid_pos(next_spot)):
-            set_desec_pos(self.desec_pos+self.desec_vel)
+            self.set_desec_pos(next_spot)
         else:
             self.handle_collision()
 
@@ -73,7 +72,7 @@ func is_valid_pos(pos: Vector2) -> bool:
 func set_texture(t: Texture2D) -> void:
     self.texture = t
 func set_desec_pos(p: Vector2) -> void:
-    self.desec_pos = p
+    self.set_position(p)
     self.map_cell = Vector2(floor(p[0]/Global.cell_size), floor(p[1]/Global.cell_size))
 func set_desec_vel(v: Vector2) -> void:
     self.desec_vel = v
@@ -101,8 +100,6 @@ func turn_right(d: float) -> void:
 
 func get_texture() -> Texture2D:
     return(self.texture)
-func get_desec_pos() -> Vector2:
-    return(self.desec_pos)
 func get_map_cell() -> Vector2:
     return(self.map_cell)
 func get_desec_vel() -> Vector2:
@@ -127,4 +124,4 @@ func is_torpedoe() -> bool:
     return(is_torp())
     
 func _to_string() -> String:
-    return("ID: "+get_id()+", POS: "+str(self.desec_pos)+", VEL: "+str(self.desec_vel))
+    return("ID: "+get_id()+", POS: "+str(self.get_position())+", VEL: "+str(self.desec_vel))
