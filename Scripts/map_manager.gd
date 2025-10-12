@@ -39,11 +39,11 @@ func give_map(LIDAR_node: ShipSystemBase) -> void:
 
 #Update the manager's state as to if the sub is going into illegal spots
 func check_collision(ent_pos_desec: Vector2) -> bool:
-    var ent_pos_map = Global.desec_to_map(ent_pos_desec, manager_node.sub_position)
+    var ent_pos_map = Global.desec_to_map(ent_pos_desec, manager_node.sub_position, true)
     for curr_land in self.land_objects:
         var curr_obj
         var new_pack = curr_land.get_polygon()
-        var offset = Global.desec_to_map(curr_land.get_position(), manager_node.sub_position)
+        var offset = Global.desec_to_map(curr_land.get_position(), manager_node.sub_position, true)
         for n in range(len(new_pack)):
             new_pack[n]+=offset
             

@@ -68,7 +68,7 @@ offset_bottom = 1018.0
 [node name="LIDAR_Ping" type="AudioStreamPlayer" parent="." index="6"]
 stream = ExtResource("8_6pme1")
 
-[node name="Map" type="Node2D" parent="." index="7"]
+[node name="MapNode" type="Node2D" parent="." index="7"]
 top_level = true
 
 [node name="A" type="RichTextLabel" parent="." index="8"]

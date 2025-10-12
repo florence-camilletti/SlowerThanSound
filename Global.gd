@@ -33,19 +33,25 @@ var knot_desectic_ratio := 1/360.0
 # === MAP ===
 var map_middle := Vector2(18000, 18000)
 var map_size   := Vector2(36000, 36000)
-var map_offset := Vector2(4392000, 144000)
-var map_limit  := Vector2(4428000, 180000)
+#var map_offset := Vector2(4392000, 144000)
+#var map_limit  := Vector2(4428000, 180000)
 var cell_size := 50
 
-var radar_pixel_radius := 435.0
-var radar_pixel_center := Vector2(846,476)
-var radar_deg_radius := 0.01#+/- 0.01 degrees (0.6 nm) in each direction
-var radar_desec_radius := self.deg_desec_ratio*radar_deg_radius #1 degree = 36,000 desec 
+var map_pixel_radius := 435.0
+var map_pixel_center := Vector2(846,476)
+var active_deg_radius := 0.01#+/- 0.02 degrees (1.2 nm) in each direction
+var active_desec_radius := self.deg_desec_ratio*active_deg_radius #1 degree = 36,000 desec 
+var passive_deg_radius := 0.06#+/- 0.06 degrees (3.6 nm) in each direction
+var passive_desec_radius := self.deg_desec_ratio*passive_deg_radius 
+var active_passive_ratio := (self.passive_deg_radius/self.active_deg_radius)
+var passive_active_ratio := (self.active_deg_radius/self.passive_deg_radius)
 #Final radar screen is [-360,360] deseconds
 #1 pixel = (360/435) desec
 #1 desec = (435/360) desec
-var pixel_desec_ratio := self.radar_desec_radius/self.radar_pixel_radius
-var desec_pixel_ratio := self.radar_pixel_radius/self.radar_desec_radius
+var active_pixel_desec_ratio := self.active_desec_radius/self.map_pixel_radius
+var active_desec_pixel_ratio := self.map_pixel_radius/self.active_desec_radius
+var passive_pixel_desec_ratio := self.passive_desec_radius/self.map_pixel_radius
+var passive_desec_pixel_ratio := self.map_pixel_radius/self.passive_desec_radius
 
 # === PHYSICS ===
 var friction_coef := 0.5
@@ -78,16 +84,27 @@ func calc_desectic_speed(curr_velocity: Vector2) -> Vector2:
 func calc_knot_speed(curr_velocity: Vector2) -> Vector2:
     return(calc_desectic_speed(curr_velocity)*Global.desectic_knot_ratio)
 
-#Translates a Vector2 of desecisecond position to a pixel position for sprite display
-func desec_to_map(entity_pos: Vector2, sub_pos: Vector2) -> Vector2:
+func desec_to_map(entity_pos: Vector2, sub_pos: Vector2, active_flag: bool) -> Vector2:
     #Get distance between sub and entity
     var distance = entity_pos-sub_pos
     #Divide desec pos by radar size to get  ([-1, 1], [-1, 1]) range
-    var rtn = distance/self.radar_desec_radius
+    var rtn: Vector2
+    if(active_flag):
+        rtn = distance/self.active_desec_radius
+    else:
+        rtn = distance/self.passive_desec_radius
     #Multiply -1, 1 range by pixel radius (435) to get offset
-    rtn *= self.radar_pixel_radius
+    rtn *= self.map_pixel_radius
     #Flip y-coord
     rtn *= Vector2(1,-1)
     #Add offset to radar center (846,476)
-    rtn += self.radar_pixel_center
+    rtn += self.map_pixel_center
     return(rtn)
+    
+#Translates a Vector2 of desecisecond position to a pixel position for sprite display
+func desec_to_active_map(entity_pos: Vector2, sub_pos: Vector2) -> Vector2:
+    return(self.desec_to_map(entity_pos, sub_pos, true))
+
+func desec_to_passive_map(entity_pos: Vector2, sub_pos: Vector2) -> Vector2:
+    return(self.desec_to_map(entity_pos, sub_pos, false))
+    

@@ -9,6 +9,8 @@ var texture: Texture2D
 
 # === Status Vars ===
 var health: int
+var active_detection_level: int#Low - sneaky, high - obvious
+var passive_detection_level: int#Low - loud, high - silent
 
 # === Position vars ===
 var desec_pos: Vector2#Decisecond position
@@ -23,9 +25,11 @@ var desec_vel: Vector2#Decisecond/tick
 var desec_speed: float
 var heading: float#0-360 degrees
 
-func _init(n:int, t:String, p:Vector2, v:Vector2) -> void:
+func _init(n:int, t:String, p:Vector2, v:Vector2, ad:int, pd:int) -> void:
     self.num = n
     self.type = t
+    self.active_detection_level = ad
+    self.passive_detection_level = pd
     
     self.set_desec_pos(p)
     self.set_desec_vel(v)
@@ -107,6 +111,10 @@ func get_desec_speed() -> float:
     return(self.desec_speed)
 func get_heading() -> float:
     return(self.heading)
+func get_active_detection_level() -> int:
+    return(self.active_detection_level)
+func get_passive_detection_level() -> int:
+    return(self.passive_detection_level)
 
 func get_id() -> String:
     return(self.type+str(self.num))
