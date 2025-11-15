@@ -19,13 +19,21 @@ var max_enemies := 3
 func _ready() -> void:
     self.timer.timeout.connect(_on_timer_timeout)
     
-    self.manager_node = get_parent()
+    self.manager_node = self.find_parent_node()
 
 func _process(_delta: float) -> void:
     #If check collisions becomes too costly, this might be done
     # every few tics instead of every tic
     check_ent_collisions()
 
+func find_parent_node() -> ShipManager:
+    var rtn = self
+    while(rtn.get_parent()):
+        rtn=rtn.get_parent()
+        if(rtn is ShipManager):
+            return(rtn)
+    return(rtn)
+    
 func set_map_manager(m: MapManager) -> void:
     self.map_manager=m
 func set_LIDAR_manager(m: ShipSystemBase) -> void:
@@ -46,6 +54,10 @@ func add_entity(ent: EntityBase) -> void:
     self.entity_list.append(ent)
     ent.death.connect(on_entity_death)
     ent.check_pos.connect(on_check_pos)
+    var tmp_sprite_test = Sprite2D.new()
+    tmp_sprite_test.set_position(self.manager_node.sub_position+Vector2(20,20))
+    tmp_sprite_test.set_texture(load("res://Assets/Textures/enemy_tmp.png"))
+    #add_child(tmp_sprite_test)
     add_child(ent)
     
 func add_enemy(enemy: BasicEnemy) -> void:
@@ -82,14 +94,13 @@ func on_LIDAR_request() -> void:
     #TODO
     
 func _make_new_still_enemy() -> void:
-    '''var tmp_pos = Vector2(rng.randi_range(-200,200),rng.randi_range(-200,200))
-    tmp_pos += Global.map_middle'''
-    var tmp_pos = self.manager_node.sub_position+Vector2(30,30)
+    var tmp_pos = Vector2(rng.randi_range(-60,60),rng.randi_range(-60,60))
+    tmp_pos += Global.map_middle
     var tmp_vel = Vector2.ZERO
     self.num_enemies += 1
     var new_enemy = DumbEnemy.new(num_enemies, tmp_pos, tmp_vel)
     #Add enemy to parent objects
-    add_entity(new_enemy)
+    self.add_entity(new_enemy)
 
 #Create a new enemy and update the manager
 func _make_new_moving_enemy() -> void:#TESTING FUNCTION
@@ -99,7 +110,7 @@ func _make_new_moving_enemy() -> void:#TESTING FUNCTION
     self.num_enemies += 1
     var new_enemy = DumbEnemy.new(num_enemies, tmp_pos, tmp_vel)
     #Add enemy to parent objects
-    add_entity(new_enemy)
+    self.add_entity(new_enemy)
     
 func _make_new_turning_enemy() -> void:#TESTING FUNCTION
     var tmp_pos = Vector2(rng.randi_range(-300,300),rng.randi_range(-300,300))
@@ -108,7 +119,7 @@ func _make_new_turning_enemy() -> void:#TESTING FUNCTION
     self.num_enemies += 1
     var new_enemy = TurnEnemy.new(num_enemies, tmp_pos, tmp_vel)
     #Add enemy to parent objects
-    add_entity(new_enemy)
+    self.add_entity(new_enemy)
     
 #Uses a spacial cell hash to determin if any torpedoes have collided with something
 func check_ent_collisions():
@@ -142,6 +153,10 @@ func check_ent_id(ent_id: String) -> bool:
         if(e.get_id()==ent_id):
             return(true)
     return(false)
+
+#Updates where the selection box should go
+func update_selection(ent: EntityBase) -> void:
+    pass
 
 #Returns the entity object with ID ent_id
 func get_ent_obj(ent_id: String) -> EntityBase:

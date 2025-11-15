@@ -3,22 +3,22 @@ class_name ShipManager
 
 # === NODE VARS ===
 #@onready var global_view := $VC/V
-@onready var entity_manager := $EntityManager
-@onready var map_manager := $MapManager
+@onready var entity_manager := $SVC/SV/EntityManager
+@onready var map_manager := $SVC/SV/MapManager
 
-@onready var menu_child   := $HUDCamera/SysChunkM/ShipMenu
+@onready var menu_child   := $SVC/SV/HUDCamera/SysChunkM/ShipMenu
 
-@onready var engine_child := $HUDCamera/SysChunk1/ShipEngine
-@onready var bulk_child   := $HUDCamera/SysChunk1/ShipBulk
-@onready var AI_child     := $HUDCamera/SysChunk1/ShipAI
-@onready var power_child  := $HUDCamera/SysChunk2/ShipPower
-@onready var oxy_child    := $HUDCamera/SysChunk2/ShipOxy
-@onready var LIDAR_child  := $HUDCamera/SysChunk3/ShipLIDAR
-@onready var weap_child   := $HUDCamera/SysChunk3/ShipWeapons
-@onready var target_child := $HUDCamera/SysChunk3/ShipTarget
+@onready var engine_child := $SVC/SV/HUDCamera/SysChunk1/ShipEngine
+@onready var bulk_child   := $SVC/SV/HUDCamera/SysChunk1/ShipBulk
+@onready var AI_child     := $SVC/SV/HUDCamera/SysChunk1/ShipAI
+@onready var power_child  := $SVC/SV/HUDCamera/SysChunk2/ShipPower
+@onready var oxy_child    := $SVC/SV/HUDCamera/SysChunk2/ShipOxy
+@onready var LIDAR_child  := $SVC/SV/HUDCamera/SysChunk3/ShipLIDAR
+@onready var weap_child   := $SVC/SV/HUDCamera/SysChunk3/ShipWeapons
+@onready var target_child := $SVC/SV/HUDCamera/SysChunk3/ShipTarget
 var command_focus := true#If a text box is being focused
 
-@onready var camera_node := $HUDCamera
+@onready var camera_node := $SVC/SV/HUDCamera
 
 # === MENU VARS ===
 var menu_choice := 0
@@ -32,7 +32,7 @@ var chunk_names := ["SysChunkM","SysChunk1","SysChunk2","SysChunk3"]
                                   self.power_child, self.oxy_child, self.target_child, self.weap_child, self.LIDAR_child]
 var num_chunks := len(chunk_names)
 
-@onready var load_screen := $HUDCamera/LoadScreen
+@onready var load_screen := $SVC/SV/HUDCamera/LoadScreen
 var loading_flag := false
 var load_curr_val := 0.0
 var load_max_val := 100.0
@@ -64,20 +64,20 @@ var engine_power := 0.0# 0 - 100
 var velocity := Vector2(0,0)#Speed and direction
 
 # === SIDEBAR VARS ===
-@onready var sidebar_engine := $HUDCamera/Sidebar/EngineStats
-@onready var elec_reserve_text := $HUDCamera/Sidebar/Elec
-@onready var lube_reserve_text := $HUDCamera/Sidebar/Lube
-@onready var cool_reserve_text := $HUDCamera/Sidebar/Cool
-@onready var signal_text  := $HUDCamera/Sidebar/Signal
+@onready var sidebar_engine := $SVC/SV/HUDCamera/Sidebar/EngineStats
+@onready var elec_reserve_text := $SVC/SV/HUDCamera/Sidebar/Elec
+@onready var lube_reserve_text := $SVC/SV/HUDCamera/Sidebar/Lube
+@onready var cool_reserve_text := $SVC/SV/HUDCamera/Sidebar/Cool
+@onready var signal_text  := $SVC/SV/HUDCamera/Sidebar/Signal
 
-@onready var LLF_T1_text := [$HUDCamera/Sidebar/Tube1/Lock, $HUDCamera/Sidebar/Tube1/Load, $HUDCamera/Sidebar/Tube1/Flood]
-@onready var LLF_T2_text := [$HUDCamera/Sidebar/Tube2/Lock, $HUDCamera/Sidebar/Tube2/Load, $HUDCamera/Sidebar/Tube2/Flood]
-@onready var LLF_T3_text := [$HUDCamera/Sidebar/Tube3/Lock, $HUDCamera/Sidebar/Tube3/Load, $HUDCamera/Sidebar/Tube3/Flood]
-@onready var LLF_T4_text := [$HUDCamera/Sidebar/Tube4/Lock, $HUDCamera/Sidebar/Tube4/Load, $HUDCamera/Sidebar/Tube4/Flood]
+@onready var LLF_T1_text := [$SVC/SV/HUDCamera/Sidebar/Tube1/Lock, $SVC/SV/HUDCamera/Sidebar/Tube1/Load, $SVC/SV/HUDCamera/Sidebar/Tube1/Flood]
+@onready var LLF_T2_text := [$SVC/SV/HUDCamera/Sidebar/Tube2/Lock, $SVC/SV/HUDCamera/Sidebar/Tube2/Load, $SVC/SV/HUDCamera/Sidebar/Tube2/Flood]
+@onready var LLF_T3_text := [$SVC/SV/HUDCamera/Sidebar/Tube3/Lock, $SVC/SV/HUDCamera/Sidebar/Tube3/Load, $SVC/SV/HUDCamera/Sidebar/Tube3/Flood]
+@onready var LLF_T4_text := [$SVC/SV/HUDCamera/Sidebar/Tube4/Lock, $SVC/SV/HUDCamera/Sidebar/Tube4/Load, $SVC/SV/HUDCamera/Sidebar/Tube4/Flood]
 @onready var LLF_array := [LLF_T1_text, LLF_T2_text, LLF_T3_text, LLF_T4_text]
 
 # === SOUND VARS ===
-@onready var swap_noise := $ScreenSwap
+@onready var swap_noise := $SVC/SV/ScreenSwap
 
 func _ready() -> void:
     #Connecting signals
@@ -293,10 +293,10 @@ func on_signal_update(s: bool) -> void:
 func on_entity_check(curr_ent: String) -> void:
     if(self.entity_manager.check_ent_id(curr_ent)):
         self.target_child.update_selection(true)
-        self.LIDAR_child.update_selection(curr_ent)
+        self.entity_manager.update_selection(curr_ent)
     else:
         self.target_child.update_selection(false)
-        self.LIDAR_child.update_selection("-1")
+        self.entity_manager.update_selection(null)
         
 func on_tube_lock(tube_num: int) -> void:
     self.LLF_array[tube_num][0].set_visible(true)

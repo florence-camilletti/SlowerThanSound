@@ -11,11 +11,19 @@ func _init() -> void:
     pass
 
 func _ready() -> void:
-    self.manager_node = get_parent()
+    self.manager_node = self.find_parent_node()
     
 func _process(delta: float) -> void:
     pass
 
+func find_parent_node() -> ShipManager:
+    var rtn = self
+    while(rtn.get_parent()):
+        rtn=rtn.get_parent()
+        if(rtn is ShipManager):
+            return(rtn)
+    return(rtn)
+    
 #TODO: HAVE THIS READ FROM FILE
 func load_map_polygons() -> void:
     var tmp_polygons = []

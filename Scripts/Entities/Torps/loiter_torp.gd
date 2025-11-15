@@ -9,8 +9,7 @@ var prev_dist: float
 
 func _init(i:int) -> void:
     super._init(i,"TL")
-    
-    self.texture = load("res://Assets/Textures/torpedo.png")
+    self.set_texture(load("res://Assets/Textures/torpedo.png"))
 
 func _ready() -> void:
     super._ready()

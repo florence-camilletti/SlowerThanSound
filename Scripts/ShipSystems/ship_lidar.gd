@@ -47,11 +47,6 @@ func _input(event: InputEvent) -> void:
 #Update the rotation of the player sprite    
 func update_sub_rotation(deg) -> void:
     self.player_sprite.set_rotation_degrees(deg)
-
-#Updates the selection info when a new entity is selected
-func update_selection(id: String) -> void:
-    self.selected_sprite.set_visible(id != "-1")
-    self.selected_entity = id
        
 #Determines if an entity should be detected
 func check_entity_detection(ent: EntityBase) -> bool:
@@ -71,11 +66,13 @@ func _on_timer_timeout() -> void:
     entity_request.emit()
     ping_noise.play()
 
+#Check the auto-LIDAR timer box
 func _on_auto_input_text_changed(_new_text: String) -> void:
     #Check for only nums
     if(not self.inputBox.text.is_empty() and not self.inputBox.text.is_valid_float()):
         self.inputBox.clear()
 
+#When auto-LIDAR timer box is submitted
 func _on_auto_input_text_submitted(new_text: String) -> void:
     if(len(new_text)>0):
         self.autoRate = float(new_text)

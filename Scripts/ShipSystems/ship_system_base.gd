@@ -40,14 +40,22 @@ func _init(f:bool, i:int) -> void:
     self.system_indx=i
 
 func _ready() -> void:
-    self.manager_node = get_parent().get_parent().get_parent()#ew
+    self.manager_node = self.find_parent_node()
         
-    #self.global_viewport = self.get_viewport()
+    self.global_viewport = self.get_viewport()
     in_focus = false
     self.visible = false
     
 func _process(_delta: float) -> void:
     update_ELC()
+
+func find_parent_node() -> ShipManager:
+    var rtn = self
+    while(rtn.get_parent()):
+        rtn=rtn.get_parent()
+        if(rtn is ShipManager):
+            return(rtn)
+    return(rtn)
 
 func set_siblings(siblings: Array) -> void:
     self.engine_system = siblings[Global.ENGINE]

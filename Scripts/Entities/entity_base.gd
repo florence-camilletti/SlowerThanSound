@@ -5,7 +5,11 @@ class_name EntityBase
 signal death
 var num: int#ID of the entity
 var type: String#String abreviation of the entity
-var texture: Texture2D
+
+# === Sprite vars ===
+var sprite: Sprite2D
+var sprite_flag := true
+var label: RichTextLabel
 
 # === Status Vars ===
 var health: int
@@ -33,6 +37,13 @@ func _init(n:int, t:String, p:Vector2, v:Vector2, ad:int, pd:int) -> void:
     self.set_desec_pos(p)
     self.set_desec_vel(v)
 
+    self.sprite = Sprite2D.new()
+    self.label = RichTextLabel.new()
+    self.label.set_text(self.type+str(self.num))
+    self.label.set_size(Vector2(100,30))
+    self.label.set_position(Vector2(5,-30))
+    add_child(self.label)
+    
 func _ready() -> void:
     pass
     
@@ -70,8 +81,10 @@ func is_valid_pos(pos: Vector2) -> bool:
     return(self.valid_next_pos)
 
 func set_texture(t: Texture2D) -> void:
-    self.texture = t
-    $Sprite2D.set_texture(t)
+    self.sprite.set_texture(t)
+    if(self.sprite_flag):
+        add_child(self.sprite)
+        self.sprite_flag = false
 func set_desec_pos(p: Vector2) -> void:
     self.set_position(p)
     self.map_cell = Vector2(floor(p[0]/Global.cell_size), floor(p[1]/Global.cell_size))
@@ -99,8 +112,6 @@ func turn_right(d: float) -> void:
         tmp-=360
     set_desec_heading(tmp)
 
-func get_texture() -> Texture2D:
-    return(self.texture)
 func get_map_cell() -> Vector2:
     return(self.map_cell)
 func get_desec_vel() -> Vector2:

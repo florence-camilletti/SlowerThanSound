@@ -20,7 +20,7 @@ var target_pos: Vector2
 
 func _init(i:int, n:String) -> void:
     super._init(i,n,Vector2(0,0),Vector2(0,0), 90, 40)
-    self.texture = load("res://Assets/Textures/torpedo.png")
+    self.set_texture(load("res://Assets/Textures/torpedo.png"))
     self.health=20
 
 func _ready() -> void:
