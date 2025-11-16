@@ -291,12 +291,7 @@ func on_signal_update(s: bool) -> void:
 #When new entity is selected
 #Signaled by Target
 func on_entity_check(curr_ent: String) -> void:
-    if(self.entity_manager.check_ent_id(curr_ent)):
-        self.target_child.update_selection(true)
-        self.entity_manager.update_selection(curr_ent)
-    else:
-        self.target_child.update_selection(false)
-        self.entity_manager.update_selection(null)
+    self.target_child.update_selection(self.entity_manager.try_new_selection(curr_ent))
         
 func on_tube_lock(tube_num: int) -> void:
     self.LLF_array[tube_num][0].set_visible(true)

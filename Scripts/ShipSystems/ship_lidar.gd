@@ -14,9 +14,7 @@ var autoRate: float
 signal signal_update
 
 # === Entity Vars ===
-@onready var selected_sprite := $SelectionBox
 signal entity_request
-var selected_entity := "-1"
 
 # === NOISE VARS ===
 @onready var ping_noise := $LIDAR_Ping
@@ -47,7 +45,7 @@ func _input(event: InputEvent) -> void:
 #Update the rotation of the player sprite    
 func update_sub_rotation(deg) -> void:
     self.player_sprite.set_rotation_degrees(deg)
-       
+    
 #Determines if an entity should be detected
 func check_entity_detection(ent: EntityBase) -> bool:
     #TODO: FIll this out

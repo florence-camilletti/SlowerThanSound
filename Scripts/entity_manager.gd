@@ -10,6 +10,9 @@ var rng = RandomNumberGenerator.new()
 
 # === ENTITY VARS ===
 var entity_list := []
+@onready var selection_box := $SelectionBox
+var select_flag := false
+var selected_ent: EntityBase
 
 # === ENEMY VARS ===
 var enemy_chance := 1.0
@@ -25,6 +28,8 @@ func _process(_delta: float) -> void:
     #If check collisions becomes too costly, this might be done
     # every few tics instead of every tic
     check_ent_collisions()
+    if(self.select_flag):
+        self.selection_box.set_position(self.selected_ent.get_position())
 
 func find_parent_node() -> ShipManager:
     var rtn = self
@@ -54,10 +59,6 @@ func add_entity(ent: EntityBase) -> void:
     self.entity_list.append(ent)
     ent.death.connect(on_entity_death)
     ent.check_pos.connect(on_check_pos)
-    var tmp_sprite_test = Sprite2D.new()
-    tmp_sprite_test.set_position(self.manager_node.sub_position+Vector2(20,20))
-    tmp_sprite_test.set_texture(load("res://Assets/Textures/enemy_tmp.png"))
-    #add_child(tmp_sprite_test)
     add_child(ent)
     
 func add_enemy(enemy: BasicEnemy) -> void:
@@ -146,24 +147,25 @@ func check_ent_collisions():
                                 if(hit):
                                     torp.kill()
                                     target.damage(torp.get_damage_points())
-                                    
+    
+#Try to select a new enemy and return if successful
+func try_new_selection(ent_id: String) -> bool:
+    for e in self.entity_list:
+        if(e.get_id()==ent_id):
+            self.selection_box.set_visible(true)
+            self.selected_ent = e
+            self.select_flag = true
+            return(true)
+    self.selection_box.set_visible(false)
+    self.select_flag = false
+    return(false)
+                                   
 #Returns if an entity exists with ID ent_id
 func check_ent_id(ent_id: String) -> bool:
     for e in self.entity_list:
         if(e.get_id()==ent_id):
             return(true)
     return(false)
-
-#Updates where the selection box should go
-func update_selection(ent: EntityBase) -> void:
-    pass
-
-#Returns the entity object with ID ent_id
-func get_ent_obj(ent_id: String) -> EntityBase:
-    for e in self.entity_list:
-        if(e.get_ID()==ent_id):
-            return(e)
-    return(null)
     
 func get_num_entities() -> int:
     return(self.num_entities)
