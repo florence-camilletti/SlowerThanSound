@@ -13,7 +13,7 @@ func _init() -> void:
 func _ready() -> void:
     self.manager_node = self.find_parent_node()
     
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
     pass
 
 func find_parent_node() -> ShipManager:
@@ -44,7 +44,6 @@ func build_map(polygons: Array, pos: Array) -> void:
 #Update the manager's state as to if the sub is going into illegal spots
 func check_collision(ent_pos: Vector2) -> bool:
     for curr_land in self.land_objects:
-        var new_pack = curr_land.get_polygon()
         if(Geometry2D.is_point_in_polygon(ent_pos-curr_land.get_position(), curr_land.get_polygon())):
             return(true)
     return(false)

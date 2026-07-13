@@ -1,4 +1,4 @@
-extends Node2D#THIS MAY NEED TO BE CHANGED BACK TO NODE2D IF IT GETS MESSY
+extends Node2D
 class_name ShipManager
 
 # === NODE VARS ===
@@ -8,29 +8,18 @@ class_name ShipManager
 
 @onready var menu_child   := $SVC/SV/HUDCamera/SysChunkM/ShipMenu
 
-@onready var engine_child := $SVC/SV/HUDCamera/SysChunk1/ShipEngine
-@onready var bulk_child   := $SVC/SV/HUDCamera/SysChunk1/ShipBulk
-@onready var AI_child     := $SVC/SV/HUDCamera/SysChunk1/ShipAI
-@onready var power_child  := $SVC/SV/HUDCamera/SysChunk2/ShipPower
-@onready var oxy_child    := $SVC/SV/HUDCamera/SysChunk2/ShipOxy
-@onready var LIDAR_child  := $SVC/SV/HUDCamera/SysChunk3/ShipLIDAR
-@onready var weap_child   := $SVC/SV/HUDCamera/SysChunk3/ShipWeapons
-@onready var target_child := $SVC/SV/HUDCamera/SysChunk3/ShipTarget
+@onready var engine_child := $SVC/SV/HUDCamera/ShipEngine
+@onready var CPU_child    := $SVC/SV/HUDCamera/ShipCPU
+@onready var LIDAR_child  := $SVC/SV/HUDCamera/ShipLIDAR
+@onready var weap_child   := $SVC/SV/HUDCamera/ShipWeapons
 var command_focus := true#If a text box is being focused
 
 @onready var camera_node := $SVC/SV/HUDCamera
 
 # === MENU VARS ===
 var menu_choice := 0
-var active_chunk := -1
-var chunk_names := ["SysChunkM","SysChunk1","SysChunk2","SysChunk3"]
-@onready var chunk_nodes := [[self.menu_child],#Chunk M
-                              [self.engine_child, self.bulk_child, self.AI_child],#Chunk 1
-                              [self.power_child, self.oxy_child],#Chunk 2
-                              [self.target_child, self.weap_child, self.LIDAR_child]]#Chunk 3
-@onready var all_system_nodes := [self.menu_child, self.engine_child, self.AI_child, self.bulk_child, 
-                                  self.power_child, self.oxy_child, self.target_child, self.weap_child, self.LIDAR_child]
-var num_chunks := len(chunk_names)
+@onready var all_system_nodes := [self.menu_child, self.engine_child, self.LIDAR_child,
+                                    self.weap_child, self.CPU_child]
 
 @onready var load_screen := $SVC/SV/HUDCamera/LoadScreen
 var loading_flag := false
@@ -89,7 +78,6 @@ func _ready() -> void:
     self.weap_child.tube_flooded.connect(on_tube_flood)
     self.weap_child.torpedo_launched.connect(on_torpedo_launch)
     
-    self.power_child.update_elec_amount.connect(on_elec_amount_update)
     self.oxy_child.update_lube_amount.connect(on_lube_amount_update)
     self.oxy_child.update_coolant_amount.connect(on_coolant_amount_update)
     
@@ -120,7 +108,7 @@ func update_command_focus(t: bool) -> void:
 func _process(delta: float):
     #Load screen if needed
     if(self.loading_flag):
-        self.load_curr_val -= (self.load_change_amnt * self.AI_child.get_total_status())
+        self.load_curr_val -= (self.load_change_amnt * self.CPU_child.get_total_status())
         if(self.load_curr_val<=0):
             self.loading_flag = false
             self.load_curr_val = 0
@@ -265,7 +253,7 @@ func get_engine_info() -> Array:
 #    return(self.global_view)
     
 func get_electricity(indx: int) -> float:
-    return(self.power_child.get_indx_electricity(indx))
+    return(self.engine_child.get_indx_electricity(indx))
 func get_lube(indx: int) -> float:
     return(self.oxy_child.get_indx_lube(indx))
 func get_coolant(indx: int) -> float:

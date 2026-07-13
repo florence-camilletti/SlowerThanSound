@@ -17,15 +17,11 @@ signal return_command_focus
 var command_focus_open: bool
 
 # === SIBLING VARS ===
-var menu_system: ShipSystemBase#M
-var engine_system: ShipSystemBase#C1
-var AI_system: ShipSystemBase
-var bulk_system: ShipSystemBase
-var power_system: ShipSystemBase#C2
-var oxy_system: ShipSystemBase
-var target_system: ShipSystemBase#C3
-var weapons_system: ShipSystemBase
+var menu_system: ShipSystemBase
+var engine_system: ShipSystemBase
 var LIDAR_system: ShipSystemBase
+var weapons_system: ShipSystemBase
+var CPU_system: ShipSystemBase
 var all_systems: Array
 
 # === STATUS VARS ===
@@ -58,19 +54,13 @@ func find_parent_node() -> ShipManager:
     return(rtn)
 
 func set_siblings(siblings: Array) -> void:
-    self.engine_system = siblings[Global.ENGINE]
-    self.AI_system = siblings[Global.AI]
-    self.bulk_system = siblings[Global.BULK]
-    
-    self.power_system = siblings[Global.POWER]
-    self.oxy_system = siblings[Global.OXY]
-    
-    self.target_system = siblings[Global.TARGET]
-    self.weapons_system = siblings[Global.WEAP]
-    self.LIDAR_system = siblings[Global.LIDAR]
+    self.engine_system = siblings[Global.ENG]
+    self.LIDAR_system = siblings[Global.LDR]
+    self.weapons_system = siblings[Global.WEP]
+    self.CPU_system = siblings[Global.CPU]
     self.sibling_flag=true
-    all_systems = [self.menu_system, self.engine_system, self.AI_system, self.bulk_system, self.power_system,
-                    self.oxy_system, self.target_system, self.weapons_system, self.LIDAR_system]
+    
+    all_systems = [self.menu_system, self.engine_system, self.LIDAR_system, self.weapons_system, self.CPU_system]
 
 func set_focus(f) -> void:
     in_focus = f

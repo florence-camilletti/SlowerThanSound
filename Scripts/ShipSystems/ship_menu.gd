@@ -1,16 +1,12 @@
 extends ShipSystemBase
 
 # === TEXT VARS ===
+
 @onready var ENG_text := [$ENG/Health, $ENG/Elec, $ENG/Lube, $ENG/Heat]
-@onready var PWR_text := [$PWR/Health, $PWR/Elec, $PWR/Lube, $PWR/Heat]
-@onready var AI_text :=  [$AI/Health,  $AI/Elec,  $AI/Lube,  $AI/Heat]
 @onready var TRG_text := [$TRG/Health, $TRG/Elec, $TRG/Lube, $TRG/Heat]
-@onready var OXY_text := [$OXY/Health, $OXY/Elec, $OXY/Lube, $OXY/Heat]
-@onready var BLK_text := [$BLK/Health, $BLK/Elec, $BLK/Lube, $BLK/Heat]
-@onready var WEP_text := [$WEP/Health, $WEP/Elec, $WEP/Lube, $WEP/Heat]
-@onready var LDR_text := [$LDR/Health, $LDR/Elec, $LDR/Lube, $LDR/Heat]
-@onready var menu_options := [null, ENG_text, PWR_text, AI_text, TRG_text,
-                            OXY_text, BLK_text, WEP_text, LDR_text]
+@onready var WEP_text := [$WEP/Health,  $WEP/Elec,  $WEP/Lube,  $WEP/Heat]
+@onready var CPU_text := [$CPU/Health, $CPU/Elec, $CPU/Lube, $CPU/Heat]
+@onready var menu_options := [null, ENG_text, TRG_text, WEP_text, CPU_text]
 
 func _init() -> void:
     super._init(true, Global.MENU)
