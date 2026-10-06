@@ -1,7 +1,7 @@
 extends ShipSystemBase
 
 func _init() -> void:
-    super._init(false, Global.AI)
+    super._init(false, Global.CPU)
 
 func _ready() -> void:
     super._ready()

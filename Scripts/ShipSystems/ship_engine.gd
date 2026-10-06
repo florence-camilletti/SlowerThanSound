@@ -75,7 +75,7 @@ func _process(delta: float) -> void:
     self.elec_reserves = min(self.elec_reserves, self.elec_cap)
     
     var new_elec_amount = self.elec_reserves/self.elec_cap
-    self.elec_reserve_text.set_text("%.2f" % new_elec_amount)
+    #self.elec_reserve_text.set_text("%.2f" % new_elec_amount)
     self.update_elec_amount.emit(new_elec_amount)
     if(new_elec_amount<=0):
         black_out()

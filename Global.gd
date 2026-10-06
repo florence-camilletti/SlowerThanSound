@@ -2,8 +2,8 @@
 extends Node
 
 # === SHIP SYSTEMS ===
-enum {MENU,ENGINE,POWER,OXY,AI,BULK,TARGET,WEAP,LIDAR}
-var systems := ["MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"]#Names of systems
+enum {MENU,ENGINE,LIDAR,WEAP,CPU}
+var systems := ["MENU","ENGINE","LIDAR","WEAP","CPU"]#Names of systems
 
 # === DISTANCES ===
 #1 degree = 60 nautical miles (nmile) = 36000 deciseconds

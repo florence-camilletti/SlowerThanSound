@@ -6,20 +6,22 @@ class_name ShipManager
 @onready var entity_manager := $SVC/SV/EntityManager
 @onready var map_manager := $SVC/SV/MapManager
 
-@onready var menu_child   := $SVC/SV/HUDCamera/SysChunkM/ShipMenu
+@onready var menu_child   := $SVC/SV/HUDCamera/ShipMenu
 
 @onready var engine_child := $SVC/SV/HUDCamera/ShipEngine
-@onready var CPU_child    := $SVC/SV/HUDCamera/ShipCPU
 @onready var LIDAR_child  := $SVC/SV/HUDCamera/ShipLIDAR
 @onready var weap_child   := $SVC/SV/HUDCamera/ShipWeapons
+@onready var CPU_child    := $SVC/SV/HUDCamera/ShipCPU
 var command_focus := true#If a text box is being focused
 
 @onready var camera_node := $SVC/SV/HUDCamera
 
 # === MENU VARS ===
 var menu_choice := 0
+var system_names := ["System0", "System1", "System2", "System3", "System4"]
 @onready var all_system_nodes := [self.menu_child, self.engine_child, self.LIDAR_child,
                                     self.weap_child, self.CPU_child]
+var num_systems := len(all_system_nodes)
 
 @onready var load_screen := $SVC/SV/HUDCamera/LoadScreen
 var loading_flag := false
@@ -70,16 +72,12 @@ var velocity := Vector2(0,0)#Speed and direction
 
 func _ready() -> void:
     #Connecting signals
-    self.target_child.check_ID.connect(on_entity_check)
     self.LIDAR_child.signal_update.connect(on_signal_update)
     
     self.weap_child.tube_locked.connect(on_tube_lock)
     self.weap_child.tube_loaded.connect(on_tube_load)
     self.weap_child.tube_flooded.connect(on_tube_flood)
     self.weap_child.torpedo_launched.connect(on_torpedo_launch)
-    
-    self.oxy_child.update_lube_amount.connect(on_lube_amount_update)
-    self.oxy_child.update_coolant_amount.connect(on_coolant_amount_update)
     
     for node in self.all_system_nodes:
         node.request_command_focus.connect(request_command_focus)
@@ -162,20 +160,20 @@ func _process(delta: float):
 func _input(event):
     if(event.is_action_pressed("Enter")):
         update_command_focus(true)
-    for action_indx in range(self.num_chunks):
-        if(event.is_action_pressed(chunk_names[action_indx])):#Check if a SysChunk event
+    for action_indx in range(self.num_systems):
+        if(event.is_action_pressed(system_names[action_indx])):#Check if a system event
             swap_noise.play()
-            for chunk_indx in range(self.num_chunks):#Set the chunk focuses
-                if(action_indx==chunk_indx):#Activate this chunk
+            for system_indx in range(self.num_chunks):#Set the chunk focuses
+                if(action_indx==system_indx):#Activate this chunk
                     self.loading_flag = true
                     self.load_curr_val = self.load_max_val
-                    self.command_focus = (self.active_chunk != chunk_indx) or self.command_focus
+                    self.command_focus = (self.active_chunk != system_indx) or self.command_focus
                     update_command_focus(self.command_focus)
-                    self.active_chunk = chunk_indx
-                    for system in self.chunk_nodes[chunk_indx]:
+                    self.active_chunk = system_indx
+                    for system in self.chunk_nodes[system_indx]:
                         system.set_focus(true)
                 else:#Deactivate these chunks
-                    for system in self.chunk_nodes[chunk_indx]:
+                    for system in self.chunk_nodes[system_indx]:
                         system.set_focus(false)
     
 func _unhandled_input(event):#Quit on ESC
@@ -252,12 +250,6 @@ func get_engine_info() -> Array:
 #func get_viewport_object() -> Viewport:
 #    return(self.global_view)
     
-func get_electricity(indx: int) -> float:
-    return(self.engine_child.get_indx_electricity(indx))
-func get_lube(indx: int) -> float:
-    return(self.oxy_child.get_indx_lube(indx))
-func get_coolant(indx: int) -> float:
-    return(self.oxy_child.get_indx_coolant(indx))
     
 #TODO
 func update_sidebar() -> void:
@@ -279,7 +271,8 @@ func on_signal_update(s: bool) -> void:
 #When new entity is selected
 #Signaled by Target
 func on_entity_check(curr_ent: String) -> void:
-    self.target_child.update_selection(self.entity_manager.try_new_selection(curr_ent))
+    pass
+    #TODO
         
 func on_tube_lock(tube_num: int) -> void:
     self.LLF_array[tube_num][0].set_visible(true)

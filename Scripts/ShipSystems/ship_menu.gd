@@ -20,7 +20,9 @@ func _process(delta: float) -> void:
     super._process(delta)
     #Process player input
     if(in_focus and self.sibling_flag):
-        update_all_boxes()
+        #TODO
+        #update_all_boxes()
+        pass
 
 #TODO
 func update_all_boxes() -> void:
@@ -29,7 +31,7 @@ func update_all_boxes() -> void:
 
 #TODO
 func update_box(curr_indx: int) -> void:
-    var new_data = self.all_systems[curr_indx].get_HELC()
+    var new_data = self.all_systems[curr_indx].get_statuses()
     var curr_box = self.menu_options[curr_indx]
     for txt_indx in range(len(curr_box)):
             curr_box[txt_indx].set_text("%f" % new_data[txt_indx])
