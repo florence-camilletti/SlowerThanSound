@@ -21,7 +21,6 @@ var menu_choice := 0
 var system_names := ["System0", "System1", "System2", "System3", "System4"]
 @onready var all_system_nodes := [self.menu_child, self.engine_child, self.LIDAR_child,
                                     self.weap_child, self.CPU_child]
-var num_systems := len(all_system_nodes)
 
 @onready var load_screen := $SVC/SV/HUDCamera/LoadScreen
 var loading_flag := false
@@ -160,21 +159,17 @@ func _process(delta: float):
 func _input(event):
     if(event.is_action_pressed("Enter")):
         update_command_focus(true)
-    for action_indx in range(self.num_systems):
+    for action_indx in range(len(self.system_names)):
         if(event.is_action_pressed(system_names[action_indx])):#Check if a system event
+            for sys in self.all_system_nodes:#Clear all systems
+                sys.set_focus(false)
             swap_noise.play()
-            for system_indx in range(self.num_chunks):#Set the chunk focuses
-                if(action_indx==system_indx):#Activate this chunk
-                    self.loading_flag = true
-                    self.load_curr_val = self.load_max_val
-                    self.command_focus = (self.active_chunk != system_indx) or self.command_focus
-                    update_command_focus(self.command_focus)
-                    self.active_chunk = system_indx
-                    for system in self.chunk_nodes[system_indx]:
-                        system.set_focus(true)
-                else:#Deactivate these chunks
-                    for system in self.chunk_nodes[system_indx]:
-                        system.set_focus(false)
+            self.all_system_nodes[action_indx].set_focus(true)
+            self.loading_flag = true
+            self.load_curr_val = self.load_max_val
+            #self.command_focus = (self.active_chunk != system_indx) or self.command_focus
+            #update_command_focus(self.command_focus)
+            #self.active_chunk = system_indx
     
 func _unhandled_input(event):#Quit on ESC
     if event is InputEventKey:
