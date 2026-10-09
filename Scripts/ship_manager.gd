@@ -1,43 +1,36 @@
-extends Node2D#THIS MAY NEED TO BE CHANGED BACK TO NODE2D IF IT GETS MESSY
+extends Node2D
 class_name ShipManager
 
 # === NODE VARS ===
-@onready var global_view := $VC/V
-@onready var entity_manager := $VC/V/EntityManager
+#@onready var global_view := $VC/V
+@onready var entity_manager := $SVC/SV/EntityManager
+@onready var map_manager := $SVC/SV/MapManager
 
-@onready var menu_child   := $VC/V/SysChunkM/ShipMenu
+@onready var menu_child   := $SVC/SV/HUDCamera/ShipMenu
 
-@onready var engine_child := $VC/V/SysChunk1/ShipEngine
-@onready var bulk_child   := $VC/V/SysChunk1/ShipBulk
-@onready var AI_child     := $VC/V/SysChunk1/ShipAI
-@onready var power_child  := $VC/V/SysChunk2/ShipPower
-@onready var oxy_child    := $VC/V/SysChunk2/ShipOxy
-@onready var LIDAR_child  := $VC/V/SysChunk3/ShipLIDAR
-@onready var weap_child   := $VC/V/SysChunk3/ShipWeapons
-@onready var target_child := $VC/V/SysChunk3/ShipTarget
+@onready var engine_child := $SVC/SV/HUDCamera/ShipEngine
+@onready var LIDAR_child  := $SVC/SV/HUDCamera/ShipLIDAR
+@onready var weap_child   := $SVC/SV/HUDCamera/ShipWeapons
+@onready var CPU_child    := $SVC/SV/HUDCamera/ShipCPU
 var command_focus := true#If a text box is being focused
+
+@onready var camera_node := $SVC/SV/HUDCamera
 
 # === MENU VARS ===
 var menu_choice := 0
-var active_chunk := -1
-var chunk_names := ["SysChunkM","SysChunk1","SysChunk2","SysChunk3"]
-@onready var chunk_nodes := [[self.menu_child],#Chunk M
-                              [self.engine_child, self.bulk_child, self.AI_child],#Chunk 1
-                              [self.power_child, self.oxy_child],#Chunk 2
-                              [self.target_child, self.weap_child, self.LIDAR_child]]#Chunk 3
-@onready var all_system_nodes := [self.menu_child, self.engine_child, self.AI_child, self.bulk_child, 
-                                  self.power_child, self.oxy_child, self.target_child, self.weap_child, self.LIDAR_child]
-var num_chunks := len(chunk_names)
+var system_names := ["System0", "System1", "System2", "System3", "System4"]
+@onready var all_system_nodes := [self.menu_child, self.engine_child, self.LIDAR_child,
+                                    self.weap_child, self.CPU_child]
 
-@onready var load_screen := $VC/V/LoadScreen
+@onready var load_screen := $SVC/SV/HUDCamera/LoadScreen
 var loading_flag := false
 var load_curr_val := 0.0
 var load_max_val := 100.0
 var load_change_amnt := 0.01
 
 # === MOVEMENT VARS ===
-#Location details in long,lat
-var sub_position := Global.map_middle#Deciseconds
+#Location details in long,lag
+var sub_position = Global.map_middle
 
 var heading := 0.0#Degrees; 0 - 360
 var desire_heading := 0.0
@@ -61,37 +54,29 @@ var engine_power := 0.0# 0 - 100
 var velocity := Vector2(0,0)#Speed and direction
 
 # === SIDEBAR VARS ===
-@onready var sidebar_engine := $VC/V/Sidebar/EngineStats
-@onready var elec_reserve_text := $VC/V/Sidebar/Elec
-@onready var lube_reserve_text := $VC/V/Sidebar/Lube
-@onready var cool_reserve_text := $VC/V/Sidebar/Cool
-@onready var signal_text  := $VC/V/Sidebar/Signal
+@onready var sidebar_engine := $SVC/SV/HUDCamera/Sidebar/EngineStats
+@onready var elec_reserve_text := $SVC/SV/HUDCamera/Sidebar/Elec
+@onready var lube_reserve_text := $SVC/SV/HUDCamera/Sidebar/Lube
+@onready var cool_reserve_text := $SVC/SV/HUDCamera/Sidebar/Cool
+@onready var signal_text  := $SVC/SV/HUDCamera/Sidebar/Signal
 
-@onready var LLF_T1_text := [$VC/V/Sidebar/Tube1/Lock, $VC/V/Sidebar/Tube1/Load, $VC/V/Sidebar/Tube1/Flood]
-@onready var LLF_T2_text := [$VC/V/Sidebar/Tube2/Lock, $VC/V/Sidebar/Tube2/Load, $VC/V/Sidebar/Tube2/Flood]
-@onready var LLF_T3_text := [$VC/V/Sidebar/Tube3/Lock, $VC/V/Sidebar/Tube3/Load, $VC/V/Sidebar/Tube3/Flood]
-@onready var LLF_T4_text := [$VC/V/Sidebar/Tube4/Lock, $VC/V/Sidebar/Tube4/Load, $VC/V/Sidebar/Tube4/Flood]
+@onready var LLF_T1_text := [$SVC/SV/HUDCamera/Sidebar/Tube1/Lock, $SVC/SV/HUDCamera/Sidebar/Tube1/Load, $SVC/SV/HUDCamera/Sidebar/Tube1/Flood]
+@onready var LLF_T2_text := [$SVC/SV/HUDCamera/Sidebar/Tube2/Lock, $SVC/SV/HUDCamera/Sidebar/Tube2/Load, $SVC/SV/HUDCamera/Sidebar/Tube2/Flood]
+@onready var LLF_T3_text := [$SVC/SV/HUDCamera/Sidebar/Tube3/Lock, $SVC/SV/HUDCamera/Sidebar/Tube3/Load, $SVC/SV/HUDCamera/Sidebar/Tube3/Flood]
+@onready var LLF_T4_text := [$SVC/SV/HUDCamera/Sidebar/Tube4/Lock, $SVC/SV/HUDCamera/Sidebar/Tube4/Load, $SVC/SV/HUDCamera/Sidebar/Tube4/Flood]
 @onready var LLF_array := [LLF_T1_text, LLF_T2_text, LLF_T3_text, LLF_T4_text]
 
 # === SOUND VARS ===
-@onready var swap_noise := $ScreenSwap
+@onready var swap_noise := $SVC/SV/ScreenSwap
 
 func _ready() -> void:
     #Connecting signals
-    self.target_child.check_ID.connect(on_entity_check)
-    self.LIDAR_child.entity_request.connect(on_LIDAR_request)
     self.LIDAR_child.signal_update.connect(on_signal_update)
-    self.entity_manager.entity_created.connect(on_entity_created)
-    self.entity_manager.entity_destroyed.connect(on_entity_destroyed)
     
     self.weap_child.tube_locked.connect(on_tube_lock)
     self.weap_child.tube_loaded.connect(on_tube_load)
     self.weap_child.tube_flooded.connect(on_tube_flood)
     self.weap_child.torpedo_launched.connect(on_torpedo_launch)
-    
-    self.power_child.update_elec_amount.connect(on_elec_amount_update)
-    self.oxy_child.update_lube_amount.connect(on_lube_amount_update)
-    self.oxy_child.update_coolant_amount.connect(on_coolant_amount_update)
     
     for node in self.all_system_nodes:
         node.request_command_focus.connect(request_command_focus)
@@ -100,6 +85,11 @@ func _ready() -> void:
     #Connecting systems to each other
     for node in self.all_system_nodes:
         node.set_siblings(self.all_system_nodes)
+        
+    #Connecting admin nodes to each other
+    self.map_manager.load_map_polygons()
+    self.entity_manager.set_map_manager(self.map_manager)
+    self.entity_manager.set_LIDAR_manager(self.LIDAR_child)
         
     self.load_screen.self_modulate.a=0
 
@@ -115,7 +105,7 @@ func update_command_focus(t: bool) -> void:
 func _process(delta: float):
     #Load screen if needed
     if(self.loading_flag):
-        self.load_curr_val -= (self.load_change_amnt * self.AI_child.get_total_status())
+        self.load_curr_val -= (self.load_change_amnt * self.CPU_child.get_total_status())
         if(self.load_curr_val<=0):
             self.loading_flag = false
             self.load_curr_val = 0
@@ -150,9 +140,18 @@ func _process(delta: float):
             self.diving_flag = false
     
     #Update ship speed
+    #Speed it up by engine*ELC, slow it down by speed*friction
     self.speed = self.speed + (((self.engine_power*self.engine_child.get_total_status()) - (self.speed*Global.friction_coef)) * delta)
     update_vel()
-    self.sub_position+=self.velocity
+    
+    #Update velocity after check
+    var new_sub_pos = self.sub_position+self.velocity
+    if(not self.map_manager.check_collision(new_sub_pos)):
+        #self.sub_position+=self.velocity
+        self.sub_position = new_sub_pos
+    
+    #Update camera
+    self.camera_node.set_position(self.sub_position+Global.camera_map_offset)
     
     #Update sidebar
     update_sidebar()
@@ -160,21 +159,17 @@ func _process(delta: float):
 func _input(event):
     if(event.is_action_pressed("Enter")):
         update_command_focus(true)
-    for action_indx in range(self.num_chunks):
-        if(event.is_action_pressed(chunk_names[action_indx])):#Check if a SysChunk event
+    for action_indx in range(len(self.system_names)):
+        if(event.is_action_pressed(system_names[action_indx])):#Check if a system event
+            for sys in self.all_system_nodes:#Clear all systems
+                sys.set_focus(false)
             swap_noise.play()
-            for chunk_indx in range(self.num_chunks):#Set the chunk focuses
-                if(action_indx==chunk_indx):#Activate this chunk
-                    self.loading_flag = true
-                    self.load_curr_val = self.load_max_val
-                    self.command_focus = (self.active_chunk != chunk_indx) or self.command_focus
-                    update_command_focus(self.command_focus)
-                    self.active_chunk = chunk_indx
-                    for system in self.chunk_nodes[chunk_indx]:
-                        system.set_focus(true)
-                else:#Deactivate these chunks
-                    for system in self.chunk_nodes[chunk_indx]:
-                        system.set_focus(false)
+            self.all_system_nodes[action_indx].set_focus(true)
+            self.loading_flag = true
+            self.load_curr_val = self.load_max_val
+            #self.command_focus = (self.active_chunk != system_indx) or self.command_focus
+            #update_command_focus(self.command_focus)
+            #self.active_chunk = system_indx
     
 func _unhandled_input(event):#Quit on ESC
     if event is InputEventKey:
@@ -223,6 +218,8 @@ func set_engine_power(a: float) -> void:
 func update_vel() -> void:
     self.velocity = Global.calc_desectic_vel(self.heading, self.speed)
     
+func check_surface() -> bool:
+    return(self.depth <= 5)
 func emergency_speed() -> void:
     if(self.engine_power==0):
         self.engine_power=self.max_accel
@@ -245,15 +242,9 @@ func get_engine_info() -> Array:
                self.depth]
     return(rtn)
     
-func get_viewport_object() -> Viewport:
-    return(self.global_view)
+#func get_viewport_object() -> Viewport:
+#    return(self.global_view)
     
-func get_electricity(indx: int) -> float:
-    return(self.power_child.get_indx_electricity(indx))
-func get_lube(indx: int) -> float:
-    return(self.oxy_child.get_indx_lube(indx))
-func get_coolant(indx: int) -> float:
-    return(self.oxy_child.get_indx_coolant(indx))
     
 #TODO
 func update_sidebar() -> void:
@@ -266,38 +257,17 @@ func update_sidebar() -> void:
     for i in tmp:
         output += "%.2f \n" % [i]
     self.sidebar_engine.set_text(output)
-    
     #Update system stats
-    
-#Update LIDAR's entity list from the entity manager
-func on_LIDAR_request() -> void:
-    var entity_list = self.entity_manager.get_entity_list()
-    self.LIDAR_child.update_entity_list(entity_list)
-    self.LIDAR_child.request_flag = false
 
 #Signaled by LIDAR when lidar timing is changed
 func on_signal_update(s: bool) -> void:
     self.signal_text.set_visible(s)
 
-#When ent has been created, update LIDAR and target
-#Signaled by Entity Manager
-func on_entity_created(ent: EntityBase) -> void:
-    self.LIDAR_child.add_new_entity(ent)
-
-#When ent had been destroyed, update LIDAR and target
-#Signaled by Entity Manager
-func on_entity_destroyed(ent: EntityBase) -> void:
-    self.LIDAR_child.destroy_entity(ent)
-
 #When new entity is selected
 #Signaled by Target
 func on_entity_check(curr_ent: String) -> void:
-    if(self.entity_manager.check_ent_id(curr_ent)):
-        self.target_child.update_selection(true)
-        self.LIDAR_child.update_selection(curr_ent)
-    else:
-        self.target_child.update_selection(false)
-        self.LIDAR_child.update_selection("-1")
+    pass
+    #TODO
         
 func on_tube_lock(tube_num: int) -> void:
     self.LLF_array[tube_num][0].set_visible(true)

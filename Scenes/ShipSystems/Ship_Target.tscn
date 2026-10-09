@@ -1,17 +1,17 @@
 [gd_scene load_steps=6 format=3 uid="uid://cnnchfc25huf5"]
 
-[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_ynqdo"]
-[ext_resource type="Script" uid="uid://bphx60wjugmxg" path="res://Scripts/ShipSystems/ship_target.gd" id="2_ln1ya"]
-[ext_resource type="Texture2D" uid="uid://b1avj7kkqlgs7" path="res://Assets/Textures/Screens/WeaponsScreen.png" id="3_wa7cl"]
-[ext_resource type="Texture2D" uid="uid://cv2j4rp3n6ksd" path="res://Assets/Textures/red_circle.png" id="4_urawi"]
-[ext_resource type="Texture2D" uid="uid://cnao21055w77d" path="res://Assets/Textures/green_circle.png" id="5_85lif"]
+[ext_resource type="PackedScene" uid="uid://bkvojy2twfmob" path="res://Scenes/ShipSystems/Ship_System_Base.tscn" id="1_urawi"]
+[ext_resource type="Script" uid="uid://bphx60wjugmxg" path="res://Scripts/ShipSystems/ship_target.gd" id="2_85lif"]
+[ext_resource type="Texture2D" uid="uid://b1avj7kkqlgs7" path="res://Assets/Textures/Screens/WeaponsScreen.png" id="3_xuea5"]
+[ext_resource type="Texture2D" uid="uid://cv2j4rp3n6ksd" path="res://Assets/Textures/red_circle.png" id="4_00wns"]
+[ext_resource type="Texture2D" uid="uid://cnao21055w77d" path="res://Assets/Textures/green_circle.png" id="5_201oa"]
 
-[node name="ShipTarget" instance=ExtResource("1_ynqdo")]
-script = ExtResource("2_ln1ya")
+[node name="ShipTarget" instance=ExtResource("1_urawi")]
+script = ExtResource("2_85lif")
 
 [node name="Background" parent="." index="0"]
 visible = false
-texture = ExtResource("3_wa7cl")
+texture = ExtResource("3_xuea5")
 
 [node name="EntityInput" type="LineEdit" parent="." index="1"]
 offset_left = 1557.0
@@ -30,11 +30,11 @@ text = "===="
 
 [node name="TargetLightR" type="Sprite2D" parent="TargetLight" index="0"]
 position = Vector2(1395, 341)
-texture = ExtResource("4_urawi")
+texture = ExtResource("4_00wns")
 
 [node name="TargetLightG" type="Sprite2D" parent="TargetLight" index="1"]
 visible = false
 position = Vector2(1395, 341)
-texture = ExtResource("5_85lif")
+texture = ExtResource("5_201oa")
 
 [connection signal="text_submitted" from="EntityInput" to="." method="_on_entity_input_text_submitted"]

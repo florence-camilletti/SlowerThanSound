@@ -2,8 +2,8 @@ extends EntityBase
 class_name BasicEnemy
 
 func _init(i:int, n:String, p:Vector2, v:Vector2) -> void:
-    super._init(i,n,p,v)
-    self.texture = load("res://Assets/Textures/enemy_tmp.png")
+    super._init(i,n,p,v, 50, 80)
+    self.set_texture(load("res://Assets/Textures/enemy_tmp.png"))
     self.health = 100
 
 func _ready() -> void:
@@ -11,3 +11,6 @@ func _ready() -> void:
     
 func _process(_delta: float) -> void:
     super._process(_delta)
+
+func handle_collision() -> void:
+    self.turn_left(15)

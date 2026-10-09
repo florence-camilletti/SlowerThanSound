@@ -1,0 +1,19 @@
+1. Tutorial [QOL]
+2. Enemy AI [Gameplay]
+3. Visuals [Style]
+4. Sound [Style]
+5. LIDAR [Gameplay]
+6. ELF [Gameplay]
+7. Health & Damage [Gameplay]
+8. Consolodate systems [Gameplay]
+9. Story [Style]
+10. Missions [QOL]
+11. Menu [QOL]
+
+
+SYSTEMS:
+Curr: AI, Bulk, Engine, LIDAR, Oxy, Power, Target, Weapons
+New: Engine (Engine, Power): movement & power
+	 TRG (LIDAR, Target): finding & tracking targets
+	 WEP (weapons): loading, preparing, firing weapons
+	 CPU (AI, oxy, bulk), repair, oxy/fuel/lube. screen power

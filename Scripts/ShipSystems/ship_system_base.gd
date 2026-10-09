@@ -17,22 +17,16 @@ signal return_command_focus
 var command_focus_open: bool
 
 # === SIBLING VARS ===
-var menu_system: ShipSystemBase#M
-var engine_system: ShipSystemBase#C1
-var AI_system: ShipSystemBase
-var bulk_system: ShipSystemBase
-var power_system: ShipSystemBase#C2
-var oxy_system: ShipSystemBase
-var target_system: ShipSystemBase#C3
-var weapons_system: ShipSystemBase
+var menu_system: ShipSystemBase
+var engine_system: ShipSystemBase
 var LIDAR_system: ShipSystemBase
+var weapons_system: ShipSystemBase
+var CPU_system: ShipSystemBase
 var all_systems: Array
 
 # === STATUS VARS ===
 var health := 1.0
 var electricity := 1.0
-var lube := 1.0
-var coolant := 1.0
 var total_status := 1.0
 
 func _init(f:bool, i:int) -> void:
@@ -40,7 +34,7 @@ func _init(f:bool, i:int) -> void:
     self.system_indx=i
 
 func _ready() -> void:
-    self.manager_node = get_parent().get_parent().get_parent().get_parent()#ew
+    self.manager_node = self.find_parent_node()
         
     self.global_viewport = self.get_viewport()
     in_focus = false
@@ -49,20 +43,22 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     update_ELC()
 
+func find_parent_node() -> ShipManager:
+    var rtn = self
+    while(rtn.get_parent()):
+        rtn=rtn.get_parent()
+        if(rtn is ShipManager):
+            return(rtn)
+    return(rtn)
+
 func set_siblings(siblings: Array) -> void:
     self.engine_system = siblings[Global.ENGINE]
-    self.AI_system = siblings[Global.AI]
-    self.bulk_system = siblings[Global.BULK]
-    
-    self.power_system = siblings[Global.POWER]
-    self.oxy_system = siblings[Global.OXY]
-    
-    self.target_system = siblings[Global.TARGET]
-    self.weapons_system = siblings[Global.WEAP]
     self.LIDAR_system = siblings[Global.LIDAR]
+    self.weapons_system = siblings[Global.WEAP]
+    self.CPU_system = siblings[Global.CPU]
     self.sibling_flag=true
-    all_systems = [self.menu_system, self.engine_system, self.AI_system, self.bulk_system, self.power_system,
-                    self.oxy_system, self.target_system, self.weapons_system, self.LIDAR_system]
+    
+    all_systems = [self.menu_system, self.engine_system, self.LIDAR_system, self.weapons_system, self.CPU_system]
 
 func set_focus(f) -> void:
     in_focus = f
@@ -75,27 +71,18 @@ func get_health() -> float:
     return(self.health)
 func get_electricity() -> float:
     return(self.electricity)
-func get_lube() -> float:
-    return(self.lube)
-func get_coolant() -> float:
-    return(self.coolant)
 func get_total_status() -> float:
     return(self.total_status)
-func get_HELC() -> Array:
-    return([self.health, self.electricity, self.lube, self.coolant])
+func get_status() -> Array:
+    return([self.health, self.electricity])
 
 func update_ELC() -> void:
-    self.coolant = self.manager_node.get_coolant(self.system_indx)
-    self.lube = self.manager_node.get_lube(self.system_indx)
-    self.electricity = self.manager_node.get_electricity(self.system_indx)
-    self.total_status = self.health*self.lube*self.electricity
-    update_UI_text()
+    #TODO
+    pass
 
 func update_UI_text() -> void:
     var output = ""
     output += "H: %.3f\t" % [self.health]
     output += "E: %.3f\t" % [self.electricity]
-    output += "L: %.3f\t" % [self.lube]
-    output += "C: %.3f\t" % [self.coolant]
     output += "T: %.3f\t" % [self.total_status]
     self.ElecLubeHeat.set_text(output)

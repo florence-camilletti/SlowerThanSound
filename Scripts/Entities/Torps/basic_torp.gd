@@ -19,8 +19,8 @@ var target: EntityBase
 var target_pos: Vector2
 
 func _init(i:int, n:String) -> void:
-    super._init(i,n,Vector2(0,0),Vector2(0,0))
-    self.texture = load("res://Assets/Textures/torpedo.png")
+    super._init(i,n,Vector2(0,0),Vector2(0,0), 90, 40)
+    self.set_texture(load("res://Assets/Textures/torpedo.png"))
     self.health=20
 
 func _ready() -> void:
@@ -39,15 +39,13 @@ func _process(_delta: float) -> void:
 
 func launch(pos: Vector2, head: float, s: float) -> void:
     self.heading = head
-    self.desec_pos = pos
+    self.set_position(pos)
     self.desec_speed = s+self.speedup
     self.desec_vel = Global.calc_desectic_vel(self.heading, self.desec_speed)
     self.arming_timer.start()
-
-func BOOM() -> void:
-    print(self.get_id())
-    print("BOOM BOOM BOOM BOOM BOOM")
-    set_health(0)
+    
+func handle_collision() -> void:
+    self.kill()
 
 func set_target_id(ent_id: String) -> void:
     self.target_id = ent_id
@@ -77,8 +75,8 @@ func is_armed() -> bool:
 func _on_arming_timer_timeout() -> void:
     self.armed = true
     if(self.target_id!="===="):
-        if(calculate_firing_plan(self.desec_pos, self.desec_speed,
-                                self.target.desec_pos, self.target.desec_speed, self.target.desec_vel)):
+        if(calculate_firing_plan(self.get_position(), self.desec_speed,
+                                self.target.get_position(), self.target.desec_speed, self.target.desec_vel)):
             execute_firing_plan()
 
 #To be written by child torps
@@ -103,15 +101,12 @@ func calculate_firing_plan(torp_pos: Vector2, torp_speed: float, ship_pos: Vecto
         if(time_solution<0):#Both solutions bad
             return(false)
     self.target_pos = (ship_pos + (ship_vel*time_solution))
-    #print("Ship curr pos: %.2f, %.2f" % [ship_pos[0], ship_pos[1]])
-    #print("Torp curr pos: %.2f, %.2f" % [self.desec_pos[0], self.desec_pos[1]])
-    #print("Intersect pos: %.2f, %.2f" % [self.target_pos[0], self.target_pos[1]])
     return(true)
 
 #Find the firing angle from torp to target and point torp that way
 #Actually signals the torp to swim to the position
 func execute_firing_plan() -> void:
-    var direction_vec = self.desec_pos.direction_to(self.target_pos)
+    var direction_vec = self.get_position().direction_to(self.target_pos)
     var new_heading = rad_to_deg(atan2(direction_vec[0], direction_vec[1]))
     if(new_heading<0):
         new_heading+=360
