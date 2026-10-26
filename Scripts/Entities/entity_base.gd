@@ -5,42 +5,65 @@ class_name EntityBase
 signal death
 var num: int#ID of the entity
 var type: String#String abreviation of the entity
-var texture: Texture2D
+
+# === Sprite vars ===
+var sprite: Sprite2D
+var sprite_flag := true
+var label: RichTextLabel
 
 # === Status Vars ===
 var health: int
+var active_detection_level: int#Low - sneaky, high - obvious
+var passive_detection_level: int#Low - loud, high - silent
 
 # === Position vars ===
-var desec_pos: Vector2#Decisecond position
 var map_cell: Vector2
+
+signal check_pos
+var pos_wait := false
+var valid_next_pos := false
 
 # === Movement Vars ===
 var desec_vel: Vector2#Decisecond/tick
 var desec_speed: float
 var heading: float#0-360 degrees
 
-func _init(n:int, t:String, p:Vector2, v:Vector2) -> void:
+func _init(n:int, t:String, p:Vector2, v:Vector2, ad:int, pd:int) -> void:
     self.num = n
     self.type = t
+    self.active_detection_level = ad
+    self.passive_detection_level = pd
     
     self.set_desec_pos(p)
     self.set_desec_vel(v)
 
+    self.sprite = Sprite2D.new()
+    self.label = RichTextLabel.new()
+    self.label.set_text(self.type+str(self.num))
+    self.label.set_size(Vector2(100,30))
+    self.label.set_position(Vector2(5,-30))
+    add_child(self.label)
+    
 func _ready() -> void:
     pass
     
 func _process(_delta: float) -> void:
     #Update entity pos
     if(self.is_alive):
-        set_desec_pos(self.desec_pos+self.desec_vel)
+        var next_spot = self.get_position()+self.desec_vel
+        if(self.is_valid_pos(next_spot)):
+            self.set_desec_pos(next_spot)
+        else:
+            self.handle_collision()
 
 func kill() -> void:
     set_health(0)
-    death.emit(self)
 func damage(d: int) -> void:
     self.health-=d
     if(self.health<=0):
         death.emit(self)
+func handle_collision():
+    pass
     
 func set_health(h: int) -> void:
     self.health = h
@@ -51,10 +74,19 @@ func get_health() -> int:
 func is_alive() -> bool:
     return(self.health>0)
 
+func is_valid_pos(pos: Vector2) -> bool:
+    self.pos_wait = true
+    self.check_pos.emit(self, pos)
+    while(self.pos_wait):pass
+    return(self.valid_next_pos)
+
 func set_texture(t: Texture2D) -> void:
-    self.texture = t
+    self.sprite.set_texture(t)
+    if(self.sprite_flag):
+        add_child(self.sprite)
+        self.sprite_flag = false
 func set_desec_pos(p: Vector2) -> void:
-    self.desec_pos = p
+    self.set_position(p)
     self.map_cell = Vector2(floor(p[0]/Global.cell_size), floor(p[1]/Global.cell_size))
 func set_desec_vel(v: Vector2) -> void:
     self.desec_vel = v
@@ -80,10 +112,6 @@ func turn_right(d: float) -> void:
         tmp-=360
     set_desec_heading(tmp)
 
-func get_texture() -> Texture2D:
-    return(self.texture)
-func get_desec_pos() -> Vector2:
-    return(self.desec_pos)
 func get_map_cell() -> Vector2:
     return(self.map_cell)
 func get_desec_vel() -> Vector2:
@@ -92,6 +120,10 @@ func get_desec_speed() -> float:
     return(self.desec_speed)
 func get_heading() -> float:
     return(self.heading)
+func get_active_detection_level() -> int:
+    return(self.active_detection_level)
+func get_passive_detection_level() -> int:
+    return(self.passive_detection_level)
 
 func get_id() -> String:
     return(self.type+str(self.num))
@@ -104,4 +136,4 @@ func is_torpedoe() -> bool:
     return(is_torp())
     
 func _to_string() -> String:
-    return("ID: "+get_id()+", POS: "+str(self.desec_pos)+", VEL: "+str(self.desec_vel))
+    return("ID: "+get_id()+", POS: "+str(self.get_position())+", VEL: "+str(self.desec_vel))

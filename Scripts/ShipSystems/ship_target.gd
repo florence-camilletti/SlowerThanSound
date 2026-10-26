@@ -2,7 +2,6 @@ extends ShipSystemBase
 
 # === SIGNAL VARS ===
 signal check_ID
-signal target_locked
 
 # === SELECTION VARS ===
 @onready var inputBox = $EntityInput
@@ -27,12 +26,13 @@ func _input(event: InputEvent) -> void:
     if(in_focus):
         if(self.command_focus_open):
             if(event.is_action_pressed("Action_I")):
-                #Set auto-update rate
+                #Select new target
                 self.inputBox.clear()
                 self.inputBox.grab_focus()
                 self.global_viewport.set_input_as_handled()
                 self.request_command_focus.emit()
             if(event.is_action_pressed("Action_O")):
+                #Lock target to torpedo
                 if(self.selected_flag):
                     check_ID.emit("-1")
                     self.weapons_system.give_tube_selection(self.selected_entity_ID)
@@ -47,6 +47,7 @@ func update_selection(is_valid: bool) -> void:
     self.selected_flag = is_valid
     self.wait_flag = false
 
+#Entity selection box is submitted
 func _on_entity_input_text_submitted(new_text: String) -> void:
     if(len(new_text)>0):
         self.selected_entity_ID = new_text#Select the new entity

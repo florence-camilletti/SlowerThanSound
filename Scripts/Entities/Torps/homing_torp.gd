@@ -7,8 +7,7 @@ var homing_timer: Timer
 
 func _init(i:int) -> void:
     super._init(i,"TH")
-    
-    self.texture = load("res://Assets/Textures/torpedo.png")
+    self.set_texture(load("res://Assets/Textures/torpedo.png"))
 
 func _ready() -> void:
     super._ready()
@@ -24,7 +23,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     super._process(_delta)
     if(self.armed):
-        var direction_vec = self.desec_pos.direction_to(self.target.desec_pos)
+        var direction_vec = self.get_position().direction_to(self.target.get_position())
         var new_heading = rad_to_deg(atan2(direction_vec[0], direction_vec[1]))
         if(new_heading<0):
             new_heading+=360
@@ -32,7 +31,7 @@ func _process(_delta: float) -> void:
 
 func _on_homing_timer_timeout() -> void:
     #Recalculate aiming angle
-    '''var direction_vec = self.desec_pos.direction_to(self.target.desec_pos)
+    '''var direction_vec = self.get_position().direction_to(self.target.get_position())
     var new_heading = rad_to_deg(atan2(direction_vec[0], direction_vec[1]))
     if(new_heading<0):
         new_heading+=360

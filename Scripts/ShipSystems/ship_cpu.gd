@@ -1,33 +1,23 @@
 extends ShipSystemBase
 
 # === NODE VARS ===
-@onready var Eng_sprites    := [$ENG/E1, $ENG/E2, $ENG/E3, $ENG/E4, $ENG/E5, $ENG/E6]
-@onready var Power_sprites  := [$PWR/E1, $PWR/E2, $PWR/E3, $PWR/E4, $PWR/E5, $PWR/E6]
-@onready var Target_sprites := [$TRG/E1, $TRG/E2, $TRG/E3, $TRG/E4, $TRG/E5, $TRG/E6]
-@onready var AI_sprites     := [$AI/E1, $AI/E2, $AI/E3, $AI/E4, $AI/E5, $AI/E6]
-@onready var Oxy_sprites    := [$OXY/E1, $OXY/E2, $OXY/E3, $OXY/E4, $OXY/E5, $OXY/E6]
-@onready var Bulk_sprites   := [$BLK/E1, $BLK/E2, $BLK/E3, $BLK/E4, $BLK/E5, $BLK/E6]
-@onready var Weap_sprites   := [$WEP/E1, $WEP/E2, $WEP/E3, $WEP/E4, $WEP/E5, $WEP/E6]
-@onready var LIDAR_sprites  := [$LDR/E1, $LDR/E2, $LDR/E3, $LDR/E4, $LDR/E5, $LDR/E6]
+@onready var ENG_sprites := [$ENG/E1, $ENG/E2, $ENG/E3, $ENG/E4, $ENG/E5, $ENG/E6]
+@onready var LDR_sprites := [$LDR/E1, $LDR/E2, $LDR/E3, $LDR/E4, $LDR/E5, $LDR/E6]
+@onready var WEP_sprites := [$WEP/E1, $WEP/E2, $WEP/E3, $WEP/E4, $WEP/E5, $WEP/E6]
+@onready var CPU_sprites := [$CPU/E1, $CPU/E2, $CPU/E3, $CPU/E4, $CPU/E5, $CPU/E6]
+@onready var all_power_sprites := [
+    null,
+    ENG_sprites,
+    LDR_sprites,
+    WEP_sprites,
+    CPU_sprites
+]
 
 # === NOISE VARS ===
 @onready var ELC_noise := $ELC_Noise
 
-@onready var all_power_sprites := [
-    null,
-    Eng_sprites,
-    Power_sprites,
-    Target_sprites,
-    AI_sprites,
-    Oxy_sprites,
-    Bulk_sprites,
-    Weap_sprites,
-    LIDAR_sprites
-]
-
 # === SELECTION VARS ===
-var system_list = [null, "Action_Q","Action_W","Action_E","Action_R",
-                            "Action_A","Action_S","Action_D","Action_F"]
+var system_list = [null, "Action_Q","Action_W","Action_E","Action_R"]
 var selected_indx := 0
 @onready var selection_sprite = $SelectedSystem
 var x_offset := 580
@@ -37,38 +27,36 @@ var y_spacing := 432
 
 # === ELECTRICITY VARS ===
 signal update_elec_amount
-@onready var elec_reserve_text = $ElecReserve
-@onready var elec_usage_text = $ElecUsage
 var elec_regen := 8
 var elec_usage := 0.0
 var elec_cap := 40000.0
 var elec_reserves := self.elec_cap/2.0
 
-#"MENU","ENGINE","POWER","OXY","AI","BULK","TARGET","WEAP","LIDAR"
-var elec_levels     := [0, 3, 0, 0, 4, 0, 1, 0, 2]
-var elec_levels_max := [0, 5, 0, 0, 4, 0, 2, 0, 4]
+#"MENU", "ENG", "LDR", "WEP", "CPU"
+var elec_levels     := [0, 1, 1, 1, 1]
+var elec_levels_max := [0, 6, 6, 6, 6]
 
 func _init() -> void:
-    super._init(false, Global.POWER)
+    super._init(false, Global.CPU)
 
 func _ready() -> void:
     super._ready()
     update_all_sprites()
-    
+
 func _process(delta: float) -> void:
     super._process(delta)
     self.elec_reserves-=self.elec_usage
     self.elec_reserves+=self.elec_regen
     self.elec_reserves = min(self.elec_reserves, self.elec_cap)
-    
+
     var new_elec_amount = self.elec_reserves/self.elec_cap
-    self.elec_reserve_text.set_text("%.2f" % new_elec_amount)
     self.update_elec_amount.emit(new_elec_amount)
     if(new_elec_amount<=0):
         black_out()
 
-func _input(event: InputEvent) -> void:
-    if(self.in_focus):
+func _input(event):
+    #Process player input
+    if(in_focus):
         for action_indx in range(1, len(self.system_list)):
             if(event.is_action_pressed(self.system_list[action_indx])):
                 self.selected_indx = action_indx
@@ -89,7 +77,7 @@ func get_indx_electricity(curr_indx: int) -> float:
 func calc_dot_spot(curr_indx: int) -> Vector2:
     if(curr_indx==-1):
         return(Vector2(-10,10))
-        
+
     var x_val = int((curr_indx-1)%4)
     @warning_ignore("integer_division")
     var y_val = int((curr_indx-1)/4)
@@ -103,21 +91,20 @@ func update_all_sprites() -> void:
     for n in range(1, len(self.all_power_sprites)):
         update_power_sprites(n)
     update_usage()
-   
-#Updates the sprites for a single system 
+
+#Updates the sprites for a single system
 func update_power_sprites(curr_indx: int) -> void:
     var new_level = self.elec_levels[curr_indx]
     var sprites = self.all_power_sprites[curr_indx]
     for level in range(len(sprites)):
         sprites[level].set_visible(new_level==level+1)
 
-#Called when power distribution is changed, calculates how much electricity is being used0
+#Called when power distribution is changed, calculates how much electricity is being used
 func update_usage() -> void:
     var total = 0
     for e in self.elec_levels:
         total+=e
     self.elec_usage = total
-    self.elec_usage_text.set_text(str(self.elec_usage) + "/" + str(self.elec_regen))
 
 #Called when the sub runs out of power, all systems are set to 1
 func black_out() -> void:

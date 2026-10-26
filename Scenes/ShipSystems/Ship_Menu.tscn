@@ -40,68 +40,8 @@ offset_right = 147.0
 offset_bottom = 102.0
 text = "H"
 
-[node name="PWR" type="Node2D" parent="." index="2"]
+[node name="TRG" type="Node2D" parent="." index="2"]
 position = Vector2(926, 587)
-
-[node name="Health" type="RichTextLabel" parent="PWR" index="0"]
-offset_left = -149.0
-offset_top = -39.0
-offset_right = -44.0
-offset_bottom = 1.0
-text = "H"
-
-[node name="Elec" type="RichTextLabel" parent="PWR" index="1"]
-offset_left = 65.0
-offset_top = -40.0
-offset_right = 146.0
-text = "E"
-
-[node name="Lube" type="RichTextLabel" parent="PWR" index="2"]
-offset_left = -151.0
-offset_top = 61.0
-offset_right = -80.0
-offset_bottom = 101.0
-text = "L"
-
-[node name="Heat" type="RichTextLabel" parent="PWR" index="3"]
-offset_left = 65.0
-offset_top = 62.0
-offset_right = 147.0
-offset_bottom = 102.0
-text = "H"
-
-[node name="AI" type="Node2D" parent="." index="3"]
-position = Vector2(1316, 587)
-
-[node name="Health" type="RichTextLabel" parent="AI" index="0"]
-offset_left = -149.0
-offset_top = -39.0
-offset_right = -44.0
-offset_bottom = 1.0
-text = "H"
-
-[node name="Elec" type="RichTextLabel" parent="AI" index="1"]
-offset_left = 65.0
-offset_top = -40.0
-offset_right = 146.0
-text = "E"
-
-[node name="Lube" type="RichTextLabel" parent="AI" index="2"]
-offset_left = -151.0
-offset_top = 61.0
-offset_right = -80.0
-offset_bottom = 101.0
-text = "L"
-
-[node name="Heat" type="RichTextLabel" parent="AI" index="3"]
-offset_left = 65.0
-offset_top = 62.0
-offset_right = 147.0
-offset_bottom = 102.0
-text = "H"
-
-[node name="TRG" type="Node2D" parent="." index="4"]
-position = Vector2(1698, 587)
 
 [node name="Health" type="RichTextLabel" parent="TRG" index="0"]
 offset_left = -149.0
@@ -130,68 +70,8 @@ offset_right = 147.0
 offset_bottom = 102.0
 text = "H"
 
-[node name="OXY" type="Node2D" parent="." index="5"]
-position = Vector2(549, 874)
-
-[node name="Health" type="RichTextLabel" parent="OXY" index="0"]
-offset_left = -149.0
-offset_top = -39.0
-offset_right = -44.0
-offset_bottom = 1.0
-text = "H"
-
-[node name="Elec" type="RichTextLabel" parent="OXY" index="1"]
-offset_left = 65.0
-offset_top = -40.0
-offset_right = 146.0
-text = "E"
-
-[node name="Lube" type="RichTextLabel" parent="OXY" index="2"]
-offset_left = -151.0
-offset_top = 61.0
-offset_right = -80.0
-offset_bottom = 101.0
-text = "L"
-
-[node name="Heat" type="RichTextLabel" parent="OXY" index="3"]
-offset_left = 65.0
-offset_top = 62.0
-offset_right = 147.0
-offset_bottom = 102.0
-text = "H"
-
-[node name="BLK" type="Node2D" parent="." index="6"]
-position = Vector2(914, 874)
-
-[node name="Health" type="RichTextLabel" parent="BLK" index="0"]
-offset_left = -149.0
-offset_top = -39.0
-offset_right = -44.0
-offset_bottom = 1.0
-text = "H"
-
-[node name="Elec" type="RichTextLabel" parent="BLK" index="1"]
-offset_left = 65.0
-offset_top = -40.0
-offset_right = 146.0
-text = "E"
-
-[node name="Lube" type="RichTextLabel" parent="BLK" index="2"]
-offset_left = -151.0
-offset_top = 61.0
-offset_right = -80.0
-offset_bottom = 101.0
-text = "L"
-
-[node name="Heat" type="RichTextLabel" parent="BLK" index="3"]
-offset_left = 65.0
-offset_top = 62.0
-offset_right = 147.0
-offset_bottom = 102.0
-text = "H"
-
-[node name="WEP" type="Node2D" parent="." index="7"]
-position = Vector2(1311, 874)
+[node name="WEP" type="Node2D" parent="." index="3"]
+position = Vector2(1316, 587)
 
 [node name="Health" type="RichTextLabel" parent="WEP" index="0"]
 offset_left = -149.0
@@ -220,35 +100,35 @@ offset_right = 147.0
 offset_bottom = 102.0
 text = "H"
 
-[node name="LDR" type="Node2D" parent="." index="8"]
-position = Vector2(1698, 874)
+[node name="CPU" type="Node2D" parent="." index="4"]
+position = Vector2(1698, 587)
 
-[node name="Health" type="RichTextLabel" parent="LDR" index="0"]
+[node name="Health" type="RichTextLabel" parent="CPU" index="0"]
 offset_left = -149.0
 offset_top = -39.0
 offset_right = -44.0
 offset_bottom = 1.0
 text = "H"
 
-[node name="Elec" type="RichTextLabel" parent="LDR" index="1"]
+[node name="Elec" type="RichTextLabel" parent="CPU" index="1"]
 offset_left = 65.0
 offset_top = -40.0
 offset_right = 146.0
 text = "E"
 
-[node name="Lube" type="RichTextLabel" parent="LDR" index="2"]
+[node name="Lube" type="RichTextLabel" parent="CPU" index="2"]
 offset_left = -151.0
 offset_top = 61.0
 offset_right = -80.0
 offset_bottom = 101.0
 text = "L"
 
-[node name="Heat" type="RichTextLabel" parent="LDR" index="3"]
+[node name="Heat" type="RichTextLabel" parent="CPU" index="3"]
 offset_left = 65.0
 offset_top = 62.0
 offset_right = 147.0
 offset_bottom = 102.0
 text = "H"
 
-[node name="ElecLubeHeat" parent="." index="9"]
+[node name="ElecLubeHeat" parent="." index="5"]
 visible = false
