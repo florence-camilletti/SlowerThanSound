@@ -90,8 +90,14 @@ func _ready() -> void:
     self.map_manager.load_map_polygons()
     self.entity_manager.set_map_manager(self.map_manager)
     self.entity_manager.set_LIDAR_manager(self.LIDAR_child)
-        
+
     self.load_screen.self_modulate.a=0
+    set_map_visible(false)#Menu is the starting screen
+
+#Map and entities live outside the system nodes, so they must be hidden separately
+func set_map_visible(v: bool) -> void:
+    self.map_manager.set_visible(v)
+    self.entity_manager.set_visible(v)
 
 func request_command_focus() -> void:
     update_command_focus(false)
@@ -165,6 +171,7 @@ func _input(event):
                 sys.set_focus(false)
             swap_noise.play()
             self.all_system_nodes[action_indx].set_focus(true)
+            set_map_visible(action_indx == Global.LIDAR)
             self.loading_flag = true
             self.load_curr_val = self.load_max_val
             #self.command_focus = (self.active_chunk != system_indx) or self.command_focus
