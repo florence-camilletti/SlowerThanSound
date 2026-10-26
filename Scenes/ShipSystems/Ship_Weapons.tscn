@@ -19,7 +19,6 @@ loop = true
 script = ExtResource("2_cbrcw")
 
 [node name="Background" parent="." index="0"]
-visible = false
 texture = ExtResource("3_0slap")
 
 [node name="TorpLight" type="Sprite2D" parent="." index="1"]
